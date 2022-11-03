@@ -17,7 +17,7 @@ internal static class DataSource
     internal static void s_Initialize()
     {
 
-           OrderItem[] tmpOrderItemsArr = new OrderItem { new OrderItem("לשלוח כאן ערכים ולבנות בנאי במחלקות")}
+           OrderItem[] tmpOrderItemsArr = new OrderItem { new OrderItem(/*"לשלוח כאן ערכים ולבנות בנאי במחלקות"*/)}
            OrderItem[] tmpOrderArr = new OrderItem[20];
            OrderItem[] tmpProductArr = new OrderItem[10];
 
