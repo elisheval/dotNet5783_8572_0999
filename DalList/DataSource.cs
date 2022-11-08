@@ -5,40 +5,59 @@ namespace Dal;
 
 internal static class DataSource
 {
-    internal static OrderItem[] orderItemsArr = new OrderItem[200];
-    internal static Product[] productArr = new Product[50];
-    internal static Order[] orderArr = new Order[100];
 
-    internal readonly static Random rnd=new Random();
+    internal readonly static Random rnd = new Random();
+
+    internal static OrderItem[] orderItemsArr = new OrderItem[200];
+    private static void addToOrderItemArr(OrderItem myOrderItem)
+    {
+        myOrderItem.Id = Config.IdentifyOrderItem;
+        orderItemsArr[Config.IndexOrderItem] = myOrderItem;
+        Config.IndexOrderItem++;
+    }
+
+    internal static Product[] productArr = new Product[50];
+    private static void addToProductArr(Product myProduct)
+    {
+        myProduct.Id = Config.IdentifyProduct;
+        productArr[Config.IndexProduct] = myProduct;
+        Config.IndexProduct++;
+    }
+
+    internal static Order[] orderArr = new Order[100];
+    private static void addToOrderArr(Order myOrder)
+    {
+        myOrder.ID = Config.IdentifyOrder;
+        orderArr[Config.IndexOrder] = myOrder;
+        Config.IndexOrder++;
+    }
+
     static DataSource()
     {
         s_Initialize();
     }
-    internal static void s_Initialize()
+    private static void s_Initialize()
     {
 
-           OrderItem[] tmpOrderItemsArr = new OrderItem { new OrderItem(/*"לשלוח כאן ערכים ולבנות בנאי במחלקות"*/)}
-           OrderItem[] tmpOrderArr = new OrderItem[20];
-           OrderItem[] tmpProductArr = new OrderItem[10];
+        Product[] tmpProductArr = new Product[10];
+        for(int i=0; i<10; i++)
+        {
+            addToProductArr(tmpProductArr[i]);    
+        }
 
-    }
-   
-    private static void addToOrderArr(Order myOrder)
-    {
-        orderArr[Config.IndexOrder] = myOrder;
-        Config.IndexOrder++;
-    }
-    private static void addToOrderItemArr(OrderItem myOrderItem)
-    {
-        orderItemsArr[Config.IndexOrderItem] = myOrderItem;
-        Config.IndexOrderItem++;
-    }
-    private static void addToProductArr(Product myProduct)
-    {
+        Order[] tmpOrderArr = new Order[20];
+        for (int i = 0; i < 20; i++)
+        {
+            addToOrderArr(tmpOrderArr[i]);
+        }
 
-        productArr[Config.IndexProduct] = myProduct;
-        Config.IndexProduct++;
+        OrderItem[] tmpOrderItemArr = new OrderItem[40];
+        for (int i = 0; i < 40; i++)
+        {
+            addToOrderItemArr(tmpOrderItemArr[i]);
+        }
     }
+
     internal struct Config
     {
         internal static int IndexOrderItem { get; set; } = 0;
