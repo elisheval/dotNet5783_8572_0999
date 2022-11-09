@@ -13,11 +13,11 @@ public struct Product
     #endregion
 
     #region Product constructor
-    public Product(string name, double price,/* Category category,*/ int inStock)
+    public Product(string name, double price, Category category, int inStock)
      {
         Name = name;
         Price= price;
-        //category = category;
+        Category = category;
         InStock = inStock;
      }
     #endregion

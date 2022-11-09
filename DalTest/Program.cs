@@ -1,30 +1,36 @@
 ﻿using DO;
 using Dal;
 using static DO.Enums;
-using Microsoft.VisualBasic;
-
 namespace DalTest;
 
 public class Program
 {
+    #region properties
     static private DalOrder order1=new DalOrder();
-  static private DalOrderItem orderItem1=new DalOrderItem();
-  static private DalProduct product1=new DalProduct();
-   static void orderOptions()
+    static private DalOrderItem orderItem1=new DalOrderItem();
+    static private DalProduct product1=new DalProduct();
+    #endregion
+    #region orderOptions
+    /// <summary>
+    /// all the options of order for the user
+    /// </summary>
+    static void orderOptions()
     {
         CRUD choose;
         do
         {
+            ///all the options to do
             Console.WriteLine("enter 1 to add an order");
             Console.WriteLine("enter 2 to get a details of order");
             Console.WriteLine("enter 3 to get all the orders");
             Console.WriteLine("enter 4 to delete an order");
             Console.WriteLine("enter 5 to update an order");
             Console.WriteLine("enter 0 to exit");
-
+           
             Enum.TryParse(Console.ReadLine(), out choose);
             switch (choose)
             {
+                ///add a new order
                 case CRUD.Create:
                     Console.WriteLine("enter customer name");
                     string name = Console.ReadLine();
@@ -44,7 +50,7 @@ public class Program
                         Console.WriteLine(ex.Message);
                     }
                     break;
-
+                ///get an order by id
                 case CRUD.Read:
                     Console.WriteLine("enter the order id");
                     int id = int.Parse(Console.ReadLine());
@@ -58,6 +64,7 @@ public class Program
                         Console.WriteLine(ex.Message);
                     }
                     break;
+                    ///get all the orders
                 case CRUD.ReadAll:
                     Order[] orderArr = order1.GetAll();
                     foreach (Order order in orderArr)
@@ -65,6 +72,7 @@ public class Program
                         Console.WriteLine(order);
                     }
                     break;
+                    ///delete an order by id
                 case CRUD.Delete:
                     Console.WriteLine("enter the order id");
                     id = int.Parse(Console.ReadLine());
@@ -77,6 +85,7 @@ public class Program
                         Console.WriteLine(ex.Message);
                     }
                     break;
+                    ///update an order by id
                 case CRUD.Update:
                     Console.WriteLine("enter the order id");
                     id = int.Parse(Console.ReadLine());
@@ -92,6 +101,8 @@ public class Program
                     }
                     Order tmpOrder = new Order();
                     String input;
+                    ///the user dont have to update all the details of the order, 
+                    ///so with thisvariable we checks what the user wanted to change and convert it to the currect type
                     Console.WriteLine("enter customer name");
                     input = Console.ReadLine();
                     if (input != "")
@@ -104,26 +115,27 @@ public class Program
                     input = Console.ReadLine();
                     if (input != "")
                         tmpOrder.CustomerAddress =input;
-
-     //להוסיף תאריכים
-                   
                     order1.Update(tmpOrder);
                     break;
+                    ///exit and return us to the main
                 case CRUD.exit:
                     break;
                 default:
                     break;
-
-
             }
         }while (choose != CRUD.exit);
     }
-
-   static void orderItemOptions()
+    #endregion
+    #region orderItemOptions
+    /// <summary>
+    /// all the options of order items for the user
+    /// </summary>
+    static void orderItemOptions()
     {
         CRUD choose;
         do
         {
+            ///showing the user all the options of order items
             Console.WriteLine("enter 1 to add an order item");
             Console.WriteLine("enter 2 to get a details of order item");
             Console.WriteLine("enter 3 to get all the orders");
@@ -131,11 +143,14 @@ public class Program
             Console.WriteLine("enter 5 to update an order item");
             Console.WriteLine("enter 6 to get an order item by product and order id");
             Console.WriteLine("enter 7 get all order items with specific order id");
+
             Console.WriteLine("enter 0 to exit");
-        
+            ///converting string to enum type
             Enum.TryParse(Console.ReadLine(), out choose);
+
             switch (choose)
             {
+                ///add a new order item
                 case CRUD.Create:
                     Console.WriteLine("enter product ID");
                     int productID =int.Parse(Console.ReadLine());
@@ -149,6 +164,7 @@ public class Program
                    int id= orderItem1.Add(tmpOrderItem);
                     Console.WriteLine("the id of the order item is: " + id);
                     break;
+                   ///get an order item by id
                 case CRUD.Read:
                     Console.WriteLine("enter order item ID");
                      id=int.Parse(Console.ReadLine());
@@ -162,6 +178,7 @@ public class Program
                         Console.WriteLine(ex.Message);
                     }
                     break;
+                    ///get all order items
                 case CRUD.ReadAll:
                     OrderItem[] ordersItemsArr = orderItem1.GetAll();
                     foreach (OrderItem orderItem in ordersItemsArr)
@@ -169,6 +186,7 @@ public class Program
                         Console.WriteLine(orderItem);
                     }
                     break;
+                    ///delete an order items by id
                 case CRUD.Delete:
                     Console.WriteLine("enter order item ID to delete");
                     id = int.Parse(Console.ReadLine());
@@ -181,6 +199,7 @@ public class Program
                         Console.WriteLine(ex.Message);
                     }
                     break;
+                    ///update an order item by id 
                 case CRUD.Update:
                     Console.WriteLine("enter order item ID to update");
                     tmpOrderItem = new OrderItem();
@@ -195,6 +214,8 @@ public class Program
                         Console.WriteLine(ex.Message);
                     }
 
+                    ///the user dont have to update all the details of the order, 
+                    ///so with thisvariable we checks what the user wanted to change and convert it to the currect type
                     String input;
                     Console.WriteLine("enter product ID");
                     input = Console.ReadLine();
@@ -214,6 +235,7 @@ public class Program
                         tmpOrderItem.Price = double.Parse(input);
                     orderItem1.Update(tmpOrderItem);
                     break;
+                    ///get an order item by order id and product id
                 case CRUD.ReadByOrderAndProductIds:
                     Console.WriteLine("enter product id");
                     productID= int.Parse(Console.ReadLine());
@@ -229,6 +251,7 @@ public class Program
                         Console.WriteLine(ex.Message);
                     }
                     break;
+                    ///get all order items by order id
                 case CRUD.ReadByOrderId:
                     Console.WriteLine("enter order id");
                     orderID= int.Parse(Console.ReadLine());
@@ -246,6 +269,7 @@ public class Program
                         Console.WriteLine(ex.Message);
                     }
                     break;
+                    //exit and returns the user to the main
                 case CRUD.exit:
                     break;
                 default:
@@ -255,22 +279,29 @@ public class Program
             }
         } while (choose != CRUD.exit);
     }
-
-     static void productOptions()
+    #endregion
+    #region productOptions
+    /// <summary>
+    /// all the options of product
+    /// </summary>
+    static void productOptions()
     {
         CRUD choose;
         do
         {
+            ///showing the user all the options of product
         Console.WriteLine("enter 1 to add a prduct");
         Console.WriteLine("enter 2 to get a details of product by id");
         Console.WriteLine("enter 3 to get all the products");
         Console.WriteLine("enter 4 to delete a product");
         Console.WriteLine("enter 5 to update a product");
         Console.WriteLine("enter 0 to exit");
-        
+           ///convert string to enum type
             Enum.TryParse(Console.ReadLine(), out choose);
+
             switch (choose)
             {
+                ///add product
                 case CRUD.Create:
                     Console.WriteLine("enter product name");
                     string name = Console.ReadLine();
@@ -290,6 +321,7 @@ public class Program
                     int productID=product1.Add(tmpProduct);
                     Console.WriteLine("pruduct id you added is: " + productID);
                     break;
+                    ///get product by id
                 case CRUD.Read:
                     Console.WriteLine("enter product ID");
                     int id=int.Parse(Console.ReadLine());
@@ -302,6 +334,7 @@ public class Program
                         Console.WriteLine(ex.Message);
                     }
                     break;
+                    ///get all products
                 case CRUD.ReadAll:
                     Product[] productArr=product1.GetAll();
                     foreach(Product product in productArr)
@@ -309,6 +342,7 @@ public class Program
                         Console.WriteLine(product);
                     }
                     break;
+                    ///delete product by id
                 case CRUD.Delete:
                     Console.WriteLine("enter product ID to delete");
                     id=int.Parse(Console.ReadLine());
@@ -321,6 +355,7 @@ public class Program
                         Console.WriteLine(ex.Message);
                     }
                     break;
+                    ///update product by id
                 case CRUD.Update:
                     Console.WriteLine("enter product ID to update");
                     tmpProduct=new Product();
@@ -335,6 +370,8 @@ public class Program
                         Console.WriteLine(ex.Message);
                     }
 
+                    ///the user dont have to update all the details of the order, 
+                    ///so with thisvariable we checks what the user wanted to change and convert it to the currect type
                     String input;
                     Console.WriteLine("enter product name");
                     input = Console.ReadLine();
@@ -358,6 +395,7 @@ public class Program
                         tmpProduct.InStock = int.Parse(input);
                     product1.Update(tmpProduct);
                     break;
+                    ///exit and return to the main
                 case CRUD.exit:
                     break;
                 default:
@@ -366,18 +404,29 @@ public class Program
             }
         } while (choose != CRUD.exit);
         }
+    #endregion
+    #region Main
+    /// <summary>
+    /// the main function that getting a number from the user
+    /// and navigate him for options of specific struct
+    /// </summary>
+    /// <param name="args"></param>
     private static void Main(string[] args)
     {
+        ///starting the data source class
         DataSource.startDataSource();
+
         Entity choose;
         
         do
         {
+            ///showing the user all options 
             Console.WriteLine("enter 1 for product options");
             Console.WriteLine("enter 2 for order options");
             Console.WriteLine("enter 3 for orderItem options");
             Console.WriteLine("enter 0 to exit");
 
+            //convert string to enum type
             Enum.TryParse(Console.ReadLine(), out choose);
 
             switch (choose)
@@ -385,11 +434,9 @@ public class Program
                 case Entity.Order:
                     orderOptions();
                     break;
-
                 case Entity.OrderItem:
                     orderItemOptions();
                     break;
-
                 case Entity.Product:
                     productOptions();
                     break;
@@ -403,4 +450,5 @@ public class Program
         }
         while (choose!=Entity.exit);
     }
+    #endregion
 }

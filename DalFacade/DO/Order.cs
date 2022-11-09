@@ -8,24 +8,26 @@ public struct Order
     public string CustomerName { get; set; }
     public string CustomerEmail { get; set; }
     public string CustomerAddress { get; set; }
-    public DateTime OrderDate { get; set; } =DateTime.MinValue;
-    public DateTime ShipDate { get; set; }=DateTime.MinValue;
-    public DateTime DeliveryDate { get; set; }= DateTime.MinValue;
+    public DateTime OrderDate { get; set; }
+    public DateTime ShipDate { get; set; }
+    public DateTime DeliveryDate { get; set; }
     #endregion
 
     #region  order constructor
-    public Order(string customerName, string customerEmail, string customerAddress, DateTime orderDate)
-    {  //DateTime.MinValue מה זה timespan
+    public Order(string customerName, string customerEmail, string customerAddress, DateTime orderDate, DateTime shipDate, DateTime deliveryDate)
+    {  
         CustomerName = customerName;
         CustomerEmail = customerEmail;
         CustomerAddress = customerAddress;
         OrderDate = orderDate;
-        //ShipDate = shipDate;
-        //DeliveryDate = deliveryDate;
+        ShipDate = shipDate;
+        DeliveryDate = deliveryDate;
     }
+    public Order(string customerName, string customerEmail, string customerAddress) : this(customerName, customerEmail, customerAddress, DateTime.Now, DateTime.MinValue, DateTime.MinValue) { }
+
     #endregion
-    
-    
+
+
     /// <returns> the props of this object</returns>
     public override string ToString() => $@"
         order ID={ID}: {CustomerName}, 

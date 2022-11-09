@@ -23,6 +23,10 @@ public static class DataSource
     }
 
     internal static Product[] productArr = new Product[50];
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="myProduct"></param>
     private static void addToProductArr(Product myProduct)
     {
         myProduct.Id = Config.IdentifyProduct;
