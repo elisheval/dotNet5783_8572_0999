@@ -38,10 +38,9 @@ internal static class DataSource
     }
     private static void s_Initialize()
     {
-
-        Product[] tmpProductArr = new Product[10];
+        Product[] tmpProductArr{("drums", 900, 5) };
         for(int i=0; i<10; i++)
-        {
+        {                                                             
             addToProductArr(tmpProductArr[i]);    
         }
 
@@ -58,7 +57,7 @@ internal static class DataSource
         }
     }
 
-    internal struct Config
+    internal class Config
     {
         internal static int IndexOrderItem { get; set; } = 0;
         internal static int IndexOrder { get; set; } = 0;

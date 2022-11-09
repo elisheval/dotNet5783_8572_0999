@@ -7,19 +7,28 @@ public struct Enums
 {
   public enum Category
     {
-        food
+        percussions,
+        keyboards,
+        exhalation,
+        strings,
+        additional
     }
+
     public enum Entity
     {
-        Order,
+        exit,
         Product,
+        Order,
         OrderItem
     }
     public enum CRUD{
+        exit,
         Create,
         Read,
         ReadAll,
-        Update,
         Delete,
+        Update,
+        ReadByOrderAndProductIds,
+        ReadByOrderId
     }
 }

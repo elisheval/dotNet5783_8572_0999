@@ -12,7 +12,7 @@ namespace Stage0
 		{
 			string name;
 			Console.Write("what is your name?");
-			name = Console.ReadLine();
+            name = Console.ReadLine();
 			Console.WriteLine($"Your name is{name}");
 		}
 	}
