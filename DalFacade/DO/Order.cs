@@ -1,5 +1,4 @@
 ﻿
-
 namespace DO;
 
 public struct Order
@@ -8,19 +7,18 @@ public struct Order
     public string CustomerName { get; set; }
     public string CustomerEmail { get; set; }
     public string CustomerAddress { get; set; }
-    public DateTime OrderDate { get; set; }
-    public DateTime ShipDate { get; set; }
-    public DateTime DeliveryDate { get; set; }
+    public DateTime OrderDate { get; set; } =DateTime.MinValue;
+    public DateTime ShipDate { get; set; }=DateTime.MinValue;
+    public DateTime DeliveryDate { get; set; }= DateTime.MinValue;
 
-    Order(string customerName, string customerEmail, string customerAddress, DateTime orderDate, DateTime shipDate, DateTime deliveryDate)
+   public Order(string customerName, string customerEmail, string customerAddress)
     {  //DateTime.MinValue מה זה timespan
         CustomerName = customerName;
         CustomerEmail = customerEmail;
         CustomerAddress = customerAddress;
-        OrderDate = orderDate;
-        ShipDate = shipDate;
-        DeliveryDate = deliveryDate;
- 
+        //OrderDate = orderDate;
+        //ShipDate = shipDate;
+        //DeliveryDate = deliveryDate;
     }
     public override string ToString() => $@"
         order ID={ID}: {CustomerName}, 

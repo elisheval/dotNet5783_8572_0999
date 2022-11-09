@@ -1,5 +1,4 @@
 ﻿using DO;
-using System.ComponentModel;
 
 namespace Dal;
 
@@ -58,7 +57,7 @@ internal static class DataSource
         }
     }
 
-    internal struct Config
+    internal class Config
     {
         internal static int IndexOrderItem { get; set; } = 0;
         internal static int IndexOrder { get; set; } = 0;

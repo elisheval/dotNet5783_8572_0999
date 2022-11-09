@@ -3,7 +3,7 @@ using DO;
 
 namespace Dal;
 
-public struct DalProduct
+public class DalProduct
 {
     public int Add(Product myProduct)
     {
@@ -24,7 +24,10 @@ public struct DalProduct
 
     public Product[] GetAll()
     {
-        return DataSource.productArr;
+        Product[] tmpProductArr = new Product[DataSource.Config.IndexProduct];
+        for (int i = 0; i < DataSource.Config.IndexProduct; i++)
+            tmpProductArr[i] = DataSource.productArr[i];
+        return tmpProductArr;
     }
 
     public void Delete(int myId)

@@ -1,9 +1,7 @@
 ﻿using DO;
-
 namespace Dal;
 
-//לברר אם מחלקה או מבנה
-public struct DalOrder
+public class DalOrder
 {
     public int Add(Order myOrder)
     {
@@ -24,7 +22,10 @@ public struct DalOrder
 
     public Order[] GetAll()
     {
-        return DataSource.orderArr;
+        Order[] tmpOrderArr = new Order[DataSource.Config.IndexOrder];
+        for (int i = 0; i < DataSource.Config.IndexOrder; i++)
+            tmpOrderArr[i] = DataSource.orderArr[i];
+        return tmpOrderArr;
     }
 
     public void Delete(int myId)
@@ -41,13 +42,14 @@ public struct DalOrder
         throw new Exception("no order found to delete with this ID");
 
     }
-    public void Update(Product myProduct)
+    public void Update(Order myOrder)
     {
-        for (int i = 0; i < DataSource.Config.IndexProduct; i++)
+        for (int i = 0; i < DataSource.Config.IndexOrder; i++)
         {
-            if (DataSource.productArr[i].Id == myProduct.Id)
+            if (DataSource.orderArr[i].ID == myOrder.ID)
             {
-                DataSource.productArr[i] = myProduct;
+                Console.WriteLine("rr");
+                DataSource.orderArr[i] = myOrder;
                 return;
             }
         }

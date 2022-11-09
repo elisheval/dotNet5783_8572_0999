@@ -11,7 +11,7 @@ public struct Product
     public Category Category { get; set; }
     public int InStock { get; set; }
 
-     Product(string name, double price, Category category, int inStock)
+    public Product(string name, double price, Category category, int inStock)
      {
         Name = name;
         Price= price;
@@ -20,8 +20,8 @@ public struct Product
      }
     public override string ToString() {
         return ($@"
-           Product ID={Id}: {Name}, 
-            category - {Category}
+            Product ID={Id}: {Name}, 
+            category - {Category.ToString()}
         	Price: {Price}
     	     Amount in stock: {InStock}
             ");

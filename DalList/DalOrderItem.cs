@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Dal;
 
-public struct DalOrderItem
+public class DalOrderItem
 {
     public int Add(OrderItem myOrderItem)
     {
@@ -25,7 +25,10 @@ public struct DalOrderItem
 
     public OrderItem[] GetAll()
     {
-        return DataSource.orderItemsArr;
+        OrderItem[] tmpOrderItemsArr = new OrderItem[DataSource.Config.IndexOrderItem];
+        for (int i = 0; i < DataSource.Config.IndexOrderItem; i++)
+            tmpOrderItemsArr[i] = DataSource.orderItemsArr[i];
+        return tmpOrderItemsArr;
     }
 
     public void Delete(int myId)
