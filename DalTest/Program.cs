@@ -368,7 +368,7 @@ public class Program
         }
     private static void Main(string[] args)
     {
-       
+        DataSource.startDataSource();
         Entity choose;
         
         do
