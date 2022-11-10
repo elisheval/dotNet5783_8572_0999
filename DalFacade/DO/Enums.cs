@@ -5,15 +5,24 @@ namespace DO;
 
 public struct Enums
 {
-  public enum Category
+    #region category
+    /// <summary>
+    /// The item's categories in the store
+    /// </summary>
+    public enum Category
     {
-        percussions,
-        keyboards,
-        exhalation,
-        strings,
-        additional
+        percussions,//כלי הקשה
+        keyboards,//כלי מקלדת
+        exhalation,//כלי נשיפה
+        strings,//כלי מיתר
+        additional//נלווים 
     }
+    #endregion
 
+    #region entity
+    /// <summary>
+    /// The Entity options to navigate
+    /// </summary>
     public enum Entity
     {
         exit,
@@ -21,6 +30,12 @@ public struct Enums
         Order,
         OrderItem
     }
+    #endregion
+
+    #region crud
+    /// <summary>
+    /// access data methods 
+    /// </summary>
     public enum CRUD{
         exit,
         Create,
@@ -31,4 +46,5 @@ public struct Enums
         ReadByOrderAndProductIds,
         ReadByOrderId
     }
+    #endregion
 }

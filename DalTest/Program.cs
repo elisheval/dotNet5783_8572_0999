@@ -89,10 +89,11 @@ public class Program
                 case CRUD.Update:
                     Console.WriteLine("enter the order id");
                     id = int.Parse(Console.ReadLine());
+                    Order orderDetailstmp;
                     try
                     {
-                        Order orderDetails = order1.Get(id);
-                        Console.WriteLine(orderDetails);
+                        orderDetailstmp = order1.Get(id);
+                        Console.WriteLine(orderDetailstmp);
                     }
                     catch (Exception ex)
                     {
@@ -100,6 +101,7 @@ public class Program
                         break;
                     }
                     Order tmpOrder = new Order();
+                    tmpOrder.ID = orderDetailstmp.ID;
                     String input;
                     ///the user dont have to update all the details of the order, 
                     ///so with thisvariable we checks what the user wanted to change and convert it to the currect type
@@ -414,7 +416,7 @@ public class Program
     private static void Main(string[] args)
     {
         ///starting the data source class
-        DataSource.startDataSource();
+        DataSource.StartDataSource();
 
         Entity choose;
         

@@ -3,7 +3,7 @@ namespace Dal;
 
 public class DalOrder
 {
-
+    #region crud
     /// <summary>
     /// The add method receives a new order object,
     /// updates it with an automatic object codeת
@@ -12,8 +12,8 @@ public class DalOrder
     /// <returns>Returns the id of the new order</returns>
     public int Add(Order myOrder)
     {
-        myOrder.ID = DataSource.Config.IdentifyOrder;
-        DataSource.orderArr[DataSource.Config.IndexOrder++] = myOrder;
+        myOrder.ID = DataSource.Config._IdentifyOrder;
+        DataSource.orderArr[DataSource.Config._IndexOrder++] = myOrder;
         return myOrder.ID;
     }
 
@@ -24,7 +24,7 @@ public class DalOrder
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public Order Get(int myId)
     {
-        for (int i = 0; i < DataSource.Config.IndexOrder; i++)
+        for (int i = 0; i < DataSource.Config._IndexOrder; i++)
         {
             if (DataSource.orderArr[i].ID == myId)
                 return DataSource.orderArr[i];
@@ -39,8 +39,8 @@ public class DalOrder
     /// <returns>the temp array</returns>
     public Order[] GetAll()
     {
-        Order[] tmpOrderArr = new Order[DataSource.Config.IndexOrder];
-        for (int i = 0; i < DataSource.Config.IndexOrder; i++)
+        Order[] tmpOrderArr = new Order[DataSource.Config._IndexOrder];
+        for (int i = 0; i < DataSource.Config._IndexOrder; i++)
             tmpOrderArr[i] = DataSource.orderArr[i];
         return tmpOrderArr;
     }
@@ -52,11 +52,11 @@ public class DalOrder
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        for( int i = 0; i < DataSource.Config.IndexOrder; i++)
+        for( int i = 0; i < DataSource.Config._IndexOrder; i++)
         {
             if (DataSource.orderArr[i].ID == myId)
             {
-                DataSource.orderArr[i] = DataSource.orderArr[--DataSource.Config.IndexOrder];
+                DataSource.orderArr[i] = DataSource.orderArr[--DataSource.Config._IndexOrder];
                 return;
             }
 
@@ -73,11 +73,10 @@ public class DalOrder
     /// <exception cref="Exception">If the id does not exist yet</exception>
     public void Update(Order myOrder)
     {
-        for (int i = 0; i < DataSource.Config.IndexOrder; i++)
+        for (int i = 0; i < DataSource.Config._IndexOrder; i++)
         {
             if (DataSource.orderArr[i].ID == myOrder.ID)
             {
-                Console.WriteLine("rr");
                 DataSource.orderArr[i] = myOrder;
                 return;
             }
@@ -85,4 +84,5 @@ public class DalOrder
         throw  new Exception("no order found to update with this ID");
 
     }
+    #endregion
 }

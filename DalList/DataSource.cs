@@ -1,51 +1,66 @@
 ﻿using DO;
-using Microsoft.VisualBasic;
-using System;
-using System.ComponentModel;
 using static DO.Enums;
-
 namespace Dal;
 
 public static class DataSource
 {
-    public static void startDataSource()
+    #region StartDataSource
+    /// <summary>
+    /// there is a problem with starting data source class
+    /// so we create this method to call her in the main in the begining of the program
+    /// </summary>
+    public static void StartDataSource()
     {
         return;
     }
-    internal readonly static Random rnd = new Random();
-
+    #endregion
+    internal readonly static Random _rnd = new Random();
+    /// <summary>
+    /// data array of order items
+    /// </summary>
     internal static OrderItem[] orderItemsArr = new OrderItem[200];
+    #region addToOrderItemArr
     private static void addToOrderItemArr(OrderItem myOrderItem)
     {
-        myOrderItem.Id = Config.IdentifyOrderItem;
-        orderItemsArr[Config.IndexOrderItem] = myOrderItem;
-        Config.IndexOrderItem++;
+        myOrderItem.Id = Config._IdentifyOrderItem;
+        orderItemsArr[Config._IndexOrderItem] = myOrderItem;
+        Config._IndexOrderItem++;
     }
+    #endregion
 
-    internal static Product[] productArr = new Product[50];
+
     /// <summary>
-    /// 
+    /// data array of products
     /// </summary>
-    /// <param name="myProduct"></param>
+    internal static Product[] productArr = new Product[50];
+    #region addToProductArr
     private static void addToProductArr(Product myProduct)
     {
-        myProduct.Id = Config.IdentifyProduct;
-        productArr[Config.IndexProduct] = myProduct;
-        Config.IndexProduct++;
+        myProduct.Id = Config._IdentifyProduct;
+        productArr[Config._IndexProduct] = myProduct;
+        Config._IndexProduct++;
     }
+    #endregion
 
+
+    /// <summary>
+    /// data array of order
+    /// </summary>
     internal static Order[] orderArr = new Order[100];
+    #region addToOrderArr
     private static void addToOrderArr(Order myOrder)
     {
-        myOrder.ID = Config.IdentifyOrder;
-        orderArr[Config.IndexOrder] = myOrder;
-        Config.IndexOrder++;
+        myOrder.ID = Config._IdentifyOrder;
+        orderArr[Config._IndexOrder] = myOrder;
+        Config._IndexOrder++;
     }
+    #endregion
 
     static DataSource()
     {
         s_Initialize();
     }
+    #region s_Initialize
     private static void s_Initialize()
     {
         Category percussions = new Category();
@@ -59,23 +74,27 @@ public static class DataSource
         Enum.TryParse("3", out strings);
         Enum.TryParse("4", out additional);
 
-        Product[] tmpProductArr = { new Product("drums", 900, percussions, 5),
-                                    new Product("Salute",400,percussions,2),
-                                    new Product("piano",20000,keyboards,1),
-                                    new Product("accordion",3000,keyboards,10),
-                                    new Product("harp",15000,strings,0),
-                                    new Product("violin",1500,strings,7),
-                                    new Product("flute",4000,exhalation,3),
-                                    new Product("saxophone",2500,exhalation,1),
-                                    new Product("guitar_textbook",70,additional,30),
-                                    new Product("accordion_case",300,additional,10),
-                                       };
+        Product[] tmpProductArr = {
+            #region assignment of 10 products
+            new Product("drums", 900, percussions, 5),
+            new Product("Salute",400,percussions,2),
+            new Product("piano",20000,keyboards,1),
+            new Product("accordion",3000,keyboards,10),
+            new Product("harp",15000,strings,0),
+            new Product("violin",1500,strings,7),
+            new Product("flute",4000,exhalation,3),
+            new Product("saxophone",2500,exhalation,1),
+            new Product("guitar_textbook",70,additional,30),
+            new Product("accordion_case",300,additional,10)
+            #endregion
+        };
         for (int i = 0; i < 10; i++)
         {
             addToProductArr(tmpProductArr[i]);
         }
 
         Order[] tmpOrderArr ={
+            #region assignment of 20 orders
             new Order("elisheva","elisheva22@","katz34", new DateTime(2022,11,09) , DateTime.MinValue, DateTime.MinValue),
             new Order("miri","miri22@","agasi44", new DateTime(2022,11,02) , DateTime.MinValue, DateTime.MinValue),
             new Order("simi","simi22@","katz19", new DateTime(2022,10,05) , DateTime.MinValue, DateTime.MinValue),
@@ -96,7 +115,7 @@ public static class DataSource
             new Order("dan","dan@","parvshtein89",new DateTime(2021,10,01),new DateTime(2020,10,10),new DateTime(2021,10,12)),
             new Order("gavriel","gavriel@","bergman3",new DateTime(2021,07,28),new DateTime(2021,07,30),new DateTime(2021,08,01)),
             new Order("ayala","qwerty@","miriam hanevia",new DateTime(2021,08,27),new DateTime(2021,09,03),new DateTime(2021,09,05))
-
+            #endregion
         };
         for (int i = 0; i < 20; i++)
         {
@@ -105,7 +124,9 @@ public static class DataSource
 
         Random rand = new Random();
         
-        OrderItem[] tmpOrderItemArr ={new OrderItem(100001,100001,900,rand.Next(1,5)),
+        OrderItem[] tmpOrderItemArr ={
+            #region assignment of 40 order items  
+            new OrderItem(100001,100001,900,rand.Next(1,5)),
             new OrderItem(100002,100001,400,rand.Next(1,5)),
             new OrderItem(100003,100001,20000,rand.Next(1,5)),
             new OrderItem(100004,100002,3000,rand.Next(1,5)),
@@ -145,37 +166,39 @@ public static class DataSource
             new OrderItem(100010,100020,300,rand.Next(1,5)),
             new OrderItem(100001,100020,900,rand.Next(1,5)),
             new OrderItem(100005,100020,15000,rand.Next(1,5))
+            #endregion
         };
         for (int i = 0; i < 40; i++)
         {
             addToOrderItemArr(tmpOrderItemArr[i]);
         }
     }
-
+    #endregion
     internal class Config
     {
-        internal static int IndexOrderItem { get; set; } = 0;
-        internal static int IndexOrder { get; set; } = 0;
-        internal static int IndexProduct { get; set; } = 0;
+        #region properties in config
+        internal static int _IndexOrderItem { get; set; } = 0;
+        internal static int _IndexOrder { get; set; } = 0;
+        internal static int _IndexProduct { get; set; } = 0;
 
-        private static int identifyProduct = 100000;
-        public static int IdentifyProduct
+        private static int _identifyProduct = 100000;
+        public static int _IdentifyProduct
         {
-            get { return ++identifyProduct; }
+            get { return ++_identifyProduct; }
         }
 
-        private static int identifyOrderItem = 100000;
-        public static int IdentifyOrderItem
+        private static int _identifyOrderItem = 100000;
+        public static int _IdentifyOrderItem
         {
-            get { return ++identifyOrderItem; }
+            get { return ++_identifyOrderItem; }
         }
 
-        private static int identifyOrder = 100000;
-        public static int IdentifyOrder
+        private static int _identifyOrder = 100000;
+        public static int _IdentifyOrder
         {
-            get { return ++identifyOrder; }
+            get { return ++_identifyOrder; }
         }
-       
 
+        #endregion
     }
 }

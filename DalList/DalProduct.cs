@@ -5,7 +5,7 @@ namespace Dal;
 
 public class DalProduct
 {
-
+    #region crud
     /// <summary>
     /// The add method receives a new order object,
     /// updates it with an automatic object codeת
@@ -14,8 +14,8 @@ public class DalProduct
     /// <returns>Returns the id of the new order</returns>
     public int Add(Product myProduct)
     {
-        myProduct.Id= DataSource.Config.IdentifyProduct;
-        DataSource.productArr[DataSource.Config.IndexProduct++] = myProduct;
+        myProduct.Id= DataSource.Config._IdentifyProduct;
+        DataSource.productArr[DataSource.Config._IndexProduct++] = myProduct;
         return myProduct.Id;
     }
 
@@ -26,7 +26,7 @@ public class DalProduct
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public Product Get(int myId)
     {
-        for(int i = 0; i < DataSource.Config.IndexProduct; i++)
+        for(int i = 0; i < DataSource.Config._IndexProduct; i++)
         {
             if (DataSource.productArr[i].Id==myId)
                 return DataSource.productArr[i];
@@ -40,8 +40,8 @@ public class DalProduct
     /// <returns>the temp array</returns>
     public Product[] GetAll()
     {
-        Product[] tmpProductArr = new Product[DataSource.Config.IndexProduct];
-        for (int i = 0; i < DataSource.Config.IndexProduct; i++)
+        Product[] tmpProductArr = new Product[DataSource.Config._IndexProduct];
+        for (int i = 0; i < DataSource.Config._IndexProduct; i++)
             tmpProductArr[i] = DataSource.productArr[i];
         return tmpProductArr;
     }
@@ -54,11 +54,11 @@ public class DalProduct
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        for (int i = 0; i < DataSource.Config.IndexProduct; i++)
+        for (int i = 0; i < DataSource.Config._IndexProduct; i++)
         {
             if (DataSource.productArr[i].Id == myId)
             {
-                DataSource.productArr[i] = DataSource.productArr[--DataSource.Config.IndexProduct];
+                DataSource.productArr[i] = DataSource.productArr[--DataSource.Config._IndexProduct];
                 return;
             }
 
@@ -77,7 +77,7 @@ public class DalProduct
     /// <exception cref="Exception">If the id does not exist yet</exception>
     public void Update(Product myProduct)
     {
-        for (int i = 0; i < DataSource.Config.IndexProduct; i++)
+        for (int i = 0; i < DataSource.Config._IndexProduct; i++)
         {
             if (DataSource.productArr[i].Id == myProduct.Id)
             {
@@ -88,4 +88,5 @@ public class DalProduct
         throw new Exception("no product found to update with this ID");
 
     }
+    #endregion
 }

@@ -7,6 +7,8 @@ namespace Dal;
 
 public class DalOrderItem
 {
+
+    #region crud 
     /// <summary>
     /// The add method receives a new order object,
     /// updates it with an automatic object codeת
@@ -15,8 +17,8 @@ public class DalOrderItem
     /// <returns>Returns the id of the new order</returns>
     public int Add(OrderItem myOrderItem)
     {
-        myOrderItem.Id = DataSource.Config.IdentifyOrderItem;
-        DataSource.orderItemsArr[DataSource.Config.IndexOrderItem++] = myOrderItem;
+        myOrderItem.Id = DataSource.Config._IdentifyOrderItem;
+        DataSource.orderItemsArr[DataSource.Config._IndexOrderItem++] = myOrderItem;
         return myOrderItem.Id;
     }
 
@@ -27,7 +29,7 @@ public class DalOrderItem
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public OrderItem Get(int myId)
     {
-        for (int i = 0; i < DataSource.Config.IndexOrderItem; i++)
+        for (int i = 0; i < DataSource.Config._IndexOrderItem; i++)
         {
             if (DataSource.orderItemsArr[i].Id == myId)
                 return DataSource.orderItemsArr[i];
@@ -41,8 +43,8 @@ public class DalOrderItem
     /// <returns>the temp array</returns>
     public OrderItem[] GetAll()
     {
-        OrderItem[] tmpOrderItemsArr = new OrderItem[DataSource.Config.IndexOrderItem];
-        for (int i = 0; i < DataSource.Config.IndexOrderItem; i++)
+        OrderItem[] tmpOrderItemsArr = new OrderItem[DataSource.Config._IndexOrderItem];
+        for (int i = 0; i < DataSource.Config._IndexOrderItem; i++)
             tmpOrderItemsArr[i] = DataSource.orderItemsArr[i];
         return tmpOrderItemsArr;
     }
@@ -54,11 +56,11 @@ public class DalOrderItem
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        for (int i = 0; i < DataSource.Config.IndexOrderItem; i++)
+        for (int i = 0; i < DataSource.Config._IndexOrderItem; i++)
         {
             if (DataSource.orderItemsArr[i].Id == myId)
             {
-                DataSource.orderItemsArr[i] = DataSource.orderItemsArr[--DataSource.Config.IndexOrderItem];
+                DataSource.orderItemsArr[i] = DataSource.orderItemsArr[--DataSource.Config._IndexOrderItem];
                 return;
             }
 
@@ -75,7 +77,7 @@ public class DalOrderItem
     /// <exception cref="Exception">If the id does not exist yet</exception>
     public void Update(OrderItem myOrderItem)
     {
-        for (int i = 0; i < DataSource.Config.IndexOrderItem; i++)
+        for (int i = 0; i < DataSource.Config._IndexOrderItem; i++)
         {
             if (DataSource.orderItemsArr[i].Id == myOrderItem.Id)
             {
@@ -97,7 +99,7 @@ public class DalOrderItem
     /// <exception cref="Exception">if not exists</exception>
     public OrderItem GetByProductAndOrderIds(int myProductId, int myOrderId)
     {
-        for(int i=0; i < DataSource.Config.IndexOrderItem; i++)
+        for(int i=0; i < DataSource.Config._IndexOrderItem; i++)
         {
             if (DataSource.orderItemsArr[i].OrderId==myOrderId&& DataSource.orderItemsArr[i].ProductId == myProductId)
                 return DataSource.orderItemsArr[i];
@@ -116,18 +118,24 @@ public class DalOrderItem
     /// <exception cref="Exception">If there are no existing order items for this id</exception>
     public OrderItem[] getOrderItemsArrWithSpecificOrderId(int myOrderId)
     {
-        OrderItem[] tmpOrderItemsArr = new OrderItem[DataSource.Config.IndexOrderItem - 1];
+        OrderItem[] orderItemsArray=new OrderItem[DataSource.Config._IndexOrderItem];
         int j = 0;
-        for (int i = 0; i < DataSource.Config.IndexOrderItem; i++)
+        for(int i=0;i < DataSource.Config._IndexOrderItem; i++)
         {
             if(DataSource.orderItemsArr[i].OrderId == myOrderId)
             {
-                tmpOrderItemsArr[j++] = DataSource.orderItemsArr[i];
+                orderItemsArray[j] = DataSource.orderItemsArr[i];
+                j++;
             }
+        }
+        OrderItem[] tmpOrderItem=new OrderItem[j];
+        for (int i = 0; i < j; i++)
+        {
+            tmpOrderItem[i] = orderItemsArray[i];
         }
         if (j == 0)
             throw new Exception("no found orderItems with this orderId");
-         return tmpOrderItemsArr;
+         return tmpOrderItem;
     }
-
+    #endregion
 }

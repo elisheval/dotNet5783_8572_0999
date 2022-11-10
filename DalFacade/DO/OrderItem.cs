@@ -24,7 +24,7 @@ public struct OrderItem
 
     /// <returns> the props of this object</returns>
     public override string ToString() => $@"
-        orderItem:{Id},
+        orderItemId:{Id},
         ProductId:{ProductId}, 
         OrderId - {OrderId}
     	Price: {Price}
