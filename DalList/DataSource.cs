@@ -76,26 +76,27 @@ public static class DataSource
         }
 
         Order[] tmpOrderArr ={
-            new Order("elisheva","elisheva22@","katz34"),
-            new Order("miri","miri22@","agasi44"),
-            new Order("simi","simi22@","katz19"),
-            new Order("rina","rina@","drook2"),
-            new Order("tamar","tamar@","drook45"),
-            new Order("nomi","nomi@","hakablan12"),
-            new Order("shimon","simon@","agasi8"),
-            new Order("refael","refael@","shaoolzon49"),
-            new Order("chaiim","chaim@","chai_taib19"),
-            new Order("nechama","nechama@","brand432"),
-            new Order("rachel","rachel@","katc54"),
-            new Order("yael","yael@","hantke87"),
-            new Order("maayan","maayan@","hakablan90"),
-            new Order("hadas","hadas@","drok76"),
-            new Order("shira","shira@","apisga1"),
-            new Order("efrat","efrat@","toravavodah9"),
-            new Order("ayala","ayala@","agasi7"),
-            new Order("tali","tali@","chaimchaviv35"),
-            new Order("dan","dan@","parvshtein89"),
-            new Order("gavriel","gavriel@","bergman3")
+            new Order("elisheva","elisheva22@","katz34", new DateTime(2022,11,09) , DateTime.MinValue, DateTime.MinValue),
+            new Order("miri","miri22@","agasi44", new DateTime(2022,11,02) , DateTime.MinValue, DateTime.MinValue),
+            new Order("simi","simi22@","katz19", new DateTime(2022,10,05) , DateTime.MinValue, DateTime.MinValue),
+            new Order("rina","rina@","drook2", new DateTime(2022,09,30) , DateTime.MinValue, DateTime.MinValue),
+            new Order("tamar","tamar@","drook45", new DateTime(2022,09,15) , new DateTime(2022,09,22), DateTime.MinValue),
+            new Order("nomi","nomi@","hakablan12", new DateTime(2022,09,07), new DateTime(2022, 09,09), DateTime.MinValue),
+            new Order("shimon","simon@","agasi8", new DateTime(2022,09,07), new DateTime(2022, 09,09), DateTime.MinValue),
+            new Order("refael","refael@","shaoolzon49",new DateTime(2022,08,22),new DateTime(2022,09,30), DateTime.MinValue),
+            new Order("chaiim","chaim@","chai_taib19",new DateTime(2022,04,10),new DateTime(2022,04,14),new DateTime(2022,04,16)),
+            new Order("nechama","nechama@","brand432",new DateTime(2022,04,03),new DateTime(2022,05,10),new DateTime(2022/05/12)),
+            new Order("rachel","rachel@","katc54",new DateTime(2022,03,05),new DateTime(2022,05,10),new DateTime(2022,05,15)),
+            new Order("yael","yael@","hantke87",new DateTime(2021,11,11),new DateTime(2022,11,11),new DateTime(2021,11,11)),
+            new Order("maayan","maayan@","hakablan90",new DateTime(2021,11,11),new DateTime(2022,11,11),new DateTime(2021,11,11)),
+            new Order("hadas","hadas@","drok76",new DateTime(2021,09,02),new DateTime(2022,11,11), new DateTime(2021,11,20)),
+            new Order("efrat","efrat@","toravavodah9",new DateTime(2020,01,08),new DateTime(2020,01,22),new DateTime(2020,01,25)),
+            new Order("ayala","ayala@","agasi7",new DateTime(2020,01,07),new DateTime(2020,01,22),new DateTime(2020,01,26)),
+            new Order("tali","tali@","chaimchaviv35",new DateTime(2020,01,07),new DateTime(2020,02,22),new DateTime(2020,02,23)),
+            new Order("dan","dan@","parvshtein89",new DateTime(2021,10,01),new DateTime(2020,10,10),new DateTime(2021,10,12)),
+            new Order("gavriel","gavriel@","bergman3",new DateTime(2021,07,28),new DateTime(2021,07,30),new DateTime(2021,08,01)),
+            new Order("ayala","qwerty@","miriam hanevia",new DateTime(2021,08,27),new DateTime(2021,09,03),new DateTime(2021,09,05))
+
         };
         for (int i = 0; i < 20; i++)
         {
