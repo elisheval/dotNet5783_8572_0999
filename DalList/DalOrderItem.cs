@@ -7,8 +7,7 @@ namespace Dal;
 
 public class DalOrderItem
 {
-
-    #region crud 
+    #region Add
     /// <summary>
     /// The add method receives a new order object,
     /// updates it with an automatic object codeת
@@ -21,7 +20,9 @@ public class DalOrderItem
         DataSource.orderItemsArr[DataSource.Config._IndexOrderItem++] = myOrderItem;
         return myOrderItem.Id;
     }
+    #endregion
 
+    #region Get
     /// <summary>
     /// Get exist order's id and scan the array's order
     /// </summary>
@@ -36,7 +37,9 @@ public class DalOrderItem
         }
         throw new Exception("no orderItem found with this ID");
     }
+    #endregion
 
+    #region GetAll
     /// <summary>
     /// copy the exist array for temp array
     /// </summary>
@@ -48,7 +51,9 @@ public class DalOrderItem
             tmpOrderItemsArr[i] = DataSource.orderItemsArr[i];
         return tmpOrderItemsArr;
     }
+    #endregion
 
+    #region Delete
     /// <summary>
     /// Searches for the object whose id was received, 
     /// deletes it from the array and updates the number of full places in the array
@@ -67,7 +72,9 @@ public class DalOrderItem
         }
         throw new Exception("no orderItem found to delete with this ID");
     }
+    #endregion
 
+    #region Update
     /// <param name="myOrder">Gets an object whose id already exists in another object</param>
     /// <summary>
     /// Searches for the object in the array
@@ -88,8 +95,9 @@ public class DalOrderItem
         throw new Exception("no orderItem found to update with this ID");
 
     }
+    #endregion
 
-
+    #region GetByProductAndOrderIds
     /// <param name="myProductId">get id of existing product</param>
     /// <param name="myOrderId">get id of existing order</param>
     /// <summary>
@@ -106,9 +114,9 @@ public class DalOrderItem
         }
         throw new Exception("no found orderItem with this IDs");
     }
+    #endregion
 
-
-
+    #region getOrderItemsArrWithSpecificOrderId
     /// <param name="myOrderId">get id of existing order</param>
     /// <summary>
     /// The method creates a new temp array

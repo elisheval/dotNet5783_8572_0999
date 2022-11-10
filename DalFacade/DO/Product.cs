@@ -22,6 +22,7 @@ public struct Product
      }
     #endregion
 
+    #region ToString
     /// <returns> the props of this object</returns>
     public override string ToString() {
         return ($@"
@@ -31,5 +32,5 @@ public struct Product
     	     Amount in stock: {InStock}
             ");
     }
-
+    #endregion
 }

@@ -22,6 +22,8 @@ public struct OrderItem
     }
     #endregion
 
+    #region ToString
+
     /// <returns> the props of this object</returns>
     public override string ToString() => $@"
         orderItemId:{Id},
@@ -30,4 +32,5 @@ public struct OrderItem
     	Price: {Price}
         Amount:{Amount}
          ";
+    #endregion
 }

@@ -1,11 +1,9 @@
-﻿
-using DO;
+﻿using DO;
 
 namespace Dal;
-
 public class DalProduct
 {
-    #region crud
+    #region Add
     /// <summary>
     /// The add method receives a new order object,
     /// updates it with an automatic object codeת
@@ -18,12 +16,15 @@ public class DalProduct
         DataSource.productArr[DataSource.Config._IndexProduct++] = myProduct;
         return myProduct.Id;
     }
+    #endregion
 
+    #region Get
     /// <summary>
     /// Get exist order's id and scan the array's order
     /// </summary>
     /// <returns>A copy of the object whose id is equal to the received id</returns>
     /// <exception cref="Exception">Throw exception if not exists</exception>
+
     public Product Get(int myId)
     {
         for(int i = 0; i < DataSource.Config._IndexProduct; i++)
@@ -33,7 +34,9 @@ public class DalProduct
         }
         throw new Exception("no product found with this ID");
     }
+    #endregion
 
+    #region GetAll
     /// <summary>
     /// copy the exist array for temp array
     /// </summary>
@@ -45,8 +48,9 @@ public class DalProduct
             tmpProductArr[i] = DataSource.productArr[i];
         return tmpProductArr;
     }
+    #endregion
 
-
+    #region Delete
     /// <summary>
     /// Searches for the object whose id was received,
     /// deletes it from the array and updates the number of full places in the array
@@ -66,8 +70,9 @@ public class DalProduct
         throw new Exception("no product found to delete with this ID");
 
     }
+    #endregion
 
-
+    #region Update
     /// <param name="myOrder">Gets an object whose id already exists in another object</param>
     /// <summary>
     /// Searches for the object in the array

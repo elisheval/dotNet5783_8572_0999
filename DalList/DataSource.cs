@@ -2,24 +2,36 @@
 using static DO.Enums;
 namespace Dal;
 
-public static class DataSource
+internal static class DataSource
 {
-    #region StartDataSource
-    /// <summary>
-    /// there is a problem with starting data source class
-    /// so we create this method to call her in the main in the begining of the program
-    /// </summary>
-    public static void StartDataSource()
-    {
-        return;
-    }
-    #endregion
+    #region variables
     internal readonly static Random _rnd = new Random();
     /// <summary>
     /// data array of order items
     /// </summary>
     internal static OrderItem[] orderItemsArr = new OrderItem[200];
+    /// <summary>
+    /// data array of products
+    /// </summary>
+    internal static Product[] productArr = new Product[50];
+    /// <summary>
+    /// data array of order
+    /// </summary>
+    internal static Order[] orderArr = new Order[100];
+    #endregion
+
+    #region DataSource ctor
+    static DataSource()
+    {
+        s_Initialize();
+    }
+    #endregion
+
     #region addToOrderItemArr
+    /// <summary>
+    /// method that get an order item and pushing it to the order items array in the next available place
+    /// </summary>
+    /// <param name="myOrderItem">the order item to push to the array</param>
     private static void addToOrderItemArr(OrderItem myOrderItem)
     {
         myOrderItem.Id = Config._IdentifyOrderItem;
@@ -28,12 +40,11 @@ public static class DataSource
     }
     #endregion
 
-
-    /// <summary>
-    /// data array of products
-    /// </summary>
-    internal static Product[] productArr = new Product[50];
     #region addToProductArr
+    /// <summary>
+    /// method that get a product and pushing it to the product array in the next available place
+    /// </summary>
+    /// <param name="myProduct">the product to add</param>
     private static void addToProductArr(Product myProduct)
     {
         myProduct.Id = Config._IdentifyProduct;
@@ -42,12 +53,11 @@ public static class DataSource
     }
     #endregion
 
-
-    /// <summary>
-    /// data array of order
-    /// </summary>
-    internal static Order[] orderArr = new Order[100];
     #region addToOrderArr
+    /// <summary>
+    /// method that get an order and pushing it to the orders array in the next available place
+    /// </summary>
+    /// <param name="myOrder">the order to add</param>
     private static void addToOrderArr(Order myOrder)
     {
         myOrder.ID = Config._IdentifyOrder;
@@ -56,13 +66,10 @@ public static class DataSource
     }
     #endregion
 
-    static DataSource()
-    {
-        s_Initialize();
-    }
     #region s_Initialize
     private static void s_Initialize()
     {
+        #region converting strings to category enum type
         Category percussions = new Category();
         Category keyboards = new Category();
         Category exhalation = new Category();
@@ -73,6 +80,7 @@ public static class DataSource
         Enum.TryParse("2", out exhalation);
         Enum.TryParse("3", out strings);
         Enum.TryParse("4", out additional);
+        #endregion
 
         Product[] tmpProductArr = {
             #region assignment of 10 products
@@ -94,7 +102,8 @@ public static class DataSource
         }
 
         Order[] tmpOrderArr ={
-            #region assignment of 20 orders
+            
+            #region assignment of 20 orders using dataTime.MinValue and timespan
             new Order("elisheva","elisheva22@","katz34", new DateTime(2022,11,09) , DateTime.MinValue, DateTime.MinValue),
             new Order("miri","miri22@","agasi44", new DateTime(2022,11,02) , DateTime.MinValue, DateTime.MinValue),
             new Order("simi","simi22@","katz19", new DateTime(2022,10,05) , DateTime.MinValue, DateTime.MinValue),
@@ -174,6 +183,8 @@ public static class DataSource
         }
     }
     #endregion
+
+    #region class Config
     internal class Config
     {
         #region properties in config
@@ -198,7 +209,7 @@ public static class DataSource
         {
             get { return ++_identifyOrder; }
         }
-
         #endregion
     }
+    #endregion
 }

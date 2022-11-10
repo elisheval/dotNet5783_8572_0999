@@ -23,12 +23,12 @@ public struct Order
         ShipDate = shipDate;
         DeliveryDate = deliveryDate;
     }
-    public Order(string customerName, string customerEmail, string customerAddress) : this(customerName, customerEmail, customerAddress, DateTime.Now, DateTime.MinValue, DateTime.MinValue) { }
 
     #endregion
 
-
+    #region ToString
     /// <returns> the props of this object</returns>
+
     public override string ToString() => $@"
         order ID={ID}: {CustomerName}, 
         email - {CustomerEmail}
@@ -37,5 +37,5 @@ public struct Order
     	ShipDate: {ShipDate}
     	DeliveryDate: {DeliveryDate}
          ";
-
+    #endregion
 }

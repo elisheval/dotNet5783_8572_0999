@@ -3,7 +3,7 @@ namespace Dal;
 
 public class DalOrder
 {
-    #region crud
+    #region Add
     /// <summary>
     /// The add method receives a new order object,
     /// updates it with an automatic object codeת
@@ -16,7 +16,9 @@ public class DalOrder
         DataSource.orderArr[DataSource.Config._IndexOrder++] = myOrder;
         return myOrder.ID;
     }
+    #endregion
 
+    #region Get
     /// <summary>
     /// Get exist order's id and scan the array's order
     /// </summary>
@@ -32,7 +34,9 @@ public class DalOrder
         throw new Exception("no order found with this ID");
 
     }
+    #endregion
 
+    #region GetAll
     /// <summary>
     /// copy the exist array for temp array
     /// </summary>
@@ -44,7 +48,9 @@ public class DalOrder
             tmpOrderArr[i] = DataSource.orderArr[i];
         return tmpOrderArr;
     }
+    #endregion
 
+    #region Delete
     /// <summary>
     /// Searches for the object whose id was received,
     /// deletes it from the array and updates the number of full places in the array
@@ -64,6 +70,9 @@ public class DalOrder
         throw new Exception("no order found to delete with this ID");
 
     }
+    #endregion
+
+    #region Update
     /// <param name="myOrder">Gets an object whose id already exists in another object</param>
     /// <summary>
     /// Searches for the object in the array

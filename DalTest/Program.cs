@@ -1,6 +1,7 @@
 ﻿using DO;
 using Dal;
 using static DO.Enums;
+
 namespace DalTest;
 
 public class Program
@@ -10,6 +11,7 @@ public class Program
     static private DalOrderItem orderItem1=new DalOrderItem();
     static private DalProduct product1=new DalProduct();
     #endregion
+
     #region orderOptions
     /// <summary>
     /// all the options of order for the user
@@ -38,8 +40,13 @@ public class Program
                     string email = Console.ReadLine();
                     Console.WriteLine("enter customer address");
                     string address = Console.ReadLine();
-
-                    Order orderToAdd = new Order(name, email, address);
+                    Console.WriteLine("enter order date");
+                    DateTime orderDate = DateTime.Parse(Console.ReadLine());
+                    Console.WriteLine("enter ship date");
+                    DateTime shipDate = DateTime.Parse(Console.ReadLine());
+                    Console.WriteLine("enter delivery date");
+                    DateTime deliveryDate = DateTime.Parse(Console.ReadLine());
+                    Order orderToAdd = new Order(name, email, address, orderDate, shipDate, deliveryDate);
                     try
                     {
                         int orderId = order1.Add(orderToAdd);
@@ -101,7 +108,7 @@ public class Program
                         break;
                     }
                     Order tmpOrder = new Order();
-                    tmpOrder.ID = orderDetailstmp.ID;
+                    tmpOrder = orderDetailstmp;
                     String input;
                     ///the user dont have to update all the details of the order, 
                     ///so with thisvariable we checks what the user wanted to change and convert it to the currect type
@@ -117,6 +124,18 @@ public class Program
                     input = Console.ReadLine();
                     if (input != "")
                         tmpOrder.CustomerAddress =input;
+                    Console.WriteLine("enter order date");
+                    input = Console.ReadLine();
+                    if (input != "")
+                        tmpOrder.OrderDate=DateTime.Parse(input);
+                    Console.WriteLine("enter ship date");
+                    input = Console.ReadLine();
+                    if (input != "")
+                        tmpOrder.ShipDate = DateTime.Parse(input);
+                    Console.WriteLine("enter delivery date");
+                    input = Console.ReadLine();
+                    if (input != "")
+                        tmpOrder.DeliveryDate = DateTime.Parse(input);
                     order1.Update(tmpOrder);
                     break;
                     ///exit and return us to the main
@@ -128,6 +147,7 @@ public class Program
         }while (choose != CRUD.exit);
     }
     #endregion
+
     #region orderItemOptions
     /// <summary>
     /// all the options of order items for the user
@@ -282,6 +302,7 @@ public class Program
         } while (choose != CRUD.exit);
     }
     #endregion
+
     #region productOptions
     /// <summary>
     /// all the options of product
@@ -384,7 +405,13 @@ public class Program
                     if(input!="")
                         tmpProduct.Price=double.Parse(input);
                     Console.WriteLine("enter product category");
-                    input=Console.ReadLine();
+                    Console.WriteLine("enter product category");
+                    Console.WriteLine("0 for percussions");
+                    Console.WriteLine("1 for keyboards");
+                    Console.WriteLine("2 for exhalation");
+                    Console.WriteLine("3 for strings");
+                    Console.WriteLine("4 for additional");
+                    input =Console.ReadLine();
                     if (input != "")
                     {
                         Category tmpC;
@@ -407,6 +434,7 @@ public class Program
         } while (choose != CRUD.exit);
         }
     #endregion
+
     #region Main
     /// <summary>
     /// the main function that getting a number from the user
@@ -415,8 +443,8 @@ public class Program
     /// <param name="args"></param>
     private static void Main(string[] args)
     {
-        ///starting the data source class
-        DataSource.StartDataSource();
+        //adding item to start the date source class
+        orderItem1.Add(new OrderItem(1,1,1,1));
 
         Entity choose;
         
