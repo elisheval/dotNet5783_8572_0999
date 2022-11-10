@@ -29,7 +29,7 @@ public struct Product
             Product ID={Id}: {Name}, 
             category - {Category.ToString()}
         	Price: {Price}
-    	     Amount in stock: {InStock}
+    	    Amount in stock: {InStock}
             ");
     }
     #endregion
