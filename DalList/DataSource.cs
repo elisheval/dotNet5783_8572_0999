@@ -102,7 +102,49 @@ public static class DataSource
             addToOrderArr(tmpOrderArr[i]);
         }
 
-        OrderItem[] tmpOrderItemArr = new OrderItem[40];
+        Random rand = new Random();
+        
+        OrderItem[] tmpOrderItemArr ={new OrderItem(100001,100001,900,rand.Next(1,5)),
+            new OrderItem(100002,100001,400,rand.Next(1,5)),
+            new OrderItem(100003,100001,20000,rand.Next(1,5)),
+            new OrderItem(100004,100002,3000,rand.Next(1,5)),
+            new OrderItem(100005,100002,15000,rand.Next(1,5)),
+            new OrderItem(100002,100002,400,rand.Next(1,5)),
+            new OrderItem(100002,100003,400,rand.Next(1,5)),
+            new OrderItem(100006,100003,1500,rand.Next(1,5)),
+            new OrderItem(100007,100003,4000,rand.Next(1,5)),
+            new OrderItem(100001,100003,900,rand.Next(1,5)),
+            new OrderItem(100003,100004,20000,rand.Next(1,5)),
+            new OrderItem(100008,100005,2500,rand.Next(1,5)),
+            new OrderItem(100005,100005,15000,rand.Next(1,5)),
+            new OrderItem(100003,100006,20000,rand.Next(1,5)),
+            new OrderItem(100009,100007,70,rand.Next(1,5)),
+            new OrderItem(100001,100007,900,rand.Next(1,5)),
+            new OrderItem(100010,100007,300,rand.Next(1,5)),
+            new OrderItem(100002,100008,400,rand.Next(1,5)),
+            new OrderItem(100009,100009,70,rand.Next(1,5)),
+            new OrderItem(100004,100009,3000,rand.Next(1,5)),
+            new OrderItem(100010,1000010,300,rand.Next(1,5)),
+            new OrderItem(100004,100010,3000,rand.Next(1,5)),
+            new OrderItem(100001,100011,900,rand.Next(1,5)),
+            new OrderItem(100002,100012,400,rand.Next(1,5)),
+            new OrderItem(100008,100012,2500,rand.Next(1,5)),
+            new OrderItem(100009,100012,70,rand.Next(1,5)),
+            new OrderItem(100002,100013,400,rand.Next(1,5)),
+            new OrderItem(100005,100014,15000,rand.Next(1,5)),
+            new OrderItem(100003,100015,20000,rand.Next(1,5)),
+            new OrderItem(100007,100016,4000,rand.Next(1,5)),
+            new OrderItem(100009,100016,70,rand.Next(1,5)),
+            new OrderItem(100001,100017,900,rand.Next(1,5)),
+            new OrderItem(100003,100018,20000,rand.Next(1,5)),
+            new OrderItem(100003,100019,20000,rand.Next(1,5)),
+            new OrderItem(100006,100019,1500,rand.Next(1,5)),
+            new OrderItem(100002,100019,400,rand.Next(1,5)),
+            new OrderItem(100010,100019,300,rand.Next(1,5)),
+            new OrderItem(100010,100020,300,rand.Next(1,5)),
+            new OrderItem(100001,100020,900,rand.Next(1,5)),
+            new OrderItem(100005,100020,15000,rand.Next(1,5))
+        };
         for (int i = 0; i < 40; i++)
         {
             addToOrderItemArr(tmpOrderItemArr[i]);
