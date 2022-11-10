@@ -154,28 +154,33 @@ public static class DataSource
 
     internal class Config
     {
+        #region save the next place in the arrays' entity's instances
         internal static int IndexOrderItem { get; set; } = 0;
         internal static int IndexOrder { get; set; } = 0;
         internal static int IndexProduct { get; set; } = 0;
+        #endregion  
 
+        #region id that changes for each instance of the entities
         private static int identifyProduct = 100000;
+
+        private static int identifyOrderItem = 100000;
+
+        private static int identifyOrder = 100000;
         public static int IdentifyProduct
         {
             get { return ++identifyProduct; }
         }
-
-        private static int identifyOrderItem = 100000;
         public static int IdentifyOrderItem
         {
             get { return ++identifyOrderItem; }
         }
 
-        private static int identifyOrder = 100000;
         public static int IdentifyOrder
         {
             get { return ++identifyOrder; }
         }
-       
+
+        #endregion
 
     }
-}
+};
