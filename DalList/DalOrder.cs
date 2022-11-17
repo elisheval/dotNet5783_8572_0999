@@ -1,7 +1,9 @@
 ﻿using DO;
-namespace Dal;
+using System.Collections.Generic;
+using DalApi;
 
-public class DalOrder
+namespace Dal;
+internal class DalOrder:IOrder
 {
     #region Add
     /// <summary>
@@ -13,7 +15,7 @@ public class DalOrder
     public int Add(Order myOrder)
     {
         myOrder.ID = DataSource.Config._IdentifyOrder;
-        DataSource.orderArr[DataSource.Config._IndexOrder++] = myOrder;
+        DataSource.orderList.Add(myOrder);
         return myOrder.ID;
     }
     #endregion
@@ -26,12 +28,12 @@ public class DalOrder
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public Order Get(int myId)
     {
-        for (int i = 0; i < DataSource.Config._IndexOrder; i++)
+        for (int i = 0; i < DataSource.orderList.Count; i++)
         {
-            if (DataSource.orderArr[i].ID == myId)
-                return DataSource.orderArr[i];
+            if (DataSource.orderList[i].ID == myId)
+                return DataSource.orderList[i];
         }
-        throw new Exception("no order found with this ID");
+        throw new NoFoundItemExceptions("no order found with this ID");
 
     }
     #endregion
@@ -41,12 +43,12 @@ public class DalOrder
     /// copy the exist array for temp array
     /// </summary>
     /// <returns>the temp array</returns>
-    public Order[] GetAll()
+    public IEnumerable<Order> GetAll()
     {
-        Order[] tmpOrderArr = new Order[DataSource.Config._IndexOrder];
-        for (int i = 0; i < DataSource.Config._IndexOrder; i++)
-            tmpOrderArr[i] = DataSource.orderArr[i];
-        return tmpOrderArr;
+        List<Order> tmpOrderList = new List<Order>();
+        for (int i = 0; i < DataSource.orderList.Count; i++)
+            tmpOrderList.Add(DataSource.orderList[i]);
+        return tmpOrderList;
     }
     #endregion
 
@@ -58,16 +60,17 @@ public class DalOrder
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        for( int i = 0; i < DataSource.Config._IndexOrder; i++)
+        for( int i = 0; i < DataSource.orderList.Count; i++)
         {
-            if (DataSource.orderArr[i].ID == myId)
+            if (DataSource.orderList[i].ID == myId)
             {
-                DataSource.orderArr[i] = DataSource.orderArr[--DataSource.Config._IndexOrder];
+                Order tmpOrder = DataSource.orderList[i];
+                DataSource.orderList.Remove(tmpOrder) ;
                 return;
             }
 
         }
-        throw new Exception("no order found to delete with this ID");
+        throw new NoFoundItemExceptions("no order found to delete with this ID");
 
     }
     #endregion
@@ -82,15 +85,15 @@ public class DalOrder
     /// <exception cref="Exception">If the id does not exist yet</exception>
     public void Update(Order myOrder)
     {
-        for (int i = 0; i < DataSource.Config._IndexOrder; i++)
+        for (int i = 0; i < DataSource.orderList.Count; i++)
         {
-            if (DataSource.orderArr[i].ID == myOrder.ID)
+            if (DataSource.orderList[i].ID == myOrder.ID)
             {
-                DataSource.orderArr[i] = myOrder;
+                DataSource.orderList[i] = myOrder;
                 return;
             }
         }
-        throw  new Exception("no order found to update with this ID");
+        throw  new NoFoundItemExceptions("no order found to update with this ID");
 
     }
     #endregion

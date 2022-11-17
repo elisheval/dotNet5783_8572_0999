@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace DO;
 
 public struct Order
@@ -29,13 +30,12 @@ public struct Order
     #region ToString
     /// <returns> the props of this object</returns>
 
-    public override string ToString() => $@"
-        order ID={ID}: {CustomerName}, 
+    public override string ToString() =>
+    $@" order ID={ID}: {CustomerName}, 
         email - {CustomerEmail}
     	CustomerAddress: {CustomerAddress}
     	OrderDate: {OrderDate}
     	ShipDate: {ShipDate}
-    	DeliveryDate: {DeliveryDate}
-         ";
+    	DeliveryDate: {DeliveryDate}";
     #endregion
 }

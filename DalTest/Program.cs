@@ -1,15 +1,18 @@
 ﻿using DO;
 using Dal;
 using static DO.Enums;
+using DalApi;
+
 
 namespace DalTest;
 
 public class Program
 {
     #region properties
-    static private DalOrder order1=new DalOrder();
-    static private DalOrderItem orderItem1=new DalOrderItem();
-    static private DalProduct product1=new DalProduct();
+    //static private DalOrder order1=new DalOrder();
+    //static private DalOrderItem orderItem1=new DalOrderItem();
+    //static private DalProduct product1=new DalProduct();
+    static private IDal dalListTmp = new DalList();
     #endregion
 
     #region orderOptions
@@ -49,10 +52,10 @@ public class Program
                     Order orderToAdd = new Order(name, email, address, orderDate, shipDate, deliveryDate);
                     try
                     {
-                        int orderId = order1.Add(orderToAdd);
+                        int orderId = dalListTmp.Order.Add(orderToAdd);
                         Console.WriteLine("the id of the order:  " + orderId);
                     }
-                    catch (Exception ex)
+                    catch (NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -63,17 +66,17 @@ public class Program
                     int id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Order orderDetails = order1.Get(id);
+                        Order orderDetails = dalListTmp.Order.Get(id);
                         Console.WriteLine(orderDetails);
                     }
-                    catch (Exception ex)
+                    catch (NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
                     break;
                     ///get all the orders
                 case CRUD.ReadAll:
-                    Order[] orderArr = order1.GetAll();
+                    List<Order> orderArr = new List<Order>(dalListTmp.Order.GetAll());
                     foreach (Order order in orderArr)
                     {
                         Console.WriteLine(order);
@@ -85,9 +88,9 @@ public class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        order1.Delete(id);
+                        dalListTmp.Order.Delete(id);
                     }
-                    catch (Exception ex)
+                    catch (NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -99,10 +102,10 @@ public class Program
                     Order orderDetailstmp;
                     try
                     {
-                        orderDetailstmp = order1.Get(id);
+                        orderDetailstmp = dalListTmp.Order.Get(id);
                         Console.WriteLine(orderDetailstmp);
                     }
-                    catch (Exception ex)
+                    catch (NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
                         break;
@@ -136,7 +139,7 @@ public class Program
                     input = Console.ReadLine();
                     if (input != "")
                         tmpOrder.DeliveryDate = DateTime.Parse(input);
-                    order1.Update(tmpOrder);
+                    dalListTmp.Order.Update(tmpOrder);
                     break;
                     ///exit and return us to the main
                 case CRUD.exit:
@@ -183,7 +186,7 @@ public class Program
                     Console.WriteLine("enter order item amount");
                     int amount = int.Parse(Console.ReadLine());
                     OrderItem tmpOrderItem = new OrderItem(productID,orderID,price,amount);
-                   int id= orderItem1.Add(tmpOrderItem);
+                   int id= dalListTmp.OrderItem.Add(tmpOrderItem);
                     Console.WriteLine("the id of the order item is: " + id);
                     break;
                    ///get an order item by id
@@ -192,17 +195,17 @@ public class Program
                      id=int.Parse(Console.ReadLine());
                     try
                     {
-                        tmpOrderItem=orderItem1.Get(id);
+                        tmpOrderItem= dalListTmp.OrderItem.Get(id);
                         Console.WriteLine(tmpOrderItem);
                     }
-                    catch(Exception ex)
+                    catch(NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
                     break;
                     ///get all order items
                 case CRUD.ReadAll:
-                    OrderItem[] ordersItemsArr = orderItem1.GetAll();
+                    List<OrderItem> ordersItemsArr = new List<OrderItem>(dalListTmp.OrderItem.GetAll());
                     foreach (OrderItem orderItem in ordersItemsArr)
                     {
                         Console.WriteLine(orderItem);
@@ -214,9 +217,9 @@ public class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        orderItem1.Delete(id);
+                        dalListTmp.OrderItem.Delete(id);
                     }
-                    catch (Exception ex)
+                    catch (NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -228,10 +231,10 @@ public class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        tmpOrderItem = orderItem1.Get(id);
+                        tmpOrderItem = dalListTmp.OrderItem.Get(id);
                         Console.WriteLine(tmpOrderItem);
                     }
-                    catch (Exception ex)
+                    catch (NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -255,7 +258,7 @@ public class Program
                     input = Console.ReadLine();
                     if (input != "")
                         tmpOrderItem.Price = double.Parse(input);
-                    orderItem1.Update(tmpOrderItem);
+                    dalListTmp.OrderItem.Update(tmpOrderItem);
                     break;
                     ///get an order item by order id and product id
                 case CRUD.ReadByOrderAndProductIds:
@@ -265,10 +268,10 @@ public class Program
                     orderID = int.Parse(Console.ReadLine());
                     try
                     {
-                        tmpOrderItem = orderItem1.GetByProductAndOrderIds(productID, orderID);
+                        tmpOrderItem = dalListTmp.OrderItem.GetByProductAndOrderIds(productID, orderID);
                         Console.WriteLine(tmpOrderItem);
                     }
-                    catch(Exception ex)
+                    catch(NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -279,14 +282,14 @@ public class Program
                     orderID= int.Parse(Console.ReadLine());
                     try
                     {
-                       OrderItem[] tmpOrderItemArr=orderItem1.getOrderItemsArrWithSpecificOrderId(orderID);
+                       List<OrderItem> tmpOrderItemArr= new List<OrderItem>(dalListTmp.OrderItem.getOrderItemsArrWithSpecificOrderId(orderID));
                         foreach (OrderItem orderItem in tmpOrderItemArr)
                         {
                             Console.WriteLine(orderItem);
                         }
 
                     }
-                    catch (Exception ex)
+                    catch (NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -341,7 +344,7 @@ public class Program
                     Console.WriteLine("enter amount in stock");
                     int inStock = int.Parse(Console.ReadLine());
                     Product tmpProduct = new Product(name, price, category, inStock);
-                    int productID=product1.Add(tmpProduct);
+                    int productID= dalListTmp.Product.Add(tmpProduct);
                     Console.WriteLine("pruduct id you added is: " + productID);
                     break;
                     ///get product by id
@@ -350,16 +353,16 @@ public class Program
                     int id=int.Parse(Console.ReadLine());
                     try
                     {
-                        tmpProduct= product1.Get(id);
+                        tmpProduct = dalListTmp.Product.Get(id);
                         Console.WriteLine(tmpProduct);
                     }
-                    catch(Exception ex){
+                    catch(NoFoundItemExceptions ex){
                         Console.WriteLine(ex.Message);
                     }
                     break;
                     ///get all products
                 case CRUD.ReadAll:
-                    Product[] productArr=product1.GetAll();
+                    List<Product> productArr = new List<Product>(dalListTmp.Product.GetAll());
                     foreach(Product product in productArr)
                     {
                         Console.WriteLine(product);
@@ -371,9 +374,9 @@ public class Program
                     id=int.Parse(Console.ReadLine());
                     try
                     {
-                        product1.Delete(id);
+                        dalListTmp.Product.Delete(id);
                     }
-                    catch(Exception ex)
+                    catch(NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -385,10 +388,10 @@ public class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        tmpProduct = product1.Get(id);
+                        tmpProduct = dalListTmp.Product.Get(id);
                         Console.WriteLine(tmpProduct);
                     }
-                    catch (Exception ex)
+                    catch (NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
@@ -422,7 +425,7 @@ public class Program
                     input = Console.ReadLine();
                     if (input != "")
                         tmpProduct.InStock = int.Parse(input);
-                    product1.Update(tmpProduct);
+                    dalListTmp.Product.Update(tmpProduct);
                     break;
                     ///exit and return to the main
                 case CRUD.exit:
@@ -444,7 +447,7 @@ public class Program
     private static void Main(string[] args)
     {
         //adding item to start the date source class
-        orderItem1.Add(new OrderItem(1,1,1,1));
+        dalListTmp.OrderItem.Add(new OrderItem(1, 1, 1, 1));
 
         Entity choose;
         

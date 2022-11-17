@@ -1,23 +1,26 @@
 ﻿using DO;
 using static DO.Enums;
+using System.Collections.Generic;
+
 namespace Dal;
+
 
 internal static class DataSource
 {
     #region variables
     internal readonly static Random _rnd = new Random();
     /// <summary>
-    /// data array of order items
+    /// data list of order items
     /// </summary>
-    internal static OrderItem[] orderItemsArr = new OrderItem[200];
+    internal static List<OrderItem> orderItemsList=new List<OrderItem>();
     /// <summary>
-    /// data array of products
+    /// data list of products
     /// </summary>
-    internal static Product[] productArr = new Product[50];
+    internal static List<Product> productList=new List<Product>();
     /// <summary>
-    /// data array of order
+    /// data list of order
     /// </summary>
-    internal static Order[] orderArr = new Order[100];
+    internal static List<Order> orderList=new List<Order>();
     #endregion
 
     #region DataSource ctor
@@ -27,42 +30,38 @@ internal static class DataSource
     }
     #endregion
 
-    #region addToOrderItemArr
+    #region addToOrderItemList
     /// <summary>
-    /// method that get an order item and pushing it to the order items array in the next available place
+    /// method that get an order item and pushing it to the order items list
     /// </summary>
     /// <param name="myOrderItem">the order item to push to the array</param>
-    private static void addToOrderItemArr(OrderItem myOrderItem)
+    private static void addToOrderItemList(OrderItem myOrderItem)
     {
         myOrderItem.Id = Config._IdentifyOrderItem;
-        orderItemsArr[Config._IndexOrderItem] = myOrderItem;
-        Config._IndexOrderItem++;
+        orderItemsList.Add(myOrderItem);
     }
     #endregion
 
-    #region addToProductArr
+    #region addToProductList
     /// <summary>
-    /// method that get a product and pushing it to the product array in the next available place
+    /// method that get a product and pushing it to the product list
     /// </summary>
     /// <param name="myProduct">the product to add</param>
-    private static void addToProductArr(Product myProduct)
+    private static void addToProductList(Product myProduct)
     {
         myProduct.Id = Config._IdentifyProduct;
-        productArr[Config._IndexProduct] = myProduct;
-        Config._IndexProduct++;
+        productList.Add(myProduct);
     }
     #endregion
 
-    #region addToOrderArr
+    #region addToOrderList
     /// <summary>
-    /// method that get an order and pushing it to the orders array in the next available place
-    /// </summary>
+    /// method that get an order and pushing it to the orders list
     /// <param name="myOrder">the order to add</param>
-    private static void addToOrderArr(Order myOrder)
+    private static void addToOrderList(Order myOrder)
     {
         myOrder.ID = Config._IdentifyOrder;
-        orderArr[Config._IndexOrder] = myOrder;
-        Config._IndexOrder++;
+        orderList.Add(myOrder);
     }
     #endregion
 
@@ -82,7 +81,7 @@ internal static class DataSource
         Enum.TryParse("4", out additional);
         #endregion
 
-        Product[] tmpProductArr = {
+        List<Product> tmpProductList = new List<Product>(){
             #region assignment of 10 products
             new Product("drums", 900, percussions, 5),
             new Product("Salute",400,percussions,2),
@@ -98,10 +97,10 @@ internal static class DataSource
         };
         for (int i = 0; i < 10; i++)
         {
-            addToProductArr(tmpProductArr[i]);
+            addToProductList(tmpProductList[i]);
         }
 
-        Order[] tmpOrderArr ={
+        List<Order> tmpOrderList =new List<Order>(){
             
             #region assignment of 20 orders using dataTime.MinValue and timespan
             new Order("elisheva","elisheva22@","katz34", new DateTime(2022,11,09) , DateTime.MinValue, DateTime.MinValue),
@@ -128,12 +127,12 @@ internal static class DataSource
         };
         for (int i = 0; i < 20; i++)
         {
-            addToOrderArr(tmpOrderArr[i]);
+            addToOrderList(tmpOrderList[i]);
         }
 
         Random rand = new Random();
         
-        OrderItem[] tmpOrderItemArr ={
+        List<OrderItem> tmpOrderItemList =new List<OrderItem>(){
             #region assignment of 40 order items  
             new OrderItem(100001,100001,900,rand.Next(1,5)),
             new OrderItem(100002,100001,400,rand.Next(1,5)),
@@ -179,7 +178,7 @@ internal static class DataSource
         };
         for (int i = 0; i < 40; i++)
         {
-            addToOrderItemArr(tmpOrderItemArr[i]);
+            addToOrderItemList(tmpOrderItemList[i]);
         }
     }
     #endregion
@@ -188,9 +187,6 @@ internal static class DataSource
     internal class Config
     {
         #region properties in config
-        internal static int _IndexOrderItem { get; set; } = 0;
-        internal static int _IndexOrder { get; set; } = 0;
-        internal static int _IndexProduct { get; set; } = 0;
 
         private static int _identifyProduct = 100000;
         public static int _IdentifyProduct

@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 
 namespace DO;
 
@@ -25,12 +26,11 @@ public struct OrderItem
     #region ToString
 
     /// <returns> the props of this object</returns>
-    public override string ToString() => $@"
-        orderItemId:{Id},
+    public override string ToString() =>
+     $@"orderItemId:{Id},
         ProductId:{ProductId}, 
         OrderId - {OrderId}
     	Price: {Price}
-        Amount:{Amount}
-         ";
+        Amount:{Amount}";
     #endregion
 }

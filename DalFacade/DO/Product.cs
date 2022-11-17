@@ -1,4 +1,5 @@
 ﻿using static DO.Enums;
+using System.Collections.Generic;
 
 namespace DO;
 
@@ -25,12 +26,11 @@ public struct Product
     #region ToString
     /// <returns> the props of this object</returns>
     public override string ToString() {
-        return ($@"
-            Product ID={Id}: {Name}, 
-            category - {Category.ToString()}
-        	Price: {Price}
-    	    Amount in stock: {InStock}
-            ");
+        return (
+      $@"Product ID={Id}: {Name}, 
+         category - {Category.ToString()}
+         Price: {Price}
+    	 Amount in stock: {InStock}");
     }
     #endregion
 }

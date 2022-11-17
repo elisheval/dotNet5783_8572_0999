@@ -1,7 +1,9 @@
 ﻿using DO;
+using System.Collections.Generic;
+using DalApi;
 
 namespace Dal;
-public class DalProduct
+internal class DalProduct:IProduct
 {
     #region Add
     /// <summary>
@@ -13,7 +15,7 @@ public class DalProduct
     public int Add(Product myProduct)
     {
         myProduct.Id= DataSource.Config._IdentifyProduct;
-        DataSource.productArr[DataSource.Config._IndexProduct++] = myProduct;
+        DataSource.productList.Add(myProduct);
         return myProduct.Id;
     }
     #endregion
@@ -27,12 +29,12 @@ public class DalProduct
 
     public Product Get(int myId)
     {
-        for(int i = 0; i < DataSource.Config._IndexProduct; i++)
+        for(int i = 0; i < DataSource.productList.Count; i++)
         {
-            if (DataSource.productArr[i].Id==myId)
-                return DataSource.productArr[i];
+            if (DataSource.productList[i].Id==myId)
+                return DataSource.productList[i];
         }
-        throw new Exception("no product found with this ID");
+        throw new NoFoundItemExceptions("no product found with this ID");
     }
     #endregion
 
@@ -41,12 +43,14 @@ public class DalProduct
     /// copy the exist array for temp array
     /// </summary>
     /// <returns>the temp array</returns>
-    public Product[] GetAll()
+    public IEnumerable<Product> GetAll()
     {
-        Product[] tmpProductArr = new Product[DataSource.Config._IndexProduct];
-        for (int i = 0; i < DataSource.Config._IndexProduct; i++)
-            tmpProductArr[i] = DataSource.productArr[i];
-        return tmpProductArr;
+        List<Product> tmpProductList = new List<Product>();
+        for (int i = 0; i < DataSource.productList.Count; i++)
+        {
+            tmpProductList.Add(DataSource.productList[i]);
+        }
+        return tmpProductList;
     }
     #endregion
 
@@ -58,16 +62,17 @@ public class DalProduct
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        for (int i = 0; i < DataSource.Config._IndexProduct; i++)
+        for (int i = 0; i < DataSource.productList.Count; i++)
         {
-            if (DataSource.productArr[i].Id == myId)
+            if (DataSource.productList[i].Id == myId)
             {
-                DataSource.productArr[i] = DataSource.productArr[--DataSource.Config._IndexProduct];
+                Product tmpProduct=DataSource.productList[i];
+                DataSource.productList.Remove(tmpProduct);
                 return;
             }
 
         }
-        throw new Exception("no product found to delete with this ID");
+        throw new NoFoundItemExceptions("no product found to delete with this ID");
 
     }
     #endregion
@@ -82,15 +87,15 @@ public class DalProduct
     /// <exception cref="Exception">If the id does not exist yet</exception>
     public void Update(Product myProduct)
     {
-        for (int i = 0; i < DataSource.Config._IndexProduct; i++)
+        for (int i = 0; i < DataSource.productList.Count; i++)
         {
-            if (DataSource.productArr[i].Id == myProduct.Id)
+            if (DataSource.productList[i].Id == myProduct.Id)
             {
-                DataSource.productArr[i] = myProduct;
+                DataSource.productList[i] = myProduct;
                 return;
             }
         }
-        throw new Exception("no product found to update with this ID");
+        throw new NoFoundItemExceptions("no product found to update with this ID");
 
     }
     #endregion
