@@ -9,4 +9,5 @@ namespace DalApi;
 
 public interface IOrder:ICrud<Order>
 {
+
 }

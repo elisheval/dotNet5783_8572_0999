@@ -1,12 +1,9 @@
-﻿
-
-using DO;
+﻿using DO;
 using System.Globalization;
-
-namespace Dal;
 using System.Collections.Generic;
 using DalApi;
 
+namespace Dal;
 internal class DalOrderItem:IOrderItem
 {
     #region Add
