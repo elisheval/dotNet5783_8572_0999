@@ -14,7 +14,13 @@ internal class DalProduct:IProduct
     /// <returns>Returns the id of the new order</returns>
     public int Add(Product myProduct)
     {
-        myProduct.Id= DataSource.Config._IdentifyProduct;
+        foreach(Product product in DataSource.productList)
+        {
+            if (product.Id == myProduct.Id)
+            {
+                throw new ItemAlresdyExsistException("product with this id already exist");
+            }
+        }
         DataSource.productList.Add(myProduct);
         return myProduct.Id;
     }

@@ -3,7 +3,6 @@
 namespace BO;
 public class Order
 {
-    //להדפיס את הרשימה
     #region properties
     public int Id { get; set; }
     public string CustomerName { get; set; }

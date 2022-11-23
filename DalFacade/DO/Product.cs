@@ -9,13 +9,14 @@ public struct Product
     public int Id { get; set; } = -1;
     public string Name { get; set; }
     public double Price { get; set; }
-    public Category Category { get; set; } = 0;
+    public Category Category { get; set; }
     public int InStock { get; set; }
     #endregion
 
     #region Product constructor
-    public Product(string name, double price, Category category, int inStock)
+    public Product(int id ,string name, double price, Category category, int inStock)
      {
+        Id = id;
         Name = name;
         Price= price;
         Category = category;

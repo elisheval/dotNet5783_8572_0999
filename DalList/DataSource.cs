@@ -1,6 +1,5 @@
 ﻿using DO;
 using static DO.Enums;
-using System.Collections.Generic;
 
 namespace Dal;
 
@@ -49,7 +48,6 @@ internal static class DataSource
     /// <param name="myProduct">the product to add</param>
     private static void addToProductList(Product myProduct)
     {
-        myProduct.Id = Config._IdentifyProduct;
         productList.Add(myProduct);
     }
     #endregion
@@ -83,16 +81,16 @@ internal static class DataSource
 
         List<Product> tmpProductList = new List<Product>(){
             #region assignment of 10 products
-            new Product("drums", 900, percussions, 5),
-            new Product("Salute",400,percussions,2),
-            new Product("piano",20000,keyboards,1),
-            new Product("accordion",3000,keyboards,10),
-            new Product("harp",15000,strings,0),
-            new Product("violin",1500,strings,7),
-            new Product("flute",4000,exhalation,3),
-            new Product("saxophone",2500,exhalation,1),
-            new Product("guitar_textbook",70,additional,30),
-            new Product("accordion_case",300,additional,10)
+            new Product(121212,"drums", 900, percussions, 5),
+            new Product(123456,"Salute",400,percussions,2),
+            new Product(135753,"piano",20000,keyboards,1),
+            new Product(121315,"accordion",3000,keyboards,10),
+            new Product(121319,"harp",15000,strings,0),
+            new Product(121318,"violin",1500,strings,7),
+            new Product(121317,"flute",4000,exhalation,3),
+            new Product(121316,"saxophone",2500,exhalation,1),
+            new Product(121311,"guitar_textbook",70,additional,30),
+            new Product(121310,"accordion_case",300,additional,10)
             #endregion
         };
         for (int i = 0; i < 10; i++)
@@ -187,12 +185,6 @@ internal static class DataSource
     internal class Config
     {
         #region properties in config
-
-        private static int _identifyProduct = 100000;
-        public static int _IdentifyProduct
-        {
-            get { return ++_identifyProduct; }
-        }
 
         private static int _identifyOrderItem = 100000;
         public static int _IdentifyOrderItem

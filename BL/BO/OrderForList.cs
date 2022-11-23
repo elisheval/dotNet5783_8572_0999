@@ -8,7 +8,7 @@ public class OrderForList
     public string CustomerName { get; set; }
     public OrderStatus OrderStatus { get; set; }
     public int  ItemsAmount { get; set; }
-    public int TotalPrice { get; set; }
+    public double TotalPrice { get; set; }
     #endregion
 
     #region ToString

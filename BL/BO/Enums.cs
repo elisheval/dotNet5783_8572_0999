@@ -38,8 +38,8 @@ public class Enums
     #region OrderStatus
     public enum OrderStatus
     {
-        approved,
-        sent,
+        Approved,
+        Sent,
         Supplied
     }
     #endregion

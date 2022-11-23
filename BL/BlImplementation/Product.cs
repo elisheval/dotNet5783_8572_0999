@@ -1,24 +1,24 @@
 ﻿using BlApi;
-using BO;
 using Dal;
-using DalApi;
+//using DalApi;
 
 namespace BlImplementation;
 
 internal class Product:IProduct
 {
-   private IDal Dal = new DalList();
+   private DalApi.IDal _dal = new DalList();
     public IEnumerable<BO.ProductForList> GetAllProduct()
     {
-        IEnumerable<DO.Product> productListFromDo = Dal.Product.GetAll();
+        IEnumerable<DO.Product> productListFromDo = _dal.Product.GetAll();
         List<BO.ProductForList> productForList= new List<BO.ProductForList>();
         foreach(DO.Product product in productListFromDo)
         {
-            int tmpId = product.Id;
-            string tmpName = product.Name;
-            double tmpPrice = product.Price;
-            Enum tmpCategory=(BO.Enums.Category)product.Category;
-            BO.ProductForList tmp = new BO.ProductForList() { Id=tmpId,Price=tmpPrice,Name=tmpName,Category= (BO.Enums.Category)tmpCategory };
+            BO.ProductForList tmp = new BO.ProductForList() { 
+                Id = product.Id,
+                Price= product.Price,
+                Name = product.Name,
+                Category = (BO.Enums.Category)product.Category
+            };
             productForList.Add(tmp);
         }
         return productForList;
@@ -29,26 +29,119 @@ internal class Product:IProduct
         {
             try
             {
-                DO.Product productFromDo = Dal.Product.Get(myId);
-                int tmpId=productFromDo.Id;
-                string tmpName = productFromDo.Name;
-                double tmpPrice = productFromDo.Price;
-                Enum tmpCategory=(BO.Enums.Category)productFromDo.Category;
-                int tmpInStock=productFromDo.InStock;
-                BO.Product product = new BO.Product() { Id= tmpId ,Name= tmpName ,Price= tmpPrice, Category=(BO.Enums.Category)tmpCategory ,InStock= tmpInStock };
+                DO.Product productFromDo = _dal.Product.Get(myId);
+                BO.Product product = new BO.Product() { 
+                    Id = productFromDo.Id,
+                    Name = productFromDo.Name, 
+                    Price = productFromDo.Price, 
+                    Category = (BO.Enums.Category)productFromDo.Category,
+                    InStock = productFromDo.InStock };
                 return product;
             }
-            catch (NoFoundItemExceptions ex) 
+            catch (DalApi.NoFoundItemExceptions ex) 
             {
-                Console.WriteLine(ex.Message);
+                throw new BO.NoFoundItemExceptions("no found item with this id",ex);
             }
         }
-        throw new InvalidValueException("invalid value");
+        throw new BO.InvalidValueException("invalid id");
     }
-    public Product GetProductById(int myId, Cart myCart)
+    private int _amountOfProductInCart(int myId,BO.Cart cart)
     {
-
+        foreach (BO.OrderItem orderItem in cart.OrderItemList)
+        {
+            if (orderItem.ProductId == myId)
+                return orderItem.AmountInCart;
+        }
+        return 0;
     }
+    public BO.Product GetProductById(int myId, BO.Cart myCart)
+    {
+        if (myId > 0)
+        {
+            try
+            {
+                DO.Product productFromDo = _dal.Product.Get(myId);
 
+                BO.ProductItem productItem = new BO.ProductItem()
+                {
+                    Id = productFromDo.Id,
+                    Name = productFromDo.Name,
+                    Price = productFromDo.Price,
+                    Category = (BO.Enums.Category)productFromDo.Category,
+                    InStock = productFromDo.InStock > 0,
+                    AmountInCart = _amountOfProductInCart(myId, myCart)
+                };
+            }
+            catch (DalApi.NoFoundItemExceptions ex)
+            {
+                throw new BO.NoFoundItemExceptions("no found product with this id",ex);
+            }
+        }
+        throw new BO.InvalidValueException("invalid id");
+    }
+    public void AddProduct(BO.Product myProduct)
+    {
+        if (myProduct.Id < 0)
+            throw new BO.InvalidValueException("invalid id");
+        if (myProduct.Name == "")
+            throw new BO.InvalidValueException("invalid name");
+        if (myProduct.Price < 0)
+            throw new BO.InvalidValueException("invalid price");
+        if (myProduct.InStock < 0)
+            throw new BO.InvalidValueException("invalid amount in stock");
+        try
+        {
+            DO.Product productToAdd = new DO.Product(myProduct.Id, myProduct.Name,myProduct.Price,(DO.Enums.Category)myProduct.Category,myProduct.InStock);
+            _dal.Product.Add(productToAdd);
+        }
+        catch(DalApi.ItemAlresdyExsistException ex)
+        {
+            throw new BO.ItemAlresdyExsistException("this product already exist",ex);
+        }
+    }
+    public void DeleteProduct(int myId)
+    {
+        IEnumerable<DO.OrderItem> productListFromDo = _dal.OrderItem.GetAll();
+
+        foreach(DO.OrderItem orderItem in productListFromDo)
+        {
+            if (orderItem.ProductId == myId)
+            {
+                DO.Order order = _dal.Order.Get(orderItem.OrderId);
+                if (order.ShipDate <= DateTime.Now) return;
+                else throw new BO.ProductInOrderException("This product cannot be deleted, it is on order");
+            }
+        }
+
+        try
+        {
+            _dal.Product.Delete(myId);
+        }
+        catch(DalApi.NoFoundItemExceptions ex)
+        {
+            throw new BO.NoFoundItemExceptions("no found product with this id to delete",ex);
+        }
+    }
+    public void UpdateProduct(BO.Product myProduct)
+    {
+        if (myProduct.Id < 0)
+            throw new BO.InvalidValueException("invalid id");
+        if (myProduct.Name == "")
+            throw new BO.InvalidValueException("invalid name");
+        if (myProduct.Price < 0)
+            throw new BO.InvalidValueException("invalid price");
+        if (myProduct.InStock < 0)
+            throw new BO.InvalidValueException("invalid amount in stock");
+        try
+        {
+            DO.Product product=new DO.Product(myProduct.Id,myProduct.Name, myProduct.Price,(DO.Enums.Category)myProduct.Category, myProduct.InStock);
+            _dal.Product.Update(product);
+        }
+        catch (DalApi.NoFoundItemExceptions ex)
+        {
+            throw new BO.NoFoundItemExceptions("no found product with this id to update",ex);
+        }
+    }
 
 }
+

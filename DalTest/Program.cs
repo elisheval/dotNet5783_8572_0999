@@ -3,9 +3,7 @@ using Dal;
 using static DO.Enums;
 using DalApi;
 
-
 namespace DalTest;
-
 public class Program
 {
     #region properties
@@ -329,6 +327,8 @@ public class Program
             {
                 ///add product
                 case CRUD.Create:
+                    Console.WriteLine("enter product id");
+                    int id = int.Parse(Console.ReadLine());
                     Console.WriteLine("enter product name");
                     string name = Console.ReadLine();
                     Console.WriteLine("enter product price");
@@ -343,14 +343,21 @@ public class Program
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("enter amount in stock");
                     int inStock = int.Parse(Console.ReadLine());
-                    Product tmpProduct = new Product(name, price, category, inStock);
-                    int productID= dalListTmp.Product.Add(tmpProduct);
-                    Console.WriteLine("pruduct id you added is: " + productID);
+                    Product tmpProduct = new Product(id,name, price, category, inStock);
+                    try
+                    {
+                        int productID = dalListTmp.Product.Add(tmpProduct);
+                        Console.WriteLine("pruduct id you added is: " + productID);
+                    }
+                    catch(ItemAlresdyExsistException ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                     break;
                     ///get product by id
                 case CRUD.Read:
                     Console.WriteLine("enter product ID");
-                    int id=int.Parse(Console.ReadLine());
+                     id=int.Parse(Console.ReadLine());
                     try
                     {
                         tmpProduct = dalListTmp.Product.Get(id);
@@ -394,6 +401,7 @@ public class Program
                     catch (NoFoundItemExceptions ex)
                     {
                         Console.WriteLine(ex.Message);
+                        break;
                     }
 
                     ///the user dont have to update all the details of the order, 
