@@ -29,3 +29,12 @@ public class ItemAlresdyExsistException : Exception {
     public ItemAlresdyExsistException(string massege, Exception ex) { }
 
 }
+public class OrderAlreadySend : Exception
+{
+    public OrderAlreadySend(string message):base(message) { }
+}
+
+public class OrderAlreadyDelivery : Exception
+{
+    public OrderAlreadyDelivery(string message) : base(message) { }
+}

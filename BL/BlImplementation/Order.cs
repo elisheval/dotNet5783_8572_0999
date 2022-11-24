@@ -1,5 +1,7 @@
 ﻿using BlApi;
+using BO;
 using Dal;
+using System.Linq.Expressions;
 using static BO.Enums;
 
 namespace BlImplementation;
@@ -62,9 +64,7 @@ internal class Order:IOrder
                 OrderStatus = _orderStatus(orderFromDo),
                 OrderDate = orderFromDo.OrderDate,
                 ShipDate = orderFromDo.ShipDate,
-                DeliveryDate = orderFromDo.DeliveryDate,
-
-
+                DeliveryDate = orderFromDo.DeliveryDate
             }
             return order;
         }
@@ -73,13 +73,152 @@ internal class Order:IOrder
             throw new BO.NoFoundItemExceptions("no found order with this id", ex);
         }
     }
-    public Order OrderShippingUpdate(int orderId)
+    public BO.Order OrderShippingUpdate(int orderId)
     {
-       BO.Order O= GetOrderById(orderId);
+        DO.Order dalOrder=new DO.Order();
+        try
+        {
+            dalOrder = _dal.Order.Get(orderId);//מקבל את פרטי ההזמנה  
+        }
+        catch (BO.NoFoundItemExceptions exe)//בודק שההזמנה קיימת
+        {
+            throw new BO.NoFoundItemExceptions("no order exist with this ID", exe);
+        }
+        if(dalOrder.ShipDate != DateTime.MinValue)// בודק אם עדיין לא נשלחה
+        {
+            throw new BO.OrderAlreadySend("this order already sent");
+        }
+
+        List<DO.OrderItem> dalOrderItems = (List<DO.OrderItem>)_dal.OrderItem.getOrderItemsArrWithSpecificOrderId(orderId);  
+        List<BO.OrderItem> blOrderItems = new List<BO.OrderItem>();
+        foreach (DO.OrderItem item in dalOrderItems)//למלא את הליסט של הפריטים
+        {
+            BO.OrderItem OrderItemToPush = new BO.OrderItem();
+            OrderItemToPush.Id = item.Id;
+            OrderItemToPush.ProductId = item.ProductId;
+            OrderItemToPush.ProductName = _dal.Product.Get(item.ProductId).Name;
+            OrderItemToPush.Price = item.Price;
+            OrderItemToPush.AmountInCart = item.Amount;
+            OrderItemToPush.TotalPriceForItem = item.Price * item.Amount;
+        }
+
+        BO.Order blOrder = new BO.Order();
+        blOrder.Id = dalOrder.ID;
+        blOrder.CustomerName = dalOrder.CustomerName;
+        blOrder.CustomerEmail = dalOrder.CustomerEmail;
+        blOrder.CustomerAddress = dalOrder.CustomerAddress;
+        blOrder.OrderStatus = BO.Enums.OrderStatus.Sent;
+        blOrder.OrderDate = dalOrder.OrderDate;
+        blOrder.DeliveryDate = dalOrder.DeliveryDate;
+        blOrder.OrderItemList = blOrderItems;
+        dalOrder.ShipDate = DateTime.Now;
+        blOrder.ShipDate = dalOrder.ShipDate;
+        _dal.Order.Update(dalOrder);
+        return blOrder;
     }//עדכון שההזמנה נשלחה
-    public Order OrderDeliveryUpdate(int orderId);
-    public OrderTracking Ordertracking(int orderId);
-    public void UpdateOrder();//בונוס
+   
+    public BO.Order OrderDeliveryUpdate(int orderId)
+    {
+        DO.Order dalOrder = new DO.Order();
+        try
+        {
+            dalOrder = _dal.Order.Get(orderId);//מקבל את פרטי ההזמנה  
+        }
+        catch (BO.NoFoundItemExceptions exe)//בודק שההזמנה קיימת
+        {
+            throw new BO.NoFoundItemExceptions("no order exist with this ID", exe);
+        }
+        if (dalOrder.DeliveryDate != DateTime.MinValue)// בודק אם עדיין לא סופקה
+        {
+            throw new BO.OrderAlreadyDelivery("this order already delivery");
+        }
+        List<DO.OrderItem> dalOrderItems = (List<DO.OrderItem>)_dal.OrderItem.getOrderItemsArrWithSpecificOrderId(orderId);
+        List<BO.OrderItem> blOrderItems = new List<BO.OrderItem>();
+        foreach (DO.OrderItem item in dalOrderItems)//למלא את הליסט של הפריטים
+        {
+            BO.OrderItem OrderItemToPush = new BO.OrderItem();
+            OrderItemToPush.Id = item.Id;
+            OrderItemToPush.ProductId = item.ProductId;
+            OrderItemToPush.ProductName = _dal.Product.Get(item.ProductId).Name;
+            OrderItemToPush.Price = item.Price;
+            OrderItemToPush.AmountInCart = item.Amount;
+            OrderItemToPush.TotalPriceForItem = item.Price * item.Amount;
+        }
+
+        BO.Order blOrder = new BO.Order();
+        blOrder.Id = dalOrder.ID;
+        blOrder.CustomerName = dalOrder.CustomerName;
+        blOrder.CustomerEmail = dalOrder.CustomerEmail;
+        blOrder.CustomerAddress = dalOrder.CustomerAddress;
+        blOrder.OrderStatus = BO.Enums.OrderStatus.Sent;
+        blOrder.OrderDate = dalOrder.OrderDate;
+        blOrder.ShipDate = dalOrder.ShipDate;
+        blOrder.OrderItemList = blOrderItems;
+        dalOrder.DeliveryDate = DateTime.Now;
+        blOrder.DeliveryDate = dalOrder.ShipDate;
+        _dal.Order.Update(dalOrder);
+        return blOrder;
+    }
+
+    public BO.OrderTracking Ordertracking(int orderId)
+    {
+        DO.Order dalOrder = new DO.Order();
+        try
+        {
+            dalOrder = _dal.Order.Get(orderId);//מקבל את פרטי ההזמנה  
+        }
+        catch (BO.NoFoundItemExceptions exe)//בודק שההזמנה קיימת
+        {
+            throw new BO.NoFoundItemExceptions("no order exist with this ID", exe);
+        }
+        BO.OrderTracking orderTrackingToCopy = new BO.OrderTracking { };
+        List<BO.DetailOrderStatus> blStatus = new List<DetailOrderStatus> { };
+        int tracking=0;
+        if (dalOrder.OrderDate != DateTime.MinValue)
+        {
+            BO.DetailOrderStatus orderApproved = new BO.DetailOrderStatus { };
+            orderApproved.Date = dalOrder.OrderDate;
+            orderApproved.OrderStatus = BO.Enums.OrderStatus.Approved;
+            blStatus.Add(orderApproved);
+            tracking = 1;
+            blStatus.Add(orderApproved);
+        }
+        if(dalOrder.ShipDate != DateTime.MinValue)
+        {
+            BO.DetailOrderStatus orderSent = new BO.DetailOrderStatus { };
+            orderSent.Date = dalOrder.ShipDate;
+            orderSent.OrderStatus = BO.Enums.OrderStatus.Sent;
+            blStatus.Add(orderSent);
+            tracking = 2;
+            blStatus.Add(orderSent);
+        }
+        if (dalOrder.DeliveryDate != DateTime.MinValue)
+        {
+            BO.DetailOrderStatus orderDelivery = new BO.DetailOrderStatus { };
+            orderDelivery.Date = dalOrder.DeliveryDate;
+            orderDelivery.OrderStatus = BO.Enums.OrderStatus.Supplied;
+            blStatus.Add(orderDelivery);
+            tracking = 3;
+            blStatus.Add(orderDelivery);
+        }
+        switch(tracking){
+            case 1:
+                orderTrackingToCopy.OrderStatus = BO.Enums.OrderStatus.Approved;
+                break;
+            case 2:
+                orderTrackingToCopy.OrderStatus = BO.Enums.OrderStatus.Sent;
+                break;
+            case 3:
+                orderTrackingToCopy.OrderStatus = BO.Enums.OrderStatus.Supplied;
+                break;
+            default: 
+                break;
+        }
+        orderTrackingToCopy.Id = dalOrder.ID;
+        return orderTrackingToCopy;
+    }
+    
+    //public void UpdateOrder();//בונוס
 
 
 }
