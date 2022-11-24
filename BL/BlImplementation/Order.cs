@@ -1,16 +1,17 @@
 ﻿using BlApi;
+using BO;
 using Dal;
 using static BO.Enums;
 
 namespace BlImplementation;
-internal class Order:IOrder
+internal class Order : IOrder
 {
     private DalApi.IDal _dal = new DalList();
     private double _totalPrice(int orderId)
     {
         double totalPrice = 0;
-        IEnumerable<DO.OrderItem> orders= _dal.OrderItem.getOrderItemsArrWithSpecificOrderId(orderId);
-        foreach(DO.OrderItem orderItem in orders)
+        IEnumerable<DO.OrderItem> orders = _dal.OrderItem.getOrderItemsArrWithSpecificOrderId(orderId);
+        foreach (DO.OrderItem orderItem in orders)
         {
             totalPrice += orderItem.Price * orderItem.Amount;
         }
@@ -26,9 +27,9 @@ internal class Order:IOrder
     }
     public IEnumerable<BO.OrderForList> GetAllOrders()
     {
-        IEnumerable<DO.Order> ordersFromDo = _dal.Order.GetAll(); 
+        IEnumerable<DO.Order> ordersFromDo = _dal.Order.GetAll();
         List<BO.OrderForList> ordersForList = new List<BO.OrderForList>();
-        foreach(DO.Order order in ordersFromDo)
+        foreach (DO.Order order in ordersFromDo)
         {
             BO.OrderForList orderForListToAdd = new BO.OrderForList() {
                 Id = order.ID,
@@ -51,8 +52,21 @@ internal class Order:IOrder
         }
         try
         {
-            DO.Order orderFromDo=_dal.Order.Get(orderId);
-            IEnumerable<DO.OrderItem> orderItems = _dal.OrderItem.getOrderItemsArrWithSpecificOrderId(orderId);
+            DO.Order orderFromDo = _dal.Order.Get(orderId);
+            IEnumerable<DO.OrderItem> orderItemsFromDo = _dal.OrderItem.getOrderItemsArrWithSpecificOrderId(orderId);
+            List<BO.OrderItem> ordersItems = new List<BO.OrderItem>();
+            foreach (DO.OrderItem orderItem in orderItemsFromDo)
+            {
+                BO.OrderItem orderToAdd = new BO.OrderItem()
+                {
+                    ProductId = orderItem.Id,
+                    ProductName=_dal.Product.Get(orderItem.ProductId).Name,
+                    Price=orderItem.Price,
+                    AmountInCart=orderItem.Amount,
+                    TotalPriceForItem= orderItem.Price* orderItem.Amount
+                };
+                ordersItems.Add(orderToAdd);
+            }
             BO.Order order = new BO.Order()
             {
                 Id = orderId,
@@ -63,9 +77,9 @@ internal class Order:IOrder
                 OrderDate = orderFromDo.OrderDate,
                 ShipDate = orderFromDo.ShipDate,
                 DeliveryDate = orderFromDo.DeliveryDate,
-
-
-            }
+                OrderItemList = ordersItems,
+                TotalOrderPrice = _totalPrice(orderId)
+            };
             return order;
         }
         catch(DalApi.NoFoundItemExceptions ex)

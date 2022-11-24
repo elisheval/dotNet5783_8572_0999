@@ -13,7 +13,7 @@ public class Order
     public DateTime ShipDate { get; set; }
     public DateTime DeliveryDate { get; set; }
     public List<OrderItem> OrderItemList { get; set; }
-    public int TotalOrderPrice{ get;set;}
+    public double TotalOrderPrice{ get;set;}
     #endregion
 
     #region ToString
