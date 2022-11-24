@@ -22,35 +22,33 @@ internal class Cart : ICart
     }
     public BO.Cart AddProductToCart(int productId, BO.Cart myCart)
     {
-        foreach (BO.OrderItem orderItem in myCart.OrderItemList)
-        {
-            if (orderItem.ProductId == productId) 
+            foreach (BO.OrderItem orderItem in myCart.OrderItemList)
             {
-                if (ProductInStock(productId))
+                if (orderItem.ProductId == productId)
                 {
-                    DO.Product product= Dal.Product.Get(productId);
-                    orderItem.AmountInCart++;
-                    orderItem.TotalPriceForItem += product.Price;
-                    orderItem.Price = product.Price;
-                    myCart.TotalOrderPrice += product.Price;
-                    return myCart;
-                }
-                else
-                {
-                    throw new BO.ProductOutOfStockException("Product is out of stock");
+                    if (ProductInStock(productId))
+                    {
+                        DO.Product product = Dal.Product.Get(productId);
+                        orderItem.AmountInCart++;
+                        orderItem.TotalPriceForItem += product.Price;
+                        orderItem.Price = product.Price;
+                        myCart.TotalOrderPrice += product.Price;
+                        return myCart;
+                    }
+                    else
+                    {
+                        throw new BO.ProductOutOfStockException("Product is out of stock");
+                    }
                 }
             }
-        }
         //the product is not in the cart
 
             foreach(DO.Product product in Dal.Product.GetAll())
             {
                 if(product.Id == productId)
                 {
-                    if (product.InStock > 0)
-                        {
+                  if (product.InStock > 0){
                         BO.OrderItem orderItemToAddToCart=new BO.OrderItem() {
-                            //public int Id { get; set; }
                             ProductId = productId,
                             ProductName=product.Name,
                             Price=product.Price,
@@ -58,9 +56,9 @@ internal class Cart : ICart
                             TotalPriceForItem=product.Price
                         };
                         myCart.OrderItemList.Add(orderItemToAddToCart);
+                    return myCart;
                     }
-                    else
-                        throw new BO.ProductOutOfStockException("Product is out of stock");
+                  else throw new BO.ProductOutOfStockException("Product is out of stock");
                 }
             }
             throw new BO.NoFoundItemExceptions("No product with this ID exists");
@@ -102,48 +100,6 @@ internal class Cart : ICart
                         }
                     }
                 }
-                //    else if (newAmount<orderItem.AmountInCart)
-                //    {
-                //        //double UpdatedProductPrice = GetPriceOfProduct(productId);
-                //        //myCart.TotalOrderPrice -= (orderItem.AmountInCart - newAmount) * orderItem.Price;
-                //        //orderItem.AmountInCart = newAmount;
-                //        //orderItem.TotalPriceForItem = newAmount * UpdatedProductPrice;
-                //        //orderItem.Price = UpdatedProductPrice;
-
-                //        //myCart.TotalOrderPrice -= (orderItem.AmountInCart - newAmount) * orderItem.Price;
-                //        //orderItem.AmountInCart = newAmount;
-                //        //orderItem.TotalPriceForItem = newAmount * orderItem.Price;
-                //    }
-
-                //    else if (newAmount>orderItem.AmountInCart)
-                //    {
-                //        IEnumerable<DO.Product> products = Dal.Product.GetAll();
-                //        foreach (DO.Product product in products)
-                //        {
-                //            if (product.Id == productId)
-                //            {
-                //                if (product.InStock > 0)
-                //                {
-                //                    //if (product.InStock >= newAmount - orderItem.AmountInCart)
-                //                    //{
-                //                    //    orderItem.TotalPriceForItem=newAmount*product.Price;
-                //                    //    myCart.TotalOrderPrice += product.Price*(newAmount-orderItem.AmountInCart);
-                //                    //    orderItem.AmountInCart = newAmount;
-                //                    //    return myCart;
-                //                    //}
-                //                    //else
-                //                    //{
-                //                    //    orderItem.TotalPriceForItem = newAmount * product.Price;
-                //                    //    myCart.TotalOrderPrice += product.Price * (newAmount - orderItem.AmountInCart);
-                //                    //    orderItem.AmountInCart = newAmount;
-                //                    //    return myCart;
-                //                    //}
-
-                //                }
-                //                throw new BO.ProductOutOfStockException("Product is out of stock");
-                //            }
-                //        }
-                //    }
             }
         }
         throw new BO.ProductNotInCartException("Product does not exist in the cart");

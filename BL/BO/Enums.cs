@@ -17,7 +17,7 @@ public class Enums
         exit,
         Product,
         Order,
-        OrderItem
+        Cart
     }
     #endregion
 
@@ -41,6 +41,41 @@ public class Enums
         Approved,
         Sent,
         Supplied
+    }
+    #endregion
+
+    #region order method
+    public enum OrderMethod
+    {
+        Exit,
+        GetAllOrders,
+        GetOrderDetById,
+        UpdateOrderStatusToSend,
+        UpdateOrderStatusToSupplied,
+        OrderTracking
+    }
+    #endregion
+
+    #region cart method
+    public enum CartMethod
+    {
+        Exit=0,
+        AddProduct,
+        UpdateAmount,
+        OrderConfirmation
+    }
+    #endregion
+
+    #region product method
+    public enum ProductMethods
+    {
+        Exit,
+        GetAll,
+        GetById,
+        GetProductItemById,
+        Add,
+        Delete,
+        Update
     }
     #endregion
 }

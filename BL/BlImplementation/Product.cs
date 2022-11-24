@@ -54,7 +54,7 @@ internal class Product:IProduct
         }
         return 0;
     }
-    public BO.Product GetProductById(int myId, BO.Cart myCart)
+    public BO.ProductItem GetProductById(int myId, BO.Cart myCart)
     {
         if (myId > 0)
         {
@@ -71,6 +71,7 @@ internal class Product:IProduct
                     InStock = productFromDo.InStock > 0,
                     AmountInCart = _amountOfProductInCart(myId, myCart)
                 };
+                return productItem;
             }
             catch (DalApi.NoFoundItemExceptions ex)
             {
