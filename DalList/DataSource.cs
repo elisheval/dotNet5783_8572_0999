@@ -81,16 +81,16 @@ internal static class DataSource
 
         List<Product> tmpProductList = new List<Product>(){
             #region assignment of 10 products
-            new Product(121212,"drums", 900, percussions, 5),
-            new Product(123456,"Salute",400,percussions,2),
-            new Product(135753,"piano",20000,keyboards,1),
-            new Product(121315,"accordion",3000,keyboards,10),
-            new Product(121319,"harp",15000,strings,0),
-            new Product(121318,"violin",1500,strings,7),
-            new Product(121317,"flute",4000,exhalation,3),
-            new Product(121316,"saxophone",2500,exhalation,1),
-            new Product(121311,"guitar_textbook",70,additional,30),
-            new Product(121310,"accordion_case",300,additional,10)
+            new Product(100001,"drums", 900, percussions, 5),
+            new Product(100002,"Salute",400,percussions,2),
+            new Product(100003,"piano",20000,keyboards,1),
+            new Product(100004,"accordion",3000,keyboards,10),
+            new Product(100005,"harp",15000,strings,0),
+            new Product(100006,"violin",1500,strings,7),
+            new Product(100007,"flute",4000,exhalation,3),
+            new Product(100008,"saxophone",2500,exhalation,1),
+            new Product(100009,"guitar_textbook",70,additional,30),
+            new Product(100010,"accordion_case",300,additional,10)
             #endregion
         };
         for (int i = 0; i < 10; i++)
@@ -152,7 +152,7 @@ internal static class DataSource
             new OrderItem(100002,100008,400,rand.Next(1,5)),
             new OrderItem(100009,100009,70,rand.Next(1,5)),
             new OrderItem(100004,100009,3000,rand.Next(1,5)),
-            new OrderItem(100010,1000010,300,rand.Next(1,5)),
+            new OrderItem(100010,100010,300,rand.Next(1,5)),
             new OrderItem(100004,100010,3000,rand.Next(1,5)),
             new OrderItem(100001,100011,900,rand.Next(1,5)),
             new OrderItem(100002,100012,400,rand.Next(1,5)),

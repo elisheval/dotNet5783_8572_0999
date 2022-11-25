@@ -1,5 +1,4 @@
-﻿
-namespace BO;
+﻿namespace BO;
 
 //Exception classes that inherit from Exception class
 
@@ -124,6 +123,22 @@ public class OrderAlreadyDelivery : Exception
     public override string ToString()
     {
         return ($@" exception name: OrderAlreadyDelivery,
+                    exception message: {Message}");
+    }
+
+}
+#endregion
+
+#region NoAccessToSentOrder
+/// <summary>
+/// This exception is made when updating the status of an order that has already been delivered
+/// </summary>
+public class NoAccessToSentOrder : Exception
+{
+    public NoAccessToSentOrder(string massege) : base(massege) { }
+    public override string ToString()
+    {
+        return ($@" exception name: NoAccessToSentOrder,
                     exception message: {Message}");
     }
 

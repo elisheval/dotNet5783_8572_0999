@@ -1,12 +1,4 @@
-﻿using DalApi;
-using DO;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static BO.Enums;
+﻿using static BO.Enums;
 
 namespace BO;
 public class OrderTracking
@@ -14,7 +6,7 @@ public class OrderTracking
     #region properties
     public int Id { get; set; }
     public OrderStatus OrderStatus { get; set; }
-    public List<DetailOrderStatus> DetailOrderStatuses { get; set; }
+    public List<(DateTime,string)> DetailOrderStatuses { get; set; }
     #endregion
 
     #region ToString
@@ -22,9 +14,9 @@ public class OrderTracking
     public override string ToString()
     {
         string DetailOrderStatusesString = "";
-        foreach(DetailOrderStatus detailOrderStatus in DetailOrderStatuses)
+        foreach(var detailOrderStatus in DetailOrderStatuses)
         {
-            DetailOrderStatusesString += detailOrderStatus;
+            DetailOrderStatusesString+=detailOrderStatus.Item1+" : "+ detailOrderStatus.Item2;
         }
         return $@" order id: {Id}
         order status: {OrderStatus},
