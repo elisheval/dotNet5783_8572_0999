@@ -6,7 +6,7 @@ namespace BlImplementation;
 
 internal class Product:IProduct
 {
-   private DalApi.IDal _dal = new DalList();
+    private DalApi.IDal _dal = new DalList();
     public IEnumerable<BO.ProductForList> GetAllProduct()
     {
         IEnumerable<DO.Product> productListFromDo = _dal.Product.GetAll();

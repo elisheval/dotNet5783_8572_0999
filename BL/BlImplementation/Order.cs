@@ -58,13 +58,14 @@ internal class Order : IOrder
                 BO.OrderItem orderToAdd = new BO.OrderItem()
                 {
                     ProductId = orderItem.Id,
-                    ProductName=_dal.Product.Get(orderItem.ProductId).Name,
-                    Price=orderItem.Price,
+                    ProductName = _dal.Product.Get(orderItem.ProductId).Name,
+                    Price =orderItem.Price,
                     AmountInCart=orderItem.Amount,
                     TotalPriceForItem= orderItem.Price* orderItem.Amount
                 };
                 ordersItems.Add(orderToAdd);
             }
+
             BO.Order order = new BO.Order()
             {
                 Id = orderId,

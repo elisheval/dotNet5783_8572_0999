@@ -8,6 +8,8 @@ internal class Program
 {
     #region IBl property
     static private IBl blTmp = new Bl();
+    static Cart cart = new Cart() { OrderItemList = new List<OrderItem>() };//Creating an instance of a cart
+
     #endregion
 
     #region product options
@@ -200,7 +202,6 @@ internal class Program
     /// </summary>
     static void cartOptions()
     {
-        Cart cart = new Cart(){OrderItemList=new List<OrderItem>() };//Creating an instance of a cart
         CartMethod choose;
         do
         {
@@ -312,8 +313,11 @@ internal class Program
                 //get all orders
                 case OrderMethod.GetAllOrders:
                     IEnumerable<OrderForList> orderForLists = blTmp.Order.GetAllOrders();
-                    foreach (OrderForList orderForList in orderForLists)//print all the orders
-                             Console.WriteLine(orderForLists);
+                    foreach (OrderForList orderForList in orderForLists)
+                    { //print all the orders
+                        Console.WriteLine(orderForList);
+                        Console.WriteLine();
+                    }
                     break;
                 //get order details by id
                 case OrderMethod.GetOrderDetById:

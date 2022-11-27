@@ -6,10 +6,10 @@ using System.Net.Mail;
 namespace BlImplementation;
 internal class Cart : ICart
 {
-    private DalApi.IDal Dal = new DalList();
+    private DalApi.IDal _dal = new DalList();
     private bool ProductInStock(int productId)
     {
-        IEnumerable<DO.Product> products = Dal.Product.GetAll();
+        IEnumerable<DO.Product> products = _dal.Product.GetAll();
         foreach (DO.Product product in products)
         {
             if (product.Id == productId)
@@ -28,7 +28,7 @@ internal class Cart : ICart
                 {
                     if (ProductInStock(productId))
                     {
-                        DO.Product product = Dal.Product.Get(productId);
+                        DO.Product product = _dal.Product.Get(productId);
                         orderItem.AmountInCart++;
                         orderItem.TotalPriceForItem += product.Price;
                         orderItem.Price = product.Price;
@@ -43,7 +43,7 @@ internal class Cart : ICart
             }
         //the product is not in the cart
 
-            foreach(DO.Product product in Dal.Product.GetAll())
+            foreach(DO.Product product in _dal.Product.GetAll())
             {
                 if(product.Id == productId)
                 {
@@ -79,19 +79,23 @@ internal class Cart : ICart
                 }
                 else
                 {
-                    IEnumerable<DO.Product> products = Dal.Product.GetAll();
+                    IEnumerable<DO.Product> products = _dal.Product.GetAll();
                     foreach (DO.Product product in products)
                     {
                         if (product.InStock == 0)
+                        {
+                            myCart.TotalOrderPrice -= orderItem.Price * orderItem.AmountInCart;
+                            _dal.OrderItem.Delete(orderItem.Id);
                             throw new BO.ProductOutOfStockException("product is out of stock");
+                        }
                         else if (product.InStock >= newAmount)
                         {
-                              orderItem.TotalPriceForItem = newAmount * product.Price;
-                              myCart.TotalOrderPrice += product.Price*(newAmount-orderItem.AmountInCart);
-                              orderItem.AmountInCart = newAmount;
-                              return myCart;
+                            orderItem.TotalPriceForItem = newAmount * product.Price;
+                            myCart.TotalOrderPrice += product.Price * (newAmount - orderItem.AmountInCart);
+                            orderItem.AmountInCart = newAmount;
+                            return myCart;
                         }
-                        else if(product.InStock < newAmount)
+                        else if (product.InStock < newAmount)
                         {
                             orderItem.TotalPriceForItem = product.InStock * product.Price;
                             myCart.TotalOrderPrice += product.Price * (product.InStock - orderItem.AmountInCart);
@@ -100,6 +104,7 @@ internal class Cart : ICart
                         }
                     }
                 }
+
             }
         }
         throw new BO.ProductNotInCartException("Product does not exist in the cart");
@@ -121,29 +126,29 @@ internal class Cart : ICart
             throw new BO.InvalidValueException("invalid email");
 
         DO.Order order = new DO.Order(customerName,customerEmail,customerAddress,DateTime.Now,DateTime.MinValue,DateTime.MinValue);
-        int orderId=Dal.Order.Add(order);
+        int orderId=_dal.Order.Add(order);
         string massegeOfLackProducts = "";
         foreach(BO.OrderItem orderItem in myCart.OrderItemList)
         {
             try
             {
-                DO.Product productFromDo = Dal.Product.Get(orderItem.ProductId);
+                DO.Product productFromDo = _dal.Product.Get(orderItem.ProductId);
                 if (productFromDo.InStock == 0)
                     massegeOfLackProducts+= productFromDo.Name + " is out of stock";
                else if (productFromDo.InStock<orderItem.AmountInCart)
                 {
                     DO.OrderItem orderItemToAdd = new DO.OrderItem(productFromDo.Id, orderId, productFromDo.Price, productFromDo.InStock);
-                    int orderItemId = Dal.OrderItem.Add(orderItemToAdd);
+                    int orderItemId = _dal.OrderItem.Add(orderItemToAdd);
                     productFromDo.InStock = 0;
-                    Dal.Product.Update(productFromDo);
+                    _dal.Product.Update(productFromDo);
                     massegeOfLackProducts +=(orderItem.AmountInCart-productFromDo.InStock)+ " out of stock ,you will get  " + productFromDo.InStock + " insted of" + orderItem.AmountInCart; 
                 }
                 else 
                 {
                     DO.OrderItem orderItemToAdd = new DO.OrderItem(productFromDo.Id, orderId, productFromDo.Price,orderItem.AmountInCart);
-                    int orderItemId = Dal.OrderItem.Add(orderItemToAdd);
+                    int orderItemId = _dal.OrderItem.Add(orderItemToAdd);
                     productFromDo.InStock-= orderItem.AmountInCart;
-                    Dal.Product.Update(productFromDo);
+                    _dal.Product.Update(productFromDo);
                 }
             }
             catch(DalApi.NoFoundItemExceptions ex)

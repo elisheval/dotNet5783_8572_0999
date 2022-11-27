@@ -23,18 +23,17 @@ public class Cart
         foreach (OrderItem item in OrderItemList)
         {
             orderItems += item;
-            Console.WriteLine();
         }
         if (CustomerName == null) CustomerName = "NOT UPDATE YET";
         if (CustomerEmail == null) CustomerEmail = "NOT UPDATE YET";
         if (CustomerAddress== null) CustomerAddress = "NOT UPDATE YET";
         return (
         $@"customer name: {CustomerName}, 
-        customerEmail - {CustomerEmail},
-    	customerAddress: {CustomerAddress},
+        customer email: {CustomerEmail},
+    	customer address: {CustomerAddress},
         order items list:
        {orderItems},
-    	cotal Order Price: {TotalOrderPrice}");
+    	total order price: {TotalOrderPrice}");
     }
     #endregion
 
