@@ -52,7 +52,8 @@ public class Enums
         GetOrderDetById,
         UpdateOrderStatusToSend,
         UpdateOrderStatusToSupplied,
-        OrderTracking
+        OrderTracking,
+        UpdateOrder
     }
     #endregion
 

@@ -97,16 +97,16 @@ public class ItemAlresdyExsistException : Exception {
 }
 #endregion
 
-#region OrderAlreadySend
+#region InvalidDateChange
 /// <summary>
 /// This exception is made when the status of a sent order is updated and it has already been sent
 /// </summary>
-public class OrderAlreadySend : Exception
+public class InvalidDateChange : Exception
 {
-    public OrderAlreadySend(string massege) : base(massege) { }
+    public InvalidDateChange(string massege) : base(massege) { }
     public override string ToString()
     {
-        return ($@" exception name: OrderAlreadySend,
+        return ($@" exception name: InvalidDateChange,
                     exception message: {Message}
                      ");
     }
@@ -114,19 +114,19 @@ public class OrderAlreadySend : Exception
 #endregion
 
 #region OrderAlreadyDelivery
-/// <summary>
-/// This exception is made when updating the status of an order that has already been delivered
-/// </summary>
-public class OrderAlreadyDelivery : Exception
-{
-    public OrderAlreadyDelivery(string massege) : base(massege) { }
-    public override string ToString()
-    {
-        return ($@" exception name: OrderAlreadyDelivery,
-                    exception message: {Message}");
-    }
+///// <summary>
+///// This exception is made when updating the status of an order that has already been delivered
+///// </summary>
+//public class OrderAlreadyDelivery : Exception
+//{
+//    public OrderAlreadyDelivery(string massege) : base(massege) { }
+//    public override string ToString()
+//    {
+//        return ($@" exception name: OrderAlreadyDelivery,
+//                    exception message: {Message}");
+//    }
 
-}
+//}
 #endregion
 
 #region NoAccessToSentOrder

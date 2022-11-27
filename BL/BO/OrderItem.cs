@@ -14,11 +14,13 @@ public class OrderItem
     #region ToString
     /// <returns> the props of this object</returns>
     public override string ToString() =>
-    $@" order item ID: {Id}
-        product id: {ProductId}, 
-        product name: {ProductName}
-    	Price: {Price}
-        amount in cart: {AmountInCart}
-    	total price for item: {TotalPriceForItem}";
+    $@" 
+                order item ID: {Id}
+                product id: {ProductId}
+                product name: {ProductName}
+    	        price: {Price}
+                amount in cart: {AmountInCart}
+    	        total price for item: {TotalPriceForItem}
+    ";
     #endregion
 }

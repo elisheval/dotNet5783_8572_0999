@@ -49,9 +49,9 @@ internal class Cart : ICart
                     {
                         DO.Product product = _dal.Product.Get(productId);
                         orderItem.AmountInCart++;
-                        orderItem.TotalPriceForItem += product.Price;
+                        myCart.TotalOrderPrice += product.Price*orderItem.AmountInCart-orderItem.TotalPriceForItem;
+                        orderItem.TotalPriceForItem = product.Price*orderItem.AmountInCart;
                         orderItem.Price = product.Price;
-                        myCart.TotalOrderPrice += product.Price;
                         return myCart;
                     }
                     else
@@ -74,7 +74,8 @@ internal class Cart : ICart
                             AmountInCart=1,
                             TotalPriceForItem=product.Price
                         };
-                        myCart.OrderItemList.Add(orderItemToAddToCart);
+                    myCart.TotalOrderPrice += product.Price;
+                    myCart.OrderItemList.Add(orderItemToAddToCart);
                     return myCart;
                     }
                   else throw new BO.ProductOutOfStockException("Product is out of stock");
@@ -117,21 +118,30 @@ internal class Cart : ICart
                     IEnumerable<DO.Product> products = _dal.Product.GetAll();
                     foreach (DO.Product product in products)
                     {
-                        if (product.InStock == 0)
-                            throw new BO.ProductOutOfStockException("product is out of stock");
-                        else if (product.InStock >= newAmount)
+                        if (product.Id == productId)
                         {
-                              orderItem.TotalPriceForItem = newAmount * product.Price;
-                              myCart.TotalOrderPrice += product.Price*(newAmount-orderItem.AmountInCart);
-                              orderItem.AmountInCart = newAmount;
-                              return myCart;
-                        }
-                        else if(product.InStock < newAmount)
-                        {
-                            orderItem.TotalPriceForItem = product.InStock * product.Price;
-                            myCart.TotalOrderPrice += product.Price * (product.InStock - orderItem.AmountInCart);
-                            orderItem.AmountInCart = product.InStock;
-                            return myCart;
+                            if (product.InStock == 0)
+                                throw new BO.ProductOutOfStockException("product is out of stock");
+                            else if (product.InStock >= newAmount)
+                            {
+                                myCart.TotalOrderPrice += product.Price * newAmount-orderItem.TotalPriceForItem;
+                                orderItem.TotalPriceForItem = newAmount * product.Price;
+                                orderItem.AmountInCart = newAmount;
+                                orderItem.Price=product.Price;
+                                return myCart;
+                            }
+                            else if (product.InStock < newAmount)
+                            {
+                                if (product.InStock > orderItem.AmountInCart)
+                                {
+                                    myCart.TotalOrderPrice += product.Price * product.InStock - orderItem.TotalPriceForItem;
+                                    orderItem.TotalPriceForItem = product.InStock * product.Price;
+                                    orderItem.AmountInCart = product.InStock;
+                                    orderItem.Price = product.Price;
+                                    return myCart;
+                                }
+                                throw new BO.ProductOutOfStockException("It is not possible to add in quantity because it is out of stock\r\n\r\n");
+                            }
                         }
                     }
                 }
@@ -186,13 +196,16 @@ internal class Cart : ICart
                 DO.Product productFromDo = _dal.Product.Get(orderItem.ProductId);
                 if (productFromDo.InStock == 0)
                     massegeOfLackProducts+= productFromDo.Name + " is out of stock";
-               else if (productFromDo.InStock<orderItem.AmountInCart)
-                {
+                else if (productFromDo.InStock<orderItem.AmountInCart)
+                   {
                     DO.OrderItem orderItemToAdd = new DO.OrderItem(productFromDo.Id, orderId, productFromDo.Price, productFromDo.InStock);
                     int orderItemId = _dal.OrderItem.Add(orderItemToAdd);
-                    productFromDo.InStock = 0;
+                    orderItem.Id = orderItemId;
                     _dal.Product.Update(productFromDo);
-                    massegeOfLackProducts +=(orderItem.AmountInCart-productFromDo.InStock)+ " out of stock ,you will get  " + productFromDo.InStock + " insted of" + orderItem.AmountInCart; 
+                    massegeOfLackProducts +=(orderItem.AmountInCart-productFromDo.InStock)+ " out of stock ,you will get  " + productFromDo.InStock + " insted of" + orderItem.AmountInCart;
+                    myCart.TotalOrderPrice += productFromDo.InStock * productFromDo.Price- orderItem.AmountInCart * orderItem.Price;
+                    productFromDo.InStock = 0;
+
                 }
                 else 
                 {
@@ -200,6 +213,7 @@ internal class Cart : ICart
                     int orderItemId = _dal.OrderItem.Add(orderItemToAdd);
                     productFromDo.InStock-= orderItem.AmountInCart;
                     _dal.Product.Update(productFromDo);
+                    myCart.TotalOrderPrice += productFromDo.InStock * productFromDo.Price - orderItem.AmountInCart * orderItem.Price;
                 }
             }
             catch(DO.NoFoundItemExceptions ex)

@@ -2,12 +2,14 @@
 using BlImplementation;
 using static BO.Enums;
 using BO;
+using System.Transactions;
 
 namespace BlTest;
 internal class Program
 {
     #region IBl property
     static private IBl blTmp = new Bl();
+    static Cart cart = new Cart() { OrderItemList = new List<OrderItem>() };//Creating an instance of a cart
     #endregion
 
     #region product options
@@ -16,7 +18,6 @@ internal class Program
     /// </summary>
     static void productOptions()
     {
-        Cart cart=new Cart() { OrderItemList=new List<OrderItem>()};//Creating an instance of a cart
         ProductMethods choose;
         do
         {
@@ -200,7 +201,6 @@ internal class Program
     /// </summary>
     static void cartOptions()
     {
-        Cart cart = new Cart(){OrderItemList=new List<OrderItem>() };//Creating an instance of a cart
         CartMethod choose;
         do
         {
@@ -231,6 +231,11 @@ internal class Program
                     {
                         Console.WriteLine(ex);
                     }
+                    catch (ProductOutOfStockException ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                    
                     break;
 
                 //update amount of product in cart
@@ -351,7 +356,7 @@ internal class Program
                     {
                         Console.WriteLine(ex);
                     }
-                    catch (OrderAlreadySend ex)
+                    catch (InvalidDateChange ex)
                     {
                         Console.WriteLine(ex);
                     }
@@ -371,7 +376,7 @@ internal class Program
                     {
                         Console.WriteLine(ex);
                     }
-                    catch (OrderAlreadyDelivery ex)
+                    catch (InvalidDateChange ex)
                     {
                         Console.WriteLine(ex);
                     }
@@ -397,10 +402,28 @@ internal class Program
                     break;
 
                 ///exit and return us to the main
+                case OrderMethod.UpdateOrder:
+                    Console.WriteLine("enter id of order");
+                    int orderId=int.Parse(Console.ReadLine());
+                    Console.WriteLine("enter id of product");
+                    int productId=int.Parse(Console.ReadLine());
+                    Console.WriteLine("enter amount to change, to delete enter 0");
+                    int amount=int.Parse(Console.ReadLine());
+                    try
+                    {
+                        blTmp.Order.UpdateOrder(orderId, productId, amount);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                    break;
                 case OrderMethod.Exit:
                     break;
                 default:
-                    break;
+                    Console.WriteLine("there is no option with this number, enter new choose");
+                    Console.WriteLine();
+                        break;
             }
         } while (choose != OrderMethod.Exit);
     }

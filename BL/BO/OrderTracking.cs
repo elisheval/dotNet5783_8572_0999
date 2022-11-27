@@ -16,11 +16,12 @@ public class OrderTracking
         string DetailOrderStatusesString = "";
         foreach(var detailOrderStatus in DetailOrderStatuses)
         {
-            DetailOrderStatusesString+=detailOrderStatus.Item1+" : "+ detailOrderStatus.Item2;
+            DetailOrderStatusesString+=detailOrderStatus.Item2+" : "+ detailOrderStatus.Item1+"\n        ";
         }
-        return $@" order id: {Id}
+        return $@"      order id: {Id}
         order status: {OrderStatus},
-        detail Order Status: {DetailOrderStatusesString}";
+        detail Order Status:
+        {DetailOrderStatusesString}";
     }
     
     #endregion
