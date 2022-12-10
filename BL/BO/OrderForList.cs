@@ -5,8 +5,8 @@ public class OrderForList
 {
     #region properties
     public int Id { get; set; }
-    public string CustomerName { get; set; }
-    public OrderStatus OrderStatus { get; set; }
+    public string? CustomerName { get; set; }
+    public OrderStatus? OrderStatus { get; set; }
     public int  ItemsAmount { get; set; }
     public double TotalPrice { get; set; }
     #endregion

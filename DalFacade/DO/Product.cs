@@ -7,9 +7,9 @@ public struct Product
 {
     #region properties
     public int Id { get; set; } = -1;
-    public string Name { get; set; }
+    public string? Name { get; set; }
     public double Price { get; set; }
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
     public int InStock { get; set; }
     #endregion
 

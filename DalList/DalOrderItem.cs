@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using DalApi;
 
 namespace Dal;
-internal class DalOrderItem:IOrderItem
+internal class DalOrderItem : IOrderItem
 {
     #region Add
     /// <summary>
@@ -21,35 +21,24 @@ internal class DalOrderItem:IOrderItem
     }
     #endregion
 
-    #region Get
-    /// <summary>
-    /// Get exist order's id and scan the array's order
-    /// </summary>
-    /// <returns>A copy of the object whose id is equal to the received id</returns>
-    /// <exception cref="Exception">Throw exception if not exists</exception>
-    public OrderItem Get(int myId)
-    {
-        for (int i = 0; i < DataSource.orderItemsList.Count; i++)
-        {
-            if (DataSource.orderItemsList[i].Id == myId)
-                return DataSource.orderItemsList[i];
-        }
-        throw new NoFoundItemExceptions("no orderItem found with this ID");
-    }
-    #endregion
-
     #region GetAll
     /// <summary>
     /// copy the exist array for temp array
     /// </summary>
     /// <returns>the temp array</returns>
-    public IEnumerable<OrderItem> GetAll()
+    public IEnumerable<OrderItem?> GetAll(Predicate<OrderItem?>? func = null)
     {
-        List<OrderItem> tmpOrderItemsList=new List<OrderItem>();
+        List<OrderItem?> tmpOrderItemsList = new();
+        if (func != null)
+        {
+            tmpOrderItemsList = DataSource.orderItemsList.FindAll(x => func(x));
+            return tmpOrderItemsList;
+        }
         for (int i = 0; i < DataSource.orderItemsList.Count; i++)
             tmpOrderItemsList.Add(DataSource.orderItemsList[i]);
         return tmpOrderItemsList;
     }
+
     #endregion
 
     #region Delete
@@ -60,15 +49,16 @@ internal class DalOrderItem:IOrderItem
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        for (int i = 0; i < DataSource.orderItemsList.Count; i++)
+        foreach (var item in DataSource.orderItemsList)
         {
-            if (DataSource.orderItemsList[i].Id == myId)
+            if (item != null)
             {
-                OrderItem tmp=DataSource.orderItemsList[i];
-                DataSource.orderItemsList.Remove(tmp);
-                return;
+                if (item.Value.Id == myId)
+                {
+                    DataSource.orderItemsList.Remove(item);
+                    return;
+                }
             }
-
         }
         throw new NoFoundItemExceptions("no orderItem found to delete with this ID");
     }
@@ -86,7 +76,7 @@ internal class DalOrderItem:IOrderItem
     {
         for (int i = 0; i < DataSource.orderItemsList.Count; i++)
         {
-            if (DataSource.orderItemsList[i].Id == myOrderItem.Id)
+            if (DataSource.orderItemsList[i]!=null&&DataSource.orderItemsList[i].Value.Id == myOrderItem.Id)
             {
                 DataSource.orderItemsList[i] = myOrderItem;
                 return;
@@ -97,45 +87,20 @@ internal class DalOrderItem:IOrderItem
     }
     #endregion
 
-    #region GetByProductAndOrderIds
-    /// <param name="myProductId">get id of existing product</param>
-    /// <param name="myOrderId">get id of existing order</param>
+    #region GetByCondition
     /// <summary>
-    /// The method looks for order details by product code and order code
+    /// 
     /// </summary>
-    /// <returns>The above order details</returns>
-    /// <exception cref="Exception">if not exists</exception>
-    public OrderItem GetByProductAndOrderIds(int myProductId, int myOrderId)
+    /// <param name="func"></param>
+    /// <returns></returns>
+    /// <exception cref="NoFoundItemExceptions"></exception>
+    public OrderItem GetByCondition(Predicate<OrderItem?> func)
     {
-        for(int i=0; i < DataSource.orderItemsList.Count; i++)
-        {
-            if (DataSource.orderItemsList[i].OrderId==myOrderId&& DataSource.orderItemsList[i].ProductId == myProductId)
-                return DataSource.orderItemsList[i];
-        }
-        throw new NoFoundItemExceptions("no found orderItem with this IDs");
-    }
-    #endregion
+        OrderItem? orderItem1 = DataSource.orderItemsList.Find(x => func(x));
+        if (orderItem1 == null)
+            throw new NoFoundItemExceptions("no found order item with this condition");
+        return (OrderItem)orderItem1;
 
-    #region getOrderItemsArrWithSpecificOrderId
-    /// <param name="myOrderId">get id of existing order</param>
-    /// <summary>
-    /// The method creates a new temp array
-    /// and copies to it all the existing order items in the order items array
-    /// </summary>
-    /// <returns>the above array</returns>
-    /// <exception cref="Exception">If there are no existing order items for this id</exception>
-    public IEnumerable<OrderItem> getOrderItemsArrWithSpecificOrderId(int myOrderId)
-    {
-       List<OrderItem> orderItemsList=new List<OrderItem>();
-
-        for(int i=0;i < DataSource.orderItemsList.Count; i++)
-        {
-            if(DataSource.orderItemsList[i].OrderId == myOrderId)
-            {
-                orderItemsList.Add(DataSource.orderItemsList[i]);
-            }
-        }
-         return orderItemsList;
     }
     #endregion
 }

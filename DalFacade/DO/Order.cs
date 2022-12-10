@@ -6,12 +6,12 @@ public struct Order
 {
     #region properties
     public int ID { get; set; } = -1;
-    public string CustomerName { get; set; }
-    public string CustomerEmail { get; set; }
-    public string CustomerAddress { get; set; }
-    public DateTime OrderDate { get; set; }
-    public DateTime ShipDate { get; set; }
-    public DateTime DeliveryDate { get; set; }
+    public string? CustomerName { get; set; }
+    public string? CustomerEmail { get; set; }
+    public string? CustomerAddress { get; set; }
+    public DateTime? OrderDate { get; set; }
+    public DateTime? ShipDate { get; set; }
+    public DateTime? DeliveryDate { get; set; }
     #endregion
 
     #region  order constructor

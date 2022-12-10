@@ -1,33 +1,35 @@
 ﻿using BlApi;
-using Dal;
-//using DalApi;
+using BO;
 
 namespace BlImplementation;
 
 internal class Product : IProduct
 {
-    private DalApi.IDal _dal = new DalList();
+    private DalApi.IDal _dal = new Dal.DalList();
 
-    #region GetAllProduct
+    #region Get All Product
     /// <summary>
     /// The function take the list product from the data entity,
     /// and make from it new list from the logic entity
     /// </summary>
     /// <returns>the new logic entity list</returns>
-    public IEnumerable<BO.ProductForList> GetAllProduct()
+    public IEnumerable<BO.ProductForList?> GetAllProduct()
     {
-        IEnumerable<DO.Product> productListFromDo = _dal.Product.GetAll();
-        List<BO.ProductForList> productForList = new List<BO.ProductForList>();
-        foreach (DO.Product product in productListFromDo)//convert the data entity properties to the logic entity propeties
+        IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll();
+        List<BO.ProductForList> productForList = new();
+        foreach (var product in productListFromDo)//convert the data entity properties to the logic entity propeties
         {
-            BO.ProductForList tmp = new BO.ProductForList()
+            if (product != null)
             {
-                Id = product.Id,
-                Price = product.Price,
-                Name = product.Name,
-                Category = (BO.Enums.Category)product.Category
-            };
-            productForList.Add(tmp);//add the new item to the list
+                BO.ProductForList tmp = new()
+                {
+                    Id = product.Value.Id,
+                    Price = product.Value.Price,
+                    Name = product.Value.Name,
+                    Category = (BO.Enums.Category?)product.Value.Category
+                };
+                productForList.Add(tmp);//add the new item to the list
+            }
         }
         return productForList;
     }
@@ -47,16 +49,16 @@ internal class Product : IProduct
         {
             try
             {
-                DO.Product productFromDo = _dal.Product.Get(myId);
-                BO.Product product = new BO.Product()
-                {
-                    Id = productFromDo.Id,
-                    Name = productFromDo.Name,
-                    Price = productFromDo.Price,
-                    Category = (BO.Enums.Category)productFromDo.Category,
-                    InStock = productFromDo.InStock
-                };
-                return product;
+                DO.Product productFromDo = _dal.Product.GetByCondition(x=>x!.Value.Id==myId&&x!=null);
+                    BO.Product product = new()
+                    {
+                        Id = productFromDo.Id,
+                        Name = productFromDo.Name,
+                        Price = productFromDo.Price,
+                        Category = (BO.Enums.Category?)productFromDo.Category,
+                        InStock = productFromDo.InStock
+                    };
+                    return product;
             }
             catch (DO.NoFoundItemExceptions ex)
             {
@@ -76,11 +78,12 @@ internal class Product : IProduct
     /// <returns>return the amount of this product</returns>
     private int _amountOfProductInCart(int myId, BO.Cart cart)
     {
-        foreach (BO.OrderItem orderItem in cart.OrderItemList)
-        {
-            if (orderItem.ProductId == myId)
-                return orderItem.AmountInCart;
-        }
+        if (cart.OrderItemList != null)
+            foreach (var orderItem in cart.OrderItemList)
+            {
+                if (orderItem.ProductId == myId)
+                    return orderItem.AmountInCart;
+            }
         return 0;
     }
     #endregion
@@ -100,14 +103,13 @@ internal class Product : IProduct
         {
             try
             {
-                DO.Product productFromDo = _dal.Product.Get(myId);
-
-                BO.ProductItem productItem = new BO.ProductItem()
+                DO.Product productFromDo = _dal.Product.GetByCondition(x=>x!=null&&x.Value.Id==myId);//לבדוק
+                BO.ProductItem productItem = new()
                 {
                     Id = productFromDo.Id,
                     Name = productFromDo.Name,
                     Price = productFromDo.Price,
-                    Category = (BO.Enums.Category)productFromDo.Category,
+                    Category = (BO.Enums.Category?)productFromDo.Category,
                     InStock = productFromDo.InStock > 0,
                     AmountInCart = _amountOfProductInCart(myId, myCart)
                 };
@@ -131,17 +133,15 @@ internal class Product : IProduct
     /// <exception cref="BO.ItemAlresdyExsistException">if the product already exist in the list products</exception>
     public void AddProduct(BO.Product myProduct)
     {
-        if (myProduct.Id < 0|| myProduct.Id > 999999 || myProduct.Id < 100000)
+        if (myProduct.Id < 0 || myProduct.Id > 999999 || myProduct.Id < 100000)
             throw new BO.InvalidValueException("invalid id");
-        if (myProduct.Name == "")
-            throw new BO.InvalidValueException("invalid name");
         if (myProduct.Price < 0)
             throw new BO.InvalidValueException("invalid price");
         if (myProduct.InStock < 0)
             throw new BO.InvalidValueException("invalid amount in stock");
         try
         {
-            DO.Product productToAdd = new DO.Product(myProduct.Id, myProduct.Name, myProduct.Price, (DO.Enums.Category)myProduct.Category, myProduct.InStock);
+            DO.Product productToAdd = new () { Id = myProduct.Id, Name = myProduct.Name, Price = myProduct.Price, Category = (DO.Enums.Category?)myProduct.Category, InStock = myProduct.InStock };
             _dal.Product.Add(productToAdd);
         }
         catch (DO.ItemAlresdyExsistException ex)
@@ -160,20 +160,13 @@ internal class Product : IProduct
     /// <exception cref="BO.NoFoundItemExceptions">if the product not exists</exception>
     public void DeleteProduct(int myId)
     {
-        IEnumerable<DO.OrderItem> productListFromDo = _dal.OrderItem.GetAll();
-
-        foreach (DO.OrderItem orderItem in productListFromDo)
-        {
-            if (orderItem.ProductId == myId)
-            {
-                DO.Order order = _dal.Order.Get(orderItem.OrderId);
-                if (order.ShipDate == DateTime.MinValue)
-                    throw new BO.ProductInOrderException("This product cannot be deleted, it is on order");
-            }
-        }
         try
         {
-            _dal.Product.Delete(myId);
+            DO.Product productListFromDo = _dal.Product.GetByCondition((x) =>x!=null && x.Value.Id == myId);
+            IEnumerable<DO.OrderItem?> orderItems = _dal.OrderItem.GetAll((x) =>x!=null && x.Value.ProductId == myId&&_dal.Order.GetByCondition((y)=>y!=null && x.Value.OrderId==y.Value.ID).ShipDate==null);
+            if(orderItems!= null)
+                 throw new BO.ProductInOrderException("This product cannot be deleted, it is on order");
+             _dal.Product.Delete(myId);
         }
         catch (DO.NoFoundItemExceptions ex)
         {
@@ -193,15 +186,13 @@ internal class Product : IProduct
     {
         if (myProduct.Id < 0)
             throw new BO.InvalidValueException("invalid id");
-        if (myProduct.Name == "")
-            throw new BO.InvalidValueException("invalid name");
         if (myProduct.Price < 0)
             throw new BO.InvalidValueException("invalid price");
         if (myProduct.InStock < 0)
             throw new BO.InvalidValueException("invalid amount in stock");
         try
         {
-            DO.Product product = new DO.Product(myProduct.Id, myProduct.Name, myProduct.Price, (DO.Enums.Category)myProduct.Category, myProduct.InStock);
+            DO.Product product = new(){ Id = myProduct.Id, Name = myProduct.Name, Price = myProduct.Price, Category = (DO.Enums.Category?)myProduct.Category, InStock = myProduct.InStock };
             _dal.Product.Update(product);
         }
         catch (DO.NoFoundItemExceptions ex)
@@ -213,5 +204,29 @@ internal class Product : IProduct
 
     #endregion
 
+    #region GetProductsByCategory
+    public IEnumerable<ProductForList?> GetProductsByCategory(BO.Enums.Category category)
+    {
+
+        IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll((x) =>x!=null&& x.Value.Category == (DO.Enums.Category?)category);
+        List<BO.ProductForList> productForList = new();
+        foreach (var product in productListFromDo)//convert the data entity properties to the logic entity propeties
+        {
+            if (product != null)
+            {
+                BO.ProductForList tmp = new BO.ProductForList()
+                {
+                    Id = product.Value.Id,
+                    Price = product.Value.Price,
+                    Name = product.Value.Name,
+                    Category = (BO.Enums.Category?)product.Value.Category
+                };
+                productForList.Add(tmp);//add the new item to the list
+            }
+        }
+        return productForList;
+    }
+
+    #endregion
 }
 

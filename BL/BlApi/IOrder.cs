@@ -7,7 +7,7 @@ public interface IOrder
     /// Get All Orders
     /// </summary>
     /// <returns>list of orderForList entity with all the details of the orders</returns>
-    public IEnumerable<OrderForList> GetAllOrders();
+    public IEnumerable<OrderForList?> GetAllOrders();
     /// <summary>
     /// Get Order By Id
     /// </summary>

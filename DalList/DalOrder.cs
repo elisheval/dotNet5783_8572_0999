@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DalApi;
 
 namespace Dal;
-internal class DalOrder:IOrder
+internal class DalOrder : IOrder
 {
     #region Add
     /// <summary>
@@ -20,34 +20,22 @@ internal class DalOrder:IOrder
     }
     #endregion
 
-    #region Get
-    /// <summary>
-    /// Get exist order's id and scan the array's order
-    /// </summary>
-    /// <returns>A copy of the object whose id is equal to the received id</returns>
-    /// <exception cref="Exception">Throw exception if not exists</exception>
-    public Order Get(int myId)
-    {
-        for (int i = 0; i < DataSource.orderList.Count; i++)
-        {
-            if (DataSource.orderList[i].ID == myId)
-                return DataSource.orderList[i];
-        }
-        throw new NoFoundItemExceptions("no order found with this ID");
-
-    }
-    #endregion
-
     #region GetAll
     /// <summary>
     /// copy the exist array for temp array
     /// </summary>
     /// <returns>the temp array</returns>
-    public IEnumerable<Order> GetAll()
+    public IEnumerable<Order?> GetAll(Predicate<Order?>? func = null)
     {
-        List<Order> tmpOrderList = new List<Order>();
-        for (int i = 0; i < DataSource.orderList.Count; i++)
-            tmpOrderList.Add(DataSource.orderList[i]);
+
+        List<Order?> tmpOrderList = new();
+        if (func != null)
+        {
+            tmpOrderList = DataSource.orderList.FindAll(x => func(x));
+            return tmpOrderList;
+        }
+        foreach (var myOrder in DataSource.orderList)
+            tmpOrderList.Add(myOrder);
         return tmpOrderList;
     }
     #endregion
@@ -60,12 +48,11 @@ internal class DalOrder:IOrder
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        for( int i = 0; i < DataSource.orderList.Count; i++)
+        for (int i = 0; i < DataSource.orderList.Count; i++)
         {
-            if (DataSource.orderList[i].ID == myId)
+            if (DataSource.orderList[i]!=null&&DataSource.orderList[i].Value.ID == myId)
             {
-                Order tmpOrder = DataSource.orderList[i];
-                DataSource.orderList.Remove(tmpOrder) ;
+                DataSource.orderList.Remove(DataSource.orderList[i]);
                 return;
             }
 
@@ -87,14 +74,32 @@ internal class DalOrder:IOrder
     {
         for (int i = 0; i < DataSource.orderList.Count; i++)
         {
-            if (DataSource.orderList[i].ID == myOrder.ID)
+            if (DataSource.orderList[i]!=null&&DataSource.orderList[i].Value.ID == myOrder.ID)
             {
                 DataSource.orderList[i] = myOrder;
                 return;
             }
         }
-        throw  new NoFoundItemExceptions("no order found to update with this ID");
+        throw new NoFoundItemExceptions("no order found to update with this ID");
 
     }
     #endregion
+
+    #region GetByCondition
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="func"></param>
+    /// <returns></returns>
+    /// <exception cref="NoFoundItemExceptions"></exception>
+    public Order GetByCondition(Predicate<Order?> func)
+    {
+        Order? order1 = DataSource.orderList.Find(x => func(x));
+        if (order1 == null)
+            throw new NoFoundItemExceptions("no found order with this condition");
+        return (Order)order1;
+       
+    }
+    #endregion
+
 }

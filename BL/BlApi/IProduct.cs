@@ -7,7 +7,7 @@ public interface IProduct
     /// Get All Product
     /// </summary>
     /// <returns>list of all the products details</returns>
-    public IEnumerable<ProductForList> GetAllProduct();
+    public IEnumerable<ProductForList?> GetAllProduct();
     /// <summary>
     /// Get Product By Id
     /// </summary>
@@ -36,5 +36,11 @@ public interface IProduct
     /// </summary>
     /// <param name="myProduct"></param>
     public void UpdateProduct(Product myProduct);
+    /// <summary>
+    /// get product by category
+    /// </summary>
+    /// <param name="category"></param>
+    /// <returns></returns>
+    public IEnumerable<ProductForList?> GetProductsByCategory(BO.Enums.Category category);
 
 }

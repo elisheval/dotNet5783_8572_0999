@@ -5,8 +5,8 @@ public class OrderTracking
 {
     #region properties
     public int Id { get; set; }
-    public OrderStatus OrderStatus { get; set; }
-    public List<(DateTime,string)> DetailOrderStatuses { get; set; }
+    public OrderStatus? OrderStatus { get; set; }
+    public List<(DateTime?,string)?> DetailOrderStatuses { get; set; }
     #endregion
 
     #region ToString
@@ -16,7 +16,7 @@ public class OrderTracking
         string DetailOrderStatusesString = "";
         foreach(var detailOrderStatus in DetailOrderStatuses)
         {
-            DetailOrderStatusesString+=detailOrderStatus.Item2+" : "+ detailOrderStatus.Item1+"\n        ";
+            DetailOrderStatusesString+=detailOrderStatus.Value.Item2+" : "+ detailOrderStatus.Value.Item1+"\n        ";
         }
         return $@"      order id: {Id}
         order status: {OrderStatus},

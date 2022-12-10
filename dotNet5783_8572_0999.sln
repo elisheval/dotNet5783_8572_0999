@@ -16,9 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{29E47F3E-92EA-484B-8F3E-A748516CA58D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BL", "BL\BL.csproj", "{29E47F3E-92EA-484B-8F3E-A748516CA58D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlTest", "BlTest\BlTest.csproj", "{488BCEFC-0BC9-443D-A674-C0A4C17C6401}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlTest", "BlTest\BlTest.csproj", "{488BCEFC-0BC9-443D-A674-C0A4C17C6401}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PL", "PL\PL.csproj", "{358EC28B-BDEC-42CA-B1FF-07CF4A6D51BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +52,10 @@ Global
 		{488BCEFC-0BC9-443D-A674-C0A4C17C6401}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{488BCEFC-0BC9-443D-A674-C0A4C17C6401}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{488BCEFC-0BC9-443D-A674-C0A4C17C6401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{358EC28B-BDEC-42CA-B1FF-07CF4A6D51BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{358EC28B-BDEC-42CA-B1FF-07CF4A6D51BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{358EC28B-BDEC-42CA-B1FF-07CF4A6D51BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{358EC28B-BDEC-42CA-B1FF-07CF4A6D51BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

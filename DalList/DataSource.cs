@@ -1,25 +1,24 @@
 ﻿using DO;
 using static DO.Enums;
-
 namespace Dal;
 
 
 internal static class DataSource
 {
     #region variables
-    internal readonly static Random _rnd = new Random();
+    internal readonly static Random _rnd = new();
     /// <summary>
     /// data list of order items
     /// </summary>
-    internal static List<OrderItem> orderItemsList=new List<OrderItem>();
+    internal static List<OrderItem?> orderItemsList=new();
     /// <summary>
     /// data list of products
     /// </summary>
-    internal static List<Product> productList=new List<Product>();
+    internal static List<Product?> productList=new();
     /// <summary>
     /// data list of order
     /// </summary>
-    internal static List<Order> orderList=new List<Order>();
+    internal static List<Order?> orderList=new();
     #endregion
 
     #region DataSource ctor
@@ -67,11 +66,11 @@ internal static class DataSource
     private static void s_Initialize()
     {
         #region converting strings to category enum type
-        Category percussions = new Category();
-        Category keyboards = new Category();
-        Category exhalation = new Category();
-        Category strings = new Category();
-        Category additional = new Category();
+        Category percussions = new ();
+        Category keyboards = new ();
+        Category exhalation = new ();
+        Category strings = new ();
+        Category additional = new ();
         Enum.TryParse("0", out percussions);
         Enum.TryParse("1", out keyboards);
         Enum.TryParse("2", out exhalation);
@@ -79,7 +78,7 @@ internal static class DataSource
         Enum.TryParse("4", out additional);
         #endregion
 
-        List<Product> tmpProductList = new List<Product>(){
+        List<Product> tmpProductList = new(){
             #region assignment of 10 products
             new Product(100001,"drums", 900, percussions, 5),
             new Product(100002,"Salute",400,percussions,2),
@@ -98,17 +97,17 @@ internal static class DataSource
             addToProductList(tmpProductList[i]);
         }
 
-        List<Order> tmpOrderList =new List<Order>(){
+        List<Order> tmpOrderList = new(){
             
             #region assignment of 20 orders using dataTime.MinValue and timespan
-            new Order("elisheva","elisheva22@","katz34", new DateTime(2022,11,09) , DateTime.MinValue, DateTime.MinValue),
-            new Order("miri","miri22@","agasi44", new DateTime(2022,11,02) , DateTime.MinValue, DateTime.MinValue),
-            new Order("simi","simi22@","katz19", new DateTime(2022,10,05) , DateTime.MinValue, DateTime.MinValue),
-            new Order("rina","rina@","drook2", new DateTime(2022,09,30) , DateTime.MinValue, DateTime.MinValue),
-            new Order("tamar","tamar@","drook45", new DateTime(2022,09,15) , new DateTime(2022,09,22), DateTime.MinValue),
-            new Order("nomi","nomi@","hakablan12", new DateTime(2022,09,07), new DateTime(2022, 09,09), DateTime.MinValue),
-            new Order("shimon","simon@","agasi8", new DateTime(2022,09,07), new DateTime(2022, 09,09), DateTime.MinValue),
-            new Order("refael","refael@","shaoolzon49",new DateTime(2022,08,22),new DateTime(2022,09,30), DateTime.MinValue),
+            new Order(){CustomerName="elisheva",CustomerEmail="ee@",CustomerAddress="ddd76",OrderDate=new DateTime(2022,11,09),ShipDate=null,DeliveryDate=null},
+            new Order(){CustomerName="miri",CustomerEmail="eemiri22" ,CustomerAddress="katz19",OrderDate=new DateTime(2022,10,05),ShipDate=null,DeliveryDate=null},
+            new Order(){CustomerName="",CustomerEmail="@",CustomerAddress="agasu45",OrderDate=new DateTime(2022,11,02),ShipDate=null,DeliveryDate=null},
+            new Order(){CustomerName="rina",CustomerEmail="rina",CustomerAddress="drouk76",OrderDate=new DateTime(2022,09,30),ShipDate=null,DeliveryDate=null},
+            new Order(){CustomerName="tamar",CustomerEmail="tamar@",CustomerAddress="drook476",OrderDate=new DateTime(2022,09,15),ShipDate=new DateTime(2022,09,22),DeliveryDate=null},
+            new Order(){CustomerName="nomi",CustomerEmail="nomi@",CustomerAddress="hakablan12",OrderDate=new DateTime(2022,09,07),ShipDate=new DateTime(2022, 09,09),DeliveryDate=null},
+            new Order(){CustomerName="shimon",CustomerEmail="simon@",CustomerAddress="agasi8",OrderDate=new DateTime(2022,11,09),ShipDate=new DateTime(2022, 09,09),DeliveryDate=null},
+            new Order(){CustomerName="refael",CustomerEmail="refael@",CustomerAddress="shaoolzon49",OrderDate=new DateTime(2022,08,22),ShipDate=new DateTime(2022,09,30),DeliveryDate=null},
             new Order("chaiim","chaim@","chai_taib19",new DateTime(2022,04,10),new DateTime(2022,04,14),new DateTime(2022,04,16)),
             new Order("nechama","nechama@","brand432",new DateTime(2022,04,03),new DateTime(2022,05,10),new DateTime(2022/05/12)),
             new Order("rachel","rachel@","katc54",new DateTime(2022,03,05),new DateTime(2022,05,10),new DateTime(2022,05,15)),
@@ -128,9 +127,9 @@ internal static class DataSource
             addToOrderList(tmpOrderList[i]);
         }
 
-        Random rand = new Random();
+        Random rand = new();
         
-        List<OrderItem> tmpOrderItemList =new List<OrderItem>(){
+        List<OrderItem> tmpOrderItemList =new(){
             #region assignment of 40 order items  
             new OrderItem(100001,100001,900,rand.Next(1,5)),
             new OrderItem(100002,100001,400,rand.Next(1,5)),

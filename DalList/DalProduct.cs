@@ -14,33 +14,18 @@ internal class DalProduct:IProduct
     /// <returns>Returns the id of the new order</returns>
     public int Add(Product myProduct)
     {
-        foreach(Product product in DataSource.productList)
+        foreach(var product in DataSource.productList)
         {
-            if (product.Id == myProduct.Id)
+            if (product != null)
             {
-                throw new ItemAlresdyExsistException("product with this id already exist");
+                if (product.Value.Id == myProduct.Id)
+                {
+                    throw new ItemAlresdyExsistException("product with this id already exist");
+                }
             }
         }
         DataSource.productList.Add(myProduct);
         return myProduct.Id;
-    }
-    #endregion
-
-    #region Get
-    /// <summary>
-    /// Get exist order's id and scan the array's order
-    /// </summary>
-    /// <returns>A copy of the object whose id is equal to the received id</returns>
-    /// <exception cref="Exception">Throw exception if not exists</exception>
-
-    public Product Get(int myId)
-    {
-        for(int i = 0; i < DataSource.productList.Count; i++)
-        {
-            if (DataSource.productList[i].Id==myId)
-                return DataSource.productList[i];
-        }
-        throw new NoFoundItemExceptions("no product found with this ID");
     }
     #endregion
 
@@ -49,9 +34,14 @@ internal class DalProduct:IProduct
     /// copy the exist array for temp array
     /// </summary>
     /// <returns>the temp array</returns>
-    public IEnumerable<Product> GetAll()
+    public IEnumerable<Product?> GetAll(Predicate<Product?>? func=null)
     {
-        List<Product> tmpProductList = new List<Product>();
+        List<Product?> tmpProductList = new();
+        if (func != null)
+        {
+            tmpProductList = DataSource.productList.FindAll(x => func(x));
+            return tmpProductList;
+        }
         for (int i = 0; i < DataSource.productList.Count; i++)
         {
             tmpProductList.Add(DataSource.productList[i]);
@@ -68,16 +58,15 @@ internal class DalProduct:IProduct
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        for (int i = 0; i < DataSource.productList.Count; i++)
-        {
-            if (DataSource.productList[i].Id == myId)
+        foreach (var product in DataSource.productList)
+            if (product != null)
             {
-                Product tmpProduct=DataSource.productList[i];
-                DataSource.productList.Remove(tmpProduct);
-                return;
+                if (product.Value.Id == myId)
+                {
+                    DataSource.productList.Remove(product);
+                    return;
+                }
             }
-
-        }
         throw new NoFoundItemExceptions("no product found to delete with this ID");
 
     }
@@ -95,14 +84,33 @@ internal class DalProduct:IProduct
     {
         for (int i = 0; i < DataSource.productList.Count; i++)
         {
-            if (DataSource.productList[i].Id == myProduct.Id)
+            if (DataSource.productList[i] != null)
             {
-                DataSource.productList[i] = myProduct;
-                return;
+                if (DataSource.productList[i].Value.Id == myProduct.Id)
+                {
+                    DataSource.productList[i] = myProduct;
+                    return;
+                }
             }
         }
         throw new NoFoundItemExceptions("no product found to update with this ID");
 
+    }
+    #endregion
+
+    #region GetByCondition
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="func"></param>
+    /// <returns></returns>
+    /// <exception cref="NoFoundItemExceptions"></exception>
+    public Product GetByCondition(Predicate<Product?> func)
+    {
+        Product? product1 = DataSource.productList.Find(x => func(x));
+        if (product1 == null)
+            throw new NoFoundItemExceptions("no found p with this condition");
+        return (Product)product1;
     }
     #endregion
 }

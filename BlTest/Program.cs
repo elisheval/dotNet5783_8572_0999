@@ -9,7 +9,7 @@ internal class Program
 {
     #region IBl property
     static private IBl blTmp = new Bl();
-    static Cart cart = new Cart() { OrderItemList = new List<OrderItem>() };//Creating an instance of a cart
+    static Cart cart = new() { OrderItemList = new List<OrderItem>() };//Creating an instance of a cart
     #endregion
 
     #region product options
@@ -37,8 +37,8 @@ internal class Program
             {
                 //get all products
                 case ProductMethods.GetAll:
-                    IEnumerable<ProductForList> productList = blTmp.Product.GetAllProduct();
-                    foreach (ProductForList product in productList)
+                    IEnumerable<ProductForList?> productList = blTmp.Product.GetAllProduct();
+                    foreach (var product in productList)
                     {
                         Console.WriteLine(product);//print all the product
                     }
@@ -317,8 +317,8 @@ internal class Program
             {
                 //get all orders
                 case OrderMethod.GetAllOrders:
-                    IEnumerable<OrderForList> orderForLists = blTmp.Order.GetAllOrders();
-                    foreach (OrderForList orderForList in orderForLists)//print all the orders
+                    IEnumerable<OrderForList?> orderForLists = blTmp.Order.GetAllOrders();
+                    foreach (var orderForList in orderForLists)//print all the orders
                     {
                         Console.WriteLine(orderForList);
                         Console.WriteLine();
