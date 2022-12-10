@@ -152,7 +152,7 @@ internal static class DataSource
             new OrderItem(100002,100008,400,rand.Next(1,5)),
             new OrderItem(100009,100009,70,rand.Next(1,5)),
             new OrderItem(100004,100009,3000,rand.Next(1,5)),
-            new OrderItem(100010,1000010,300,rand.Next(1,5)),
+            new OrderItem(100010,100010,300,rand.Next(1,5)),
             new OrderItem(100004,100010,3000,rand.Next(1,5)),
             new OrderItem(100001,100011,900,rand.Next(1,5)),
             new OrderItem(100002,100012,400,rand.Next(1,5)),

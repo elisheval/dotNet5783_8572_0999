@@ -52,7 +52,8 @@ public class Enums
         GetOrderDetById,
         UpdateOrderStatusToSend,
         UpdateOrderStatusToSupplied,
-        OrderTracking
+        OrderTracking,
+        UpdateOrder
     }
     #endregion
 
@@ -78,4 +79,14 @@ public class Enums
         Update
     }
     #endregion
+
+    #region typeOfUpdateOrderByManager
+    public enum typeOfUpdateOrderByManager
+    {
+        add,
+        delete,
+        changeAmount
+    }
+    #endregion
+
 }

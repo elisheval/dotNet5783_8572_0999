@@ -33,6 +33,5 @@ public interface IOrder
     /// <returns>the order tracking details</returns>
     public OrderTracking Ordertracking(int orderId);
 
-    //public void UpdateOrder();//בונוס
-
+    public void UpdateOrder(int orderId, int productId, int amount);
 }
