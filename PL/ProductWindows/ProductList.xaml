@@ -22,7 +22,7 @@
                   Grid.Column="1" SelectionChanged="categorySelector_SelectionChanged">
             
         </ComboBox>
-        <ListView  MouseDoubleClick="ListView_MouseDoubleClick" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" x:Name="ProductListview" >
+        <ListView Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" x:Name="ProductListview" MouseDoubleClick="ListView_MouseDoubleClick" >
             <ListView.View>
                 <GridView x:Name="GridView1">
                     <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=Id}" 

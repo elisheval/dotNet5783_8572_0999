@@ -200,8 +200,6 @@ internal class Product : IProduct
             throw new BO.NoFoundItemExceptions("no found product with this id to update", ex);
         }
     }
-
-
     #endregion
 
     #region GetProductsByCategory
@@ -226,7 +224,6 @@ internal class Product : IProduct
         }
         return productForList;
     }
-
     #endregion
 }
 

@@ -76,11 +76,12 @@ internal class DalOrderItem : IOrderItem
     {
         for (int i = 0; i < DataSource.orderItemsList.Count; i++)
         {
-            if (DataSource.orderItemsList[i]!=null&&DataSource.orderItemsList[i].Value.Id == myOrderItem.Id)
-            {
-                DataSource.orderItemsList[i] = myOrderItem;
-                return;
-            }
+            if (DataSource.orderItemsList[i] != null)
+                if (DataSource.orderItemsList[i].Value.Id == myOrderItem.Id)
+                {
+                    DataSource.orderItemsList[i] = myOrderItem;
+                    return;
+                }
         }
         throw new NoFoundItemExceptions("no orderItem found to update with this ID");
 
