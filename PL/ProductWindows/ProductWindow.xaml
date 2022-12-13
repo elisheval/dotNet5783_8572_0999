@@ -1,4 +1,5 @@
-﻿<Window x:Class="PL.ProductWindows.ProductWindow"
+﻿
+<Window x:Class="PL.ProductWindows.ProductWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -21,12 +22,12 @@
         <Label Content="name" HorizontalAlignment="Left" Margin="321,209,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.392,0.239"/>
         <Label Content="price" HorizontalAlignment="Left" Margin="323,257,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.587,2.18"/>
         <Label Content="in stock" HorizontalAlignment="Left" Margin="313,294,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.724,2.419"/>
-        <TextBox Name="ProductId" HorizontalAlignment="Left" Margin="400,112,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.149,-0.44" TextChanged="ProductId_TextChanged"/>
+        <TextBox Name="ProductId" PreviewTextInput="PreviewTextInput" HorizontalAlignment="Left" Margin="400,112,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.149,-0.44" TextChanged="ProductId_TextChanged" Text=""/>
         <ComboBox Name="CategorySelector" HorizontalAlignment="Left" Margin="400,159,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120"/>
         <TextBox Name="ProductName" HorizontalAlignment="Left" Margin="400,213,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox Name="ProductPrice" HorizontalAlignment="Left" Margin="400,261,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox Name="ProductInStock" HorizontalAlignment="Left" Margin="400,302,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-
+        <TextBox Name="ProductPrice" PreviewTextInput="PreviewTextInput" HorizontalAlignment="Left" Margin="400,261,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="ProductInStock" PreviewTextInput="PreviewTextInput" HorizontalAlignment="Left" Margin="400,302,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+       
 
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>

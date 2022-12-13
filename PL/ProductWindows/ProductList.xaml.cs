@@ -27,13 +27,17 @@ public partial class ProductList : Window
     {
         InitializeComponent();
         ProductListview.ItemsSource = bl.Product.GetAllProduct();
-        categorySelector.ItemsSource = Enum.GetValues(typeof(BO.Enums.Category));
+        foreach(var item in Enum.GetValues(typeof(BO.Enums.Category)))
+        categorySelector.Items.Add(item);
+        categorySelector.Items.Add("");
     }
     private void ShowProductsButton_Click(object sender, RoutedEventArgs e) => new ProductWindow().Show();
     private void categorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        BO.Enums.Category selecteVal = (BO.Enums.Category)categorySelector.SelectedValue;
-        ProductListview.ItemsSource = bl.Product.GetProductsByCategory(selecteVal);
+        if (categorySelector.SelectedItem.ToString() == "")
+            ProductListview.ItemsSource = bl.Product.GetAllProduct();
+        else 
+        ProductListview.ItemsSource = bl.Product.GetProductsByCategory((BO.Enums.Category)categorySelector.SelectedValue);
     }
 
     private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
