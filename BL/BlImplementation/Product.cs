@@ -23,10 +23,10 @@ internal class Product : IProduct
             {
                 BO.ProductForList tmp = new()
                 {
-                    Id = product.Value.Id,
-                    Price = product.Value.Price,
-                    Name = product.Value.Name,
-                    Category = (BO.Enums.Category?)product.Value.Category
+                    Id = product?.Id??0,
+                    Price = product?.Price??0,
+                    Name = product?.Name,
+                    Category = (BO.Enums.Category?)product?.Category
                 };
                 productForList.Add(tmp);//add the new item to the list
             }
@@ -49,7 +49,7 @@ internal class Product : IProduct
         {
             try
             {
-                DO.Product productFromDo = _dal.Product.GetByCondition(x=>x!.Value.Id==myId&&x!=null);
+                DO.Product productFromDo = _dal.Product.GetByCondition(x=>x!?.Id==myId&&x!=null);
                     BO.Product product = new()
                     {
                         Id = productFromDo.Id,
@@ -103,7 +103,7 @@ internal class Product : IProduct
         {
             try
             {
-                DO.Product productFromDo = _dal.Product.GetByCondition(x=>x!=null&&x.Value.Id==myId);//לבדוק
+                DO.Product productFromDo = _dal.Product.GetByCondition(x=>x!=null&&x?.Id==myId);//לבדוק
                 BO.ProductItem productItem = new()
                 {
                     Id = productFromDo.Id,
@@ -162,8 +162,8 @@ internal class Product : IProduct
     {
         try
         {
-            DO.Product productListFromDo = _dal.Product.GetByCondition((x) =>x!=null && x.Value.Id == myId);
-            IEnumerable<DO.OrderItem?> orderItems = _dal.OrderItem.GetAll((x) =>x!=null && x.Value.ProductId == myId&&_dal.Order.GetByCondition((y)=>y!=null && x.Value.OrderId==y.Value.ID).ShipDate==null);
+            DO.Product productListFromDo = _dal.Product.GetByCondition((x) =>x!=null && x?.Id == myId);
+            IEnumerable<DO.OrderItem?> orderItems = _dal.OrderItem.GetAll((x) =>x!=null && x?.ProductId == myId&&_dal.Order.GetByCondition((y)=>y!=null && x?.OrderId==y?.ID).ShipDate==null);
             if(orderItems!= null)
                  throw new BO.ProductInOrderException("This product cannot be deleted, it is on order");
              _dal.Product.Delete(myId);
@@ -206,7 +206,7 @@ internal class Product : IProduct
     public IEnumerable<ProductForList?> GetProductsByCategory(BO.Enums.Category category)
     {
 
-        IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll((x) =>x!=null&& x.Value.Category == (DO.Enums.Category?)category);
+        IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll((x) =>x!=null&& x?.Category == (DO.Enums.Category?)category);
         List<BO.ProductForList> productForList = new();
         foreach (var product in productListFromDo)//convert the data entity properties to the logic entity propeties
         {
@@ -214,10 +214,10 @@ internal class Product : IProduct
             {
                 BO.ProductForList tmp = new BO.ProductForList()
                 {
-                    Id = product.Value.Id,
-                    Price = product.Value.Price,
-                    Name = product.Value.Name,
-                    Category = (BO.Enums.Category?)product.Value.Category
+                    Id = product?.Id??0,
+                    Price = product?.Price??0,
+                    Name = product?.Name,
+                    Category = (BO.Enums.Category?)product?.Category
                 };
                 productForList.Add(tmp);//add the new item to the list
             }

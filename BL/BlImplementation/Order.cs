@@ -15,11 +15,11 @@ internal class Order : IOrder
     private double _totalPrice(int orderId)
     {
         double totalPrice = 0;
-        IEnumerable<DO.OrderItem?> orders = _dal.OrderItem.GetAll((x) => x!=null && x.Value.OrderId == orderId);
+        IEnumerable<DO.OrderItem?> orders = _dal.OrderItem.GetAll((x) => x!=null && x?.OrderId == orderId);
         foreach (var orderItem in orders)
         {
             if (orderItem != null)
-                totalPrice += orderItem.Value.Price * orderItem.Value.Amount;
+                totalPrice += orderItem?.Price??0 * orderItem?.Amount??0;
         }
         return totalPrice;
     }
@@ -57,11 +57,11 @@ internal class Order : IOrder
             {
                 BO.OrderForList orderForListToAdd = new()
                 {
-                    Id = order.Value.ID,
-                    CustomerName = order.Value.CustomerName,
+                    Id = order?.ID??0,
+                    CustomerName = order?.CustomerName,
                     OrderStatus = _orderStatus(order.Value),
-                    ItemsAmount = _dal.OrderItem.GetAll(x=>x!=null && order.Value.ID==x.Value.OrderId).Count(),
-                    TotalPrice = _totalPrice(order.Value.ID)
+                    ItemsAmount = _dal.OrderItem.GetAll(x=>x!=null && order?.ID==x?.OrderId).Count(),
+                    TotalPrice = _totalPrice(order?.ID??0)
                 };
                 ordersForList.Add(orderForListToAdd);
             }
@@ -86,8 +86,8 @@ internal class Order : IOrder
         }
         try
         {
-            DO.Order orderFromDo = _dal.Order.GetByCondition((x) => x!=null && orderId == x.Value.ID);
-            IEnumerable<DO.OrderItem?> orderItemsFromDo = _dal.OrderItem.GetAll((x)=>x!=null&&orderId==x.Value.OrderId);
+            DO.Order orderFromDo = _dal.Order.GetByCondition((x) => x!=null && orderId == x?.ID);
+            IEnumerable<DO.OrderItem?> orderItemsFromDo = _dal.OrderItem.GetAll((x)=>x!=null&&orderId==x?.OrderId);
             List<BO.OrderItem> ordersItems = new();
             foreach (var orderItem in orderItemsFromDo)
             {
@@ -95,11 +95,11 @@ internal class Order : IOrder
                 {
                     BO.OrderItem orderToAdd = new()
                     {
-                        ProductId = orderItem.Value.Id,
-                        ProductName = _dal.Product.GetByCondition(x=>x!=null&&orderItem.Value.ProductId==x.Value.Id).Name,
-                        Price = orderItem.Value.Price,
-                        AmountInCart = orderItem.Value.Amount,
-                        TotalPriceForItem = orderItem.Value.Price * orderItem.Value.Amount
+                        ProductId = orderItem?.Id??0,
+                        ProductName = _dal.Product.GetByCondition(x=>x!=null&&orderItem?.ProductId==x?.Id).Name,
+                        Price = orderItem?.Price??0,
+                        AmountInCart = orderItem?.Amount??0,
+                        TotalPriceForItem = orderItem?.Price??0 * orderItem?.Amount??0
                     };
                     ordersItems.Add(orderToAdd);
                 }
@@ -139,7 +139,7 @@ internal class Order : IOrder
         DO.Order dalOrder = new ();
         try
         {
-            dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x.Value.ID==orderId);//get the details order
+            dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x?.ID==orderId);//get the details order
         }
         catch (DO.NoFoundItemExceptions exe)//check if exist
         {
@@ -150,7 +150,7 @@ internal class Order : IOrder
             throw new BO.InvalidDateChange("this order already sent");
         }
 
-        IEnumerable<DO.OrderItem?> dalOrderItems =_dal.OrderItem.GetAll(x=>x!=null && x.Value.OrderId==dalOrder.ID);
+        IEnumerable<DO.OrderItem?> dalOrderItems =_dal.OrderItem.GetAll(x=>x!=null && x?.OrderId==dalOrder.ID);
         List<BO.OrderItem> blOrderItems = new();
         double totalPrice = 0;
         foreach (var item in dalOrderItems)
@@ -158,12 +158,12 @@ internal class Order : IOrder
             if (item != null)
             {
                 BO.OrderItem OrderItemToPush = new();
-                OrderItemToPush.Id = item.Value.Id;
-                OrderItemToPush.ProductId = item.Value.ProductId;
-                OrderItemToPush.ProductName = _dal.Product.GetByCondition(x=>x!=null&&x.Value.Id==item.Value.ProductId).Name;
-                OrderItemToPush.Price = item.Value.Price;
-                OrderItemToPush.AmountInCart = item.Value.Amount;
-                OrderItemToPush.TotalPriceForItem = item.Value.Price * item.Value.Amount;
+                OrderItemToPush.Id = item?.Id??0;
+                OrderItemToPush.ProductId = item?.ProductId??0;
+                OrderItemToPush.ProductName = _dal.Product.GetByCondition(x=>x!=null&&x?.Id==item?.ProductId).Name;
+                OrderItemToPush.Price = item?.Price??0;
+                OrderItemToPush.AmountInCart = item?.Amount??0;
+                OrderItemToPush.TotalPriceForItem = item?.Price * item?.Amount??0;
                 totalPrice += OrderItemToPush.TotalPriceForItem;
                 blOrderItems.Add(OrderItemToPush);
             }
@@ -199,14 +199,14 @@ internal class Order : IOrder
         DO.Order dalOrder = new();
         try
         {
-            dalOrder = _dal.Order.GetByCondition((x) => x!=null&&orderId == x.Value.ID);//get the order details
+            dalOrder = _dal.Order.GetByCondition((x) => x!=null&&orderId == x?.ID);//get the order details
             if (dalOrder.DeliveryDate != null)// 
             {
                 throw new BO.InvalidDateChange("this order already delivery");
             }
             if (dalOrder.ShipDate ==null)
                 throw new BO.InvalidDateChange("the order cannot delivery before send");
-            IEnumerable<DO.OrderItem?> dalOrderItems = _dal.OrderItem.GetAll(x=>x!=null&&x.Value.OrderId==orderId);
+            IEnumerable<DO.OrderItem?> dalOrderItems = _dal.OrderItem.GetAll(x=>x!=null&&x?.OrderId==orderId);
             List<BO.OrderItem> blOrderItems = new ();
             double totalPrice = 0;
             foreach (var item in dalOrderItems)
@@ -214,12 +214,12 @@ internal class Order : IOrder
                 if (item != null)
                 {
                     BO.OrderItem OrderItemToPush = new();
-                    OrderItemToPush.Id = item.Value.Id;
-                    OrderItemToPush.ProductId = item.Value.ProductId;
-                    OrderItemToPush.ProductName = _dal.Product.GetByCondition(x=>x!=null&&x.Value.Id==item.Value.ProductId).Name;
-                    OrderItemToPush.Price = item.Value.Price;
-                    OrderItemToPush.AmountInCart = item.Value.Amount;
-                    OrderItemToPush.TotalPriceForItem = item.Value.Price * item.Value.Amount;
+                    OrderItemToPush.Id = item?.Id??0;
+                    OrderItemToPush.ProductId = item?.ProductId??0;
+                    OrderItemToPush.ProductName = _dal.Product.GetByCondition(x=>x!=null&&x?.Id==item?.ProductId).Name;
+                    OrderItemToPush.Price = item?.Price??0;
+                    OrderItemToPush.AmountInCart = item?.Amount??0;
+                    OrderItemToPush.TotalPriceForItem = item?.Price * item?.Amount??0;
                     totalPrice += OrderItemToPush.TotalPriceForItem;
                     blOrderItems.Add(OrderItemToPush);
                 }
@@ -263,7 +263,7 @@ internal class Order : IOrder
         DO.Order dalOrder = new();
         try
         {
-            dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x.Value.ID==orderId);//מקבל את פרטי ההזמנה  
+            dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x?.ID==orderId);//מקבל את פרטי ההזמנה  
         }
         catch (DO.NoFoundItemExceptions exe)//בודק שההזמנה קיימת
         {
@@ -309,15 +309,15 @@ internal class Order : IOrder
             if (orderId <= 0)
                 throw new BO.InvalidValueException("invalid order id");
             DO.Order dalOrder = new DO.Order();
-            dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x.Value.ID==orderId);
+            dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x?.ID==orderId);
             if (dalOrder.ShipDate !=null)//if the order sent the manager cannot change it
                 throw new BO.NoAccessToSentOrder("the order already sent, you can't change the date");
             if (amount < 0)//invalid
                 throw new BO.InvalidValueException("invalid amount of product");
             if (amount == 0)//This is a sign that the manager wants to delete
             {
-                DO.Product p = _dal.Product.GetByCondition(x=>x!=null&&x.Value.Id==productId);
-                DO.OrderItem orderitem = _dal.OrderItem.GetByCondition(x=>x!=null&&x.Value.ProductId==productId &&x.Value.OrderId==orderId);
+                DO.Product p = _dal.Product.GetByCondition(x=>x!=null&&x?.Id==productId);
+                DO.OrderItem orderitem = _dal.OrderItem.GetByCondition(x=>x!=null&&x?.ProductId==productId &&x?.OrderId==orderId);
                 p.InStock += orderitem.Amount;
                 _dal.OrderItem.Delete(orderitem.Id);
                 _dal.Product.Update(p);
@@ -329,28 +329,28 @@ internal class Order : IOrder
                 foreach (var oi in OrderItems)//look for the order item,
                 {
                     if (oi!=null){
-                        if (oi.Value.ProductId == productId && oi.Value.OrderId == orderId)//if the product exist- change the amount to be the getter amount
+                        if (oi?.ProductId == productId && oi?.OrderId == orderId)//if the product exist- change the amount to be the getter amount
                         {
                             flag = true;
-                            if (oi.Value.Amount != amount)
+                            if (oi?.Amount != amount)
                             {
-                                DO.Product p = _dal.Product.GetByCondition(x=> x != null && x.Value.Id == productId);
+                                DO.Product p = _dal.Product.GetByCondition(x=> x != null && x?.Id == productId);
                                 DO.OrderItem OItoChange = new()
                                 {
-                                    OrderId = oi.Value.OrderId,
-                                    Id = oi.Value.Id,
-                                    Price = oi.Value.Price,
-                                    ProductId = oi.Value.ProductId
+                                    OrderId = oi?.OrderId??0,
+                                    Id = oi?.Id??0,
+                                    Price = oi?.Price??0,
+                                    ProductId = oi?.ProductId??0
                                 };
                                 if (p.InStock < amount)
                                 {
-                                    OItoChange.Amount = oi.Value.Amount + p.InStock;
+                                    OItoChange.Amount = oi?.Amount??0 + p.InStock;
                                     p.InStock = 0;
                                 }
                                 else
                                 {
                                     OItoChange.Amount = amount;
-                                    p.InStock -= amount - oi.Value.Amount;
+                                    p.InStock -= amount - oi?.Amount??0;
                                 }
                                 _dal.Product.Update(p);
                                 _dal.OrderItem.Update(OItoChange);
@@ -360,7 +360,7 @@ internal class Order : IOrder
                 }
                 if (!flag)//if not exist enter the product to the order
                 {
-                    DO.Product p = _dal.Product.GetByCondition(x=>x != null && x.Value.Id == productId);
+                    DO.Product p = _dal.Product.GetByCondition(x=>x != null && x?.Id == productId);
                     if (p.InStock < amount)
                     {
                         p.InStock = 0;

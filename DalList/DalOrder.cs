@@ -50,7 +50,7 @@ internal class DalOrder : IOrder
     {
         for (int i = 0; i < DataSource.orderList.Count; i++)
         {
-            if (DataSource.orderList[i]!=null&&DataSource.orderList[i].Value.ID == myId)
+            if (DataSource.orderList[i]!=null&&DataSource.orderList[i]?.ID == myId)
             {
                 DataSource.orderList.Remove(DataSource.orderList[i]);
                 return;
@@ -74,7 +74,7 @@ internal class DalOrder : IOrder
     {
         for (int i = 0; i < DataSource.orderList.Count; i++)
         {
-            if (DataSource.orderList[i]!=null&&DataSource.orderList[i].Value.ID == myOrder.ID)
+            if (DataSource.orderList[i]!=null&&DataSource.orderList[i]?.ID == myOrder.ID)
             {
                 DataSource.orderList[i] = myOrder;
                 return;
@@ -86,12 +86,12 @@ internal class DalOrder : IOrder
     #endregion
 
     #region GetByCondition
+    /// <param name="func"> predicate</param>
     /// <summary>
-    /// 
+    /// get filtering predicate and return the orderList filtering according to the method
     /// </summary>
-    /// <param name="func"></param>
-    /// <returns></returns>
-    /// <exception cref="NoFoundItemExceptions"></exception>
+    /// <returns>filtering orderList</returns>
+    /// <exception cref="NoFoundItemExceptions"> if the </exception>
     public Order GetByCondition(Predicate<Order?> func)
     {
         Order? order1 = DataSource.orderList.Find(x => func(x));

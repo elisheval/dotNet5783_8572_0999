@@ -32,6 +32,15 @@ public interface IOrder
     /// <param name="orderId"></param>
     /// <returns>the order tracking details</returns>
     public OrderTracking Ordertracking(int orderId);
-
+    /// bonus method
+    /// <param name="orderId">get order of id</param>
+    /// <param name="productId">get id of product to add, delete or change amount</param>
+    /// <param name="amount">get amount</param>
+    /// <summary>
+    /// the manager can add, delete or change amount of product in confirm order.
+    /// </summary>
+    /// <exception cref="BO.InvalidValueException"></exception>
+    /// <exception cref="BO.NoAccessToSentOrder"></exception>
+    /// <exception cref="BO.NoFoundItemExceptions"></exception>
     public void UpdateOrder(int orderId, int productId, int amount);
 }
