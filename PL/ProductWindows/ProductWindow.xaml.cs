@@ -219,10 +219,16 @@ public partial class ProductWindow : Window
 
     #region PreviewTextInput
 
-    private void PreviewTextInput(object sender, TextCompositionEventArgs e)
+    private void PreviewTextInputInt(object sender, TextCompositionEventArgs e)
     {
         Regex regex = new ("[^0-9]+");
         e.Handled = regex.IsMatch(e.Text);
     }
     #endregion
+    private void PreviewTextInputDouble(object sender, TextCompositionEventArgs e)
+    {
+        Regex regex = new("[^0-9,.]+");
+        e.Handled = regex.IsMatch(e.Text);
+    }
+    
 }

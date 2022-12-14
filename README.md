@@ -98,3 +98,20 @@ stage2: this is the method to update, we tryed it and its work:
 
     }
     #endregion
+
+    stage3:
+    genery function to print object with out getting specific type o the object
+
+    #region print object
+    private static void _print<T>(T obj)
+    {
+        var type = obj?.GetType();
+        if (type != null)
+            foreach (var pInfo in type?.GetProperties())
+            {
+                Console.Write(pInfo.Name + ": ");
+                Console.WriteLine(pInfo.GetValue(obj, null));
+
+            }
+    }
+    #endregion

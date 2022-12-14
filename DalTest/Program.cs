@@ -6,6 +6,19 @@ using DalApi;
 namespace DalTest;
 public class Program
 {
+    #region print object bunus
+    private static void _print<T>(T obj)
+    {
+        var type = obj?.GetType();
+        if(type!=null)
+        foreach (var pInfo in type?.GetProperties())
+        {
+            Console.Write(pInfo.Name+ ": ");
+            Console.WriteLine(pInfo.GetValue(obj, null));
+
+        }
+    }
+    #endregion
 
     #region properties
     //static private DalOrder order1=new DalOrder();
@@ -66,7 +79,8 @@ public class Program
                     try
                     {
                         Order orderDetails = dalListTmp.Order.GetByCondition(x=>x!=null&&x?.ID==id);
-                        Console.WriteLine(orderDetails);
+                        _print(orderDetails);
+                        Console.WriteLine();
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -78,7 +92,8 @@ public class Program
                     IEnumerable<Order?> orderArr =dalListTmp.Order.GetAll();
                     foreach (var order in orderArr)
                     {
-                        Console.WriteLine(order);
+                        _print(order);
+                        Console.WriteLine();
                     }
                     break;
                 ///delete an order by id
@@ -102,7 +117,8 @@ public class Program
                     try
                     {
                         orderDetailstmp = dalListTmp.Order.GetByCondition(x=>x!=null&&x?.ID==id);
-                        Console.WriteLine(orderDetailstmp);
+                        _print(orderDetailstmp);
+                        Console.WriteLine();
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -195,7 +211,7 @@ public class Program
                     try
                     {
                         tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x => x != null && x?.Id == id);
-                        Console.WriteLine(tmpOrderItem);
+                       _print(tmpOrderItem);
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -207,7 +223,8 @@ public class Program
                     IEnumerable<OrderItem?> ordersItemsArr =dalListTmp.OrderItem.GetAll();
                     foreach (var orderItem in ordersItemsArr)
                     {
-                        Console.WriteLine(orderItem);
+                        _print(orderItem);
+                        Console.WriteLine();
                     }
                     break;
                 ///delete an order items by id
@@ -231,7 +248,7 @@ public class Program
                     try
                     {
                         tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x=>x!=null&&x?.Id==id);
-                        Console.WriteLine(tmpOrderItem);
+                        _print(tmpOrderItem);
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -268,7 +285,8 @@ public class Program
                     try
                     {
                         tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x => x!=null&&productID == x?.ProductId && orderID == x?.OrderId);
-                        Console.WriteLine(tmpOrderItem);
+                        _print(tmpOrderItem);
+                        Console.WriteLine();
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -284,7 +302,8 @@ public class Program
                         IEnumerable<OrderItem?> tmpOrderItemArr =dalListTmp.OrderItem.GetAll(x => x!=null&&orderID == x?.OrderId);
                         foreach (var orderItem in tmpOrderItemArr)
                         {
-                            Console.WriteLine(orderItem);
+                            _print(orderItem);
+                            Console.WriteLine();
                         }
 
                     }
@@ -362,7 +381,7 @@ public class Program
                     try
                     {
                         tmpProduct = dalListTmp.Product.GetByCondition(x=>x!=null&&x?.Id==id);
-                        Console.WriteLine(tmpProduct);
+                       _print(tmpProduct);
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -374,7 +393,8 @@ public class Program
                     IEnumerable<Product?> productArr =dalListTmp.Product.GetAll();
                     foreach (var product in productArr)
                     {
-                        Console.WriteLine(product);
+                        _print(product);
+                        Console.WriteLine();
                     }
                     break;
                 ///delete product by id

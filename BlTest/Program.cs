@@ -7,6 +7,20 @@ using System.Transactions;
 namespace BlTest;
 internal class Program
 {
+    #region print object bunus
+    private static void _print<T>(T obj)
+    {
+        var type = obj?.GetType();
+        if (type != null)
+            foreach (var pInfo in type?.GetProperties())
+            {
+                Console.Write(pInfo.Name + ": ");
+                Console.WriteLine(pInfo.GetValue(obj, null));
+
+            }
+    }
+    #endregion
+
     #region IBl property
     static private IBl blTmp = new Bl();
     static Cart cart = new() { OrderItemList = new List<OrderItem>() };//Creating an instance of a cart
@@ -40,7 +54,8 @@ internal class Program
                     IEnumerable<ProductForList?> productList = blTmp.Product.GetAllProduct();
                     foreach (var product in productList)
                     {
-                        Console.WriteLine(product);//print all the product
+                        _print(product);//print all the product
+                        Console.WriteLine();
                     }
                     break;
 
@@ -51,7 +66,9 @@ internal class Program
                     try
                     {
                         Product product = blTmp.Product.GetProductById(id);
-                        Console.WriteLine(product);
+                        _print(product);
+                        Console.WriteLine();
+
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -72,7 +89,7 @@ internal class Program
                     try
                     {
                         ProductItem productItem = blTmp.Product.GetProductById(id, cart);
-                        Console.WriteLine(productItem);
+                        _print(productItem);
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -221,7 +238,9 @@ internal class Program
                     try
                     {
                         Cart cartTmp = blTmp.Cart.AddProductToCart(id, cart);
-                        Console.WriteLine(cartTmp);
+                        _print(cartTmp);
+                        Console.WriteLine();
+
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -248,7 +267,9 @@ internal class Program
                     {
                         Cart cartTmp = blTmp.Cart.UpdateAmountOfProductInCart(id, cart, newAmount);
                         Console.WriteLine("the update cart is: ");
-                        Console.WriteLine(cartTmp);
+                        _print(cartTmp);
+                        Console.WriteLine();
+
                     }
                     catch (ProductOutOfStockException ex)
                     {
@@ -320,7 +341,7 @@ internal class Program
                     IEnumerable<OrderForList?> orderForLists = blTmp.Order.GetAllOrders();
                     foreach (var orderForList in orderForLists)//print all the orders
                     {
-                        Console.WriteLine(orderForList);
+                        _print(orderForList);
                         Console.WriteLine();
                     }
                     break;
@@ -331,7 +352,9 @@ internal class Program
                     try
                     {
                         Order order = blTmp.Order.GetOrderById(id);
-                        Console.WriteLine(order);
+                        _print(order);
+                        Console.WriteLine();
+
                     }
                     catch (InvalidValueException ex)
                     {
@@ -350,7 +373,8 @@ internal class Program
                     try
                     {
                         Order order = blTmp.Order.OrderShippingUpdate(id);
-                        Console.WriteLine(order);
+                        _print(order);
+                        Console.WriteLine();
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -369,7 +393,8 @@ internal class Program
                     try
                     {
                         Order order = blTmp.Order.OrderDeliveryUpdate(id);
-                        Console.WriteLine(order);
+                        _print(order);
+                        Console.WriteLine();
                     }
 
                     catch (NoFoundItemExceptions ex)
@@ -389,7 +414,8 @@ internal class Program
                     try
                     {
                         OrderTracking orderTracking = blTmp.Order.Ordertracking(id);
-                        Console.WriteLine(orderTracking);
+                        _print(orderTracking);
+                        Console.WriteLine();
                     }
                     catch (NoFoundItemExceptions ex)
                     {
