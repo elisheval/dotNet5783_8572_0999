@@ -37,7 +37,7 @@
             </ListView.View>
         </ListView>
 
-        <Button Content="Add new Product" Grid.Row="2" HorizontalAlignment="Left" Margin="691,0,0,5" Padding="5" Click="ShowProductsButton_Click" Height="28" VerticalAlignment="Bottom"/>
+        <Button Content="Add new Product" Grid.Row="2" HorizontalAlignment="Left" Margin="691,0,0,5" Padding="5" Click="ShowProductWindow_Click" Height="28" VerticalAlignment="Bottom"/>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>

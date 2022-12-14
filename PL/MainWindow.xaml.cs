@@ -25,13 +25,19 @@ namespace PL;
 public partial class MainWindow : Window
 {
     IBl bl = new Bl();
-    private void ShowProductsButton_Click(object sender, RoutedEventArgs e)
+
+    #region ShowProductsButton_Click
+    private void ShowProductsButton_Click(object sender, RoutedEventArgs e)//button to show all products
     {
         new ProductList().Show();
         this.Close();
     }
+    #endregion
+
+    #region constractor
     public MainWindow()
     {
         InitializeComponent();
     }
+    #endregion
 }
