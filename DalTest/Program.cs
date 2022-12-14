@@ -64,7 +64,7 @@ public class Program
                     int id = int.Parse(Console.ReadLine());
                     try
                     {
-                        Order orderDetails = dalListTmp.Order.GetByCondition(x=>x!=null&&x.Value.ID==id);
+                        Order orderDetails = dalListTmp.Order.GetByCondition(x=>x!=null&&x?.ID==id);
                         Console.WriteLine(orderDetails);
                     }
                     catch (NoFoundItemExceptions ex)
@@ -100,7 +100,7 @@ public class Program
                     Order orderDetailstmp;
                     try
                     {
-                        orderDetailstmp = dalListTmp.Order.GetByCondition(x=>x!=null&&x.Value.ID==id);
+                        orderDetailstmp = dalListTmp.Order.GetByCondition(x=>x!=null&&x?.ID==id);
                         Console.WriteLine(orderDetailstmp);
                     }
                     catch (NoFoundItemExceptions ex)
@@ -193,7 +193,7 @@ public class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x => x != null && x.Value.Id == id);
+                        tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x => x != null && x?.Id == id);
                         Console.WriteLine(tmpOrderItem);
                     }
                     catch (NoFoundItemExceptions ex)
@@ -229,7 +229,7 @@ public class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x=>x!=null&&x.Value.Id==id);
+                        tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x=>x!=null&&x?.Id==id);
                         Console.WriteLine(tmpOrderItem);
                     }
                     catch (NoFoundItemExceptions ex)
@@ -266,7 +266,7 @@ public class Program
                     orderID = int.Parse(Console.ReadLine());
                     try
                     {
-                        tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x => x!=null&&productID == x.Value.ProductId && orderID == x.Value.OrderId);
+                        tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x => x!=null&&productID == x?.ProductId && orderID == x?.OrderId);
                         Console.WriteLine(tmpOrderItem);
                     }
                     catch (NoFoundItemExceptions ex)
@@ -280,7 +280,7 @@ public class Program
                     orderID = int.Parse(Console.ReadLine());
                     try
                     {
-                        IEnumerable<OrderItem?> tmpOrderItemArr =dalListTmp.OrderItem.GetAll(x => x!=null&&orderID == x.Value.OrderId);
+                        IEnumerable<OrderItem?> tmpOrderItemArr =dalListTmp.OrderItem.GetAll(x => x!=null&&orderID == x?.OrderId);
                         foreach (var orderItem in tmpOrderItemArr)
                         {
                             Console.WriteLine(orderItem);
@@ -360,7 +360,7 @@ public class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        tmpProduct = dalListTmp.Product.GetByCondition(x=>x!=null&&x.Value.Id==id);
+                        tmpProduct = dalListTmp.Product.GetByCondition(x=>x!=null&&x?.Id==id);
                         Console.WriteLine(tmpProduct);
                     }
                     catch (NoFoundItemExceptions ex)
@@ -396,7 +396,7 @@ public class Program
                     id = int.Parse(Console.ReadLine());
                     try
                     {
-                        tmpProduct = dalListTmp.Product.GetByCondition(x => x != null && x.Value.Id == id);
+                        tmpProduct = dalListTmp.Product.GetByCondition(x => x != null && x?.Id == id);
                         Console.WriteLine(tmpProduct);
                     }
                     catch (NoFoundItemExceptions ex)

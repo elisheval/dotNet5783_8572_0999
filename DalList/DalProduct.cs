@@ -18,7 +18,7 @@ internal class DalProduct:IProduct
         {
             if (product != null)
             {
-                if (product.Value.Id == myProduct.Id)
+                if (product?.Id == myProduct.Id)
                 {
                     throw new ItemAlresdyExsistException("product with this id already exist");
                 }
@@ -61,7 +61,7 @@ internal class DalProduct:IProduct
         foreach (var product in DataSource.productList)
             if (product != null)
             {
-                if (product.Value.Id == myId)
+                if (product?.Id == myId)
                 {
                     DataSource.productList.Remove(product);
                     return;
@@ -86,7 +86,7 @@ internal class DalProduct:IProduct
         {
             if (DataSource.productList[i] != null)
             {
-                if (DataSource.productList[i].Value.Id == myProduct.Id)
+                if (DataSource.productList[i]?.Id == myProduct.Id)
                 {
                     DataSource.productList[i] = myProduct;
                     return;

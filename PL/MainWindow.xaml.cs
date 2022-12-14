@@ -24,9 +24,12 @@ namespace PL;
 /// </summary>
 public partial class MainWindow : Window
 {
-    IBl bl=new Bl();
-    private void ShowProductsButton_Click(object sender, RoutedEventArgs e) => new ProductList().Show();
-
+    IBl bl = new Bl();
+    private void ShowProductsButton_Click(object sender, RoutedEventArgs e)
+    {
+        new ProductList().Show();
+        this.Close();
+    }
     public MainWindow()
     {
         InitializeComponent();

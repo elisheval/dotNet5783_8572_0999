@@ -53,7 +53,7 @@ internal class DalOrderItem : IOrderItem
         {
             if (item != null)
             {
-                if (item.Value.Id == myId)
+                if (item?.Id == myId)
                 {
                     DataSource.orderItemsList.Remove(item);
                     return;
@@ -76,11 +76,12 @@ internal class DalOrderItem : IOrderItem
     {
         for (int i = 0; i < DataSource.orderItemsList.Count; i++)
         {
-            if (DataSource.orderItemsList[i]!=null&&DataSource.orderItemsList[i].Value.Id == myOrderItem.Id)
-            {
-                DataSource.orderItemsList[i] = myOrderItem;
-                return;
-            }
+            if (DataSource.orderItemsList[i] != null)
+                if (DataSource.orderItemsList[i]?.Id == myOrderItem.Id)
+                {
+                    DataSource.orderItemsList[i] = myOrderItem;
+                    return;
+                }
         }
         throw new NoFoundItemExceptions("no orderItem found to update with this ID");
 
