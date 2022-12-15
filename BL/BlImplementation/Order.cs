@@ -4,7 +4,8 @@ using System.Security.Cryptography.X509Certificates;
 namespace BlImplementation;
 internal class Order : IOrder
 {
-    private DalApi.IDal _dal = new Dal.DalList();
+    DalApi.IDal? _dal = DalApi.Factory.Get();
+
 
     #region total price
     /// <param name="orderId">get id of order</param>

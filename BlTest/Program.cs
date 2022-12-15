@@ -1,8 +1,5 @@
-﻿using BlApi;
-using BlImplementation;
-using static BO.Enums;
+﻿using static BO.Enums;
 using BO;
-using System.Transactions;
 
 namespace BlTest;
 internal class Program
@@ -22,7 +19,7 @@ internal class Program
     #endregion
 
     #region IBl property
-    static private IBl blTmp = new Bl();
+    static BlApi.IBl? blTmp = BlApi.Factory.Get();
     static Cart cart = new() { OrderItemList = new List<OrderItem>() };//Creating an instance of a cart
     #endregion
 

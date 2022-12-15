@@ -1,6 +1,4 @@
-﻿using BlApi;
-using BlImplementation;
-using BO;
+﻿using BO;
 using System;
 using System.Linq;
 using System.Windows;
@@ -16,7 +14,8 @@ namespace PL.ProductWindows;
 /// </summary>
 public partial class ProductWindow : Window
 {
-    IBl bl = new Bl();
+    BlApi.IBl? bl = BlApi.Factory.Get();
+
 
     #region AddButton_Click
     /// <summary>

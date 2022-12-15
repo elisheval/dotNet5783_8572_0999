@@ -2,8 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using BlImplementation;
-using BlApi;
 
 namespace PL.ProductWindows;
 /// <summary>
@@ -12,7 +10,8 @@ namespace PL.ProductWindows;
 /// 
 public partial class ProductList : Window
 {
-    IBl bl = new Bl();
+    BlApi.IBl? bl = BlApi.Factory.Get();
+
 
     #region constructor
     /// <summary>

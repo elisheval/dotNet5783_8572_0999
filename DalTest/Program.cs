@@ -1,7 +1,5 @@
 ﻿using DO;
-using Dal;
 using static DO.Enums;
-using DalApi;
 
 namespace DalTest;
 public class Program
@@ -24,7 +22,9 @@ public class Program
     //static private DalOrder order1=new DalOrder();
     //static private DalOrderItem orderItem1=new DalOrderItem();
     //static private DalProduct product1=new DalProduct();
-    static private IDal dalListTmp = new DalList();
+
+    static DalApi.IDal? dalListTmp = DalApi.Factory.Get();
+
     #endregion
 
     #region orderOptions
