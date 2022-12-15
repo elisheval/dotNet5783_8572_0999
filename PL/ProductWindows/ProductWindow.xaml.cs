@@ -60,7 +60,7 @@ public partial class ProductWindow : Window
                 place = 271;
             if (ex.Message == "invalid amount in stock")
                 place = 312;
-            Label invalidValue = new Label()//create label under the invalid textBox
+            Label invalidValue = new Label()//create label
             {
                 Name = "invalidValue",
                 Margin = new Thickness(80, place, 0, 0),
@@ -69,13 +69,13 @@ public partial class ProductWindow : Window
                 VerticalAlignment = VerticalAlignment.Top,
                 Foreground = new SolidColorBrush(Colors.Red),
             };
-            Grid.SetRow(invalidValue, 1);
+            Grid.SetRow(invalidValue, 1); //put the label under the invalid textBox
             MainGrid.Children.Add(invalidValue);
         }
         catch (ItemAlresdyExsistException ex)
         {
             StackPanel DeptStackPanel = new StackPanel();
-            Label lblAlreadyExists = new Label()
+            Label lblAlreadyExists = new Label()//create label
             {
                 Name = "lblAlreadyExists",
                 Margin = new Thickness(0, 36, 0, 0),
@@ -84,22 +84,24 @@ public partial class ProductWindow : Window
                 VerticalAlignment = VerticalAlignment.Top,
                 Foreground = new SolidColorBrush(Colors.Red),
             };
-            Grid.SetRow(lblAlreadyExists, 1);
+            Grid.SetRow(lblAlreadyExists, 1);//put the label under the invalid textBox
             MainGrid.Children.Add(lblAlreadyExists);
         };
     }
+    
     /// <summary>
-    /// 
+    /// c-tor of the add window
     /// </summary>
-    public ProductWindow()
+    public ProductWindow() 
     {
         InitializeComponent();
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Enums.Category));
     }
+
+    /// <param name="productId">get product id</param>
     /// <summary>
-    /// 
+    /// c-tor of the update window, the textBoxes filled in the props of the getter productId
     /// </summary>
-    /// <param name="productId"></param>
     public ProductWindow(int productId)
     {
 
@@ -115,8 +117,9 @@ public partial class ProductWindow : Window
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Enums.Category));
 
     }
+   
     /// <summary>
-    /// 
+    /// delete the warning labels if the textBox changes
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -129,8 +132,9 @@ public partial class ProductWindow : Window
         if (child2 != null)
             MainGrid.Children.Remove(child2);
     }
+    
     /// <summary>
-    /// 
+    /// delete the warning labels if the textBox changes
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -140,8 +144,9 @@ public partial class ProductWindow : Window
         if (child != null)
             MainGrid.Children.Remove(child);
     }
+    
     /// <summary>
-    /// 
+    /// delete the warning labels if the textBox changes
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -151,8 +156,9 @@ public partial class ProductWindow : Window
         if (child != null)
             MainGrid.Children.Remove(child);
     }
+    
     /// <summary>
-    /// 
+    /// Prevents the user from entering non-numeric characters
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -161,4 +167,5 @@ public partial class ProductWindow : Window
         Regex regex = new ("[^0-9]+");
         e.Handled = regex.IsMatch(e.Text);
     }
+
 }

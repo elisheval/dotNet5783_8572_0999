@@ -23,7 +23,6 @@ namespace PL.ProductWindows;
 public partial class ProductList : Window
 {
     IBl bl = new Bl();
-
     
     /// <summary>
     /// constructor
@@ -36,6 +35,7 @@ public partial class ProductList : Window
             categorySelector.Items.Add(item);
         categorySelector.Items.Add("");
     }
+
     /// <summary>
     /// open the add window
     /// </summary>
@@ -46,6 +46,7 @@ public partial class ProductList : Window
         new ProductWindow().ShowDialog();
         ProductListview.ItemsSource = bl.Product.GetAllProduct();//after the add window close updating the list
     }
+    
     /// <summary>
     /// select the list by category
     /// </summary>
@@ -60,6 +61,7 @@ public partial class ProductList : Window
             ProductListview.ItemsSource = bl.Product.GetProductsByCategory((BO.Enums.Category)categorySelector.SelectedValue);
 
     }
+    
     /// <summary>
     /// open the update window with the props of the tapped row
     /// </summary>
@@ -71,6 +73,5 @@ public partial class ProductList : Window
         new ProductWindow(pfl.Id).ShowDialog();//after the add window close updating the list
         ProductListview.ItemsSource = bl.Product.GetAllProduct();
     }
-
 
 }
