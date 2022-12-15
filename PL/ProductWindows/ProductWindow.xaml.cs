@@ -50,9 +50,9 @@ public partial class ProductWindow : Window
             };
 
             if (btnAddOrUpdate.Content.ToString() == "update")//update
-                bl.Product.UpdateProduct(p);
+                bl?.Product.UpdateProduct(p);
             else//add
-                bl.Product.AddProduct(p);
+                bl?.Product.AddProduct(p);
             MessageBox.Show("succesfully");
             Close();//close the window
         }
@@ -110,7 +110,7 @@ public partial class ProductWindow : Window
             VerticalAlignment = VerticalAlignment.Top,
             Foreground = new SolidColorBrush(Colors.Red),
         };
-        if (massege == "lblAlreadyExists")
+        if (name == "lblAlreadyExists")
         {
             Grid.SetRow(lbl, 1);
             MainGrid.Children.Add(lbl);
@@ -223,11 +223,11 @@ public partial class ProductWindow : Window
         Regex regex = new ("[^0-9]+");
         e.Handled = regex.IsMatch(e.Text);
     }
-    #endregion
     private void PreviewTextInputDouble(object sender, TextCompositionEventArgs e)
     {
         Regex regex = new("[^0-9,.]+");
         e.Handled = regex.IsMatch(e.Text);
     }
-    
+    #endregion
+
 }
