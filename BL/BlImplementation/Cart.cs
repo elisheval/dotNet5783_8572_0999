@@ -1,11 +1,11 @@
 ﻿using BlApi;
+using BO;
 using System.Net.Mail;
 
 namespace BlImplementation;
 internal class Cart : ICart
 {
     DalApi.IDal? _dal = DalApi.Factory.Get();
-
 
     #region private productInStock
     /// <param name="productId">get id of product</param>
@@ -15,6 +15,7 @@ internal class Cart : ICart
     /// <returns>true- if in, false- if not in</returns>
     private bool ProductInStock(int productId)
     {
+        if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         DO.Product product1 = _dal.Product.GetByCondition((x) => x != null && productId == x?.Id);
         if (product1.InStock > 0)
             return true;
@@ -35,13 +36,15 @@ internal class Cart : ICart
     public BO.Cart AddProductToCart(int productId, BO.Cart myCart)
     {
 
-        foreach (var orderItem in myCart.OrderItemList)
+        foreach (var orderItem in myCart.OrderItemList!)
             if (orderItem != null)
             {
                 if (orderItem.ProductId == productId)
                 {
                     if (ProductInStock(productId))
                     {
+                        if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
+
                         DO.Product product = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
                         orderItem.AmountInCart++;
                         myCart.TotalOrderPrice += product.Price * orderItem.AmountInCart - orderItem.TotalPriceForItem;
@@ -56,6 +59,7 @@ internal class Cart : ICart
                 }
             }
         //the product is not in the cart
+        if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         DO.Product product1 = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
         if (product1.InStock <= 0)
             throw new BO.ProductOutOfStockException("Product is out of stock");
@@ -93,7 +97,7 @@ internal class Cart : ICart
             throw new BO.InvalidValueException("invalid amount");
         if (productId < 0)
             throw new BO.InvalidValueException("invalid product id");
-        foreach (BO.OrderItem orderItem in myCart.OrderItemList)
+        foreach (BO.OrderItem orderItem in myCart.OrderItemList!)
         {
             if (orderItem.ProductId == productId)
             {
@@ -103,6 +107,7 @@ internal class Cart : ICart
                 }
                 else
                 {
+                    if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
                     IEnumerable<DO.Product?> products = _dal.Product.GetAll();
                     foreach (var product in products)
                     {
@@ -178,9 +183,10 @@ internal class Cart : ICart
             throw new BO.InvalidValueException("invalid email");
 
         DO.Order order = new() { CustomerName = customerName, CustomerEmail = customerEmail, CustomerAddress = customerEmail, OrderDate = DateTime.Now, ShipDate = null, DeliveryDate = null };
+        if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         int orderId = _dal.Order.Add(order);
         string massegeOfLackProducts = "";
-        foreach (BO.OrderItem orderItem in myCart.OrderItemList)
+        foreach (BO.OrderItem orderItem in myCart.OrderItemList!)
         {
             try
             {

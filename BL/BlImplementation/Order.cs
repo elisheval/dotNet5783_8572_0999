@@ -6,7 +6,6 @@ internal class Order : IOrder
 {
     DalApi.IDal? _dal = DalApi.Factory.Get();
 
-
     #region total price
     /// <param name="orderId">get id of order</param>
     /// <summary>
@@ -16,6 +15,7 @@ internal class Order : IOrder
     private double _totalPrice(int orderId)
     {
         double totalPrice = 0;
+        if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.OrderItem?> orders = _dal.OrderItem.GetAll((x) => x!=null && x?.OrderId == orderId);
         foreach (var orderItem in orders)
         {
@@ -50,6 +50,7 @@ internal class Order : IOrder
     /// <returns>return list with the orders</returns>
     public IEnumerable<BO.OrderForList> GetAllOrders()
     {
+        if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.Order?> ordersFromDo = _dal.Order.GetAll();
         List<BO.OrderForList> ordersForList = new();
         foreach (var order in ordersFromDo)
@@ -60,7 +61,7 @@ internal class Order : IOrder
                 {
                     Id = order?.ID??0,
                     CustomerName = order?.CustomerName,
-                    OrderStatus = _orderStatus(order.Value),
+                    OrderStatus = _orderStatus(order!.Value),
                     ItemsAmount = _dal.OrderItem.GetAll(x=>x!=null && order?.ID==x?.OrderId).Count(),
                     TotalPrice = _totalPrice(order?.ID??0)
                 };
@@ -87,6 +88,7 @@ internal class Order : IOrder
         }
         try
         {
+            if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
             DO.Order orderFromDo = _dal.Order.GetByCondition((x) => x!=null && orderId == x?.ID);
             IEnumerable<DO.OrderItem?> orderItemsFromDo = _dal.OrderItem.GetAll((x)=>x!=null&&orderId==x?.OrderId);
             List<BO.OrderItem> ordersItems = new();
@@ -140,6 +142,7 @@ internal class Order : IOrder
         DO.Order dalOrder = new ();
         try
         {
+            if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
             dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x?.ID==orderId);//get the details order
         }
         catch (DO.NoFoundItemExceptions exe)//check if exist
@@ -200,6 +203,8 @@ internal class Order : IOrder
         DO.Order dalOrder = new();
         try
         {
+
+            if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
             dalOrder = _dal.Order.GetByCondition((x) => x!=null&&orderId == x?.ID);//get the order details
             if (dalOrder.DeliveryDate != null)// 
             {
@@ -264,6 +269,7 @@ internal class Order : IOrder
         DO.Order dalOrder = new();
         try
         {
+            if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
             dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x?.ID==orderId);//מקבל את פרטי ההזמנה  
         }
         catch (DO.NoFoundItemExceptions exe)//בודק שההזמנה קיימת
@@ -309,6 +315,7 @@ internal class Order : IOrder
         {
             if (orderId <= 0)
                 throw new BO.InvalidValueException("invalid order id");
+            if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
             DO.Order dalOrder = new DO.Order();
             dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x?.ID==orderId);
             if (dalOrder.ShipDate !=null)//if the order sent the manager cannot change it

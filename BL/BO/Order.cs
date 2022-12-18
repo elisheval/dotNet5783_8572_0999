@@ -21,8 +21,12 @@ public class Order
 
     public override string ToString() {
         string item = "";
-        foreach (OrderItem orderItem in OrderItemList) {
-            item += orderItem;
+        if (OrderItemList != null)
+        {
+            foreach (OrderItem orderItem in OrderItemList)
+            {
+                item += orderItem;
+            }
         }
         return
     $@" order ID: {Id}

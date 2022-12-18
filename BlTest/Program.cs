@@ -9,11 +9,10 @@ internal class Program
     {
         var type = obj?.GetType();
         if (type != null)
-            foreach (var pInfo in type?.GetProperties())
+            foreach (var pInfo in type.GetProperties())
             {
                 Console.Write(pInfo.Name + ": ");
                 Console.WriteLine(pInfo.GetValue(obj, null));
-
             }
     }
     #endregion
@@ -48,6 +47,7 @@ internal class Program
             {
                 //get all products
                 case ProductMethods.GetAll:
+                    if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                     IEnumerable<ProductForList?> productList = blTmp.Product.GetAllProduct();
                     foreach (var product in productList)
                     {
@@ -59,9 +59,11 @@ internal class Program
                 //get product by id
                 case ProductMethods.GetById:
                     Console.WriteLine("enter product Id");
-                    int id = int.Parse(Console.ReadLine());
+                    int id;
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         Product product = blTmp.Product.GetProductById(id);
                         _print(product);
                         Console.WriteLine();
@@ -82,9 +84,10 @@ internal class Program
                 ///get product item by id
                 case ProductMethods.GetProductItemById:
                     Console.WriteLine("enter product ID");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         ProductItem productItem = blTmp.Product.GetProductById(id, cart);
                         _print(productItem);
                     }
@@ -102,11 +105,12 @@ internal class Program
                 case ProductMethods.Add:
                     //getting all the details of product 
                     Console.WriteLine("enter product id");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     Console.WriteLine("enter product name");
-                    string name = Console.ReadLine();
+                    string name = Console.ReadLine()!;
                     Console.WriteLine("enter product price");
-                    double price = double.Parse(Console.ReadLine());
+                    double price;
+                    double.TryParse(Console.ReadLine(), out price);
                     Console.WriteLine("enter product category");
                     Console.WriteLine("0 for percussions");
                     Console.WriteLine("1 for keyboards");
@@ -116,8 +120,9 @@ internal class Program
                     Category category;
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("enter amount in stock");
-                    int inStock = int.Parse(Console.ReadLine());
-                    Product tmpProduct = new Product()//creating an instance of product to add
+                    int inStock;
+                    int.TryParse(Console.ReadLine(),out inStock);
+                    Product tmpProduct = new()//creating an instance of product to add
                     {
                         Id = id,
                         Price = price,
@@ -127,6 +132,7 @@ internal class Program
                     };
                     try
                     {
+                       if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         blTmp.Product.AddProduct(tmpProduct);
                     }
                     catch (ItemAlresdyExsistException ex)
@@ -142,9 +148,11 @@ internal class Program
                 ///delete product by id
                 case ProductMethods.Delete:
                     Console.WriteLine("enter product id");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
+
                     try
                     {
+                        if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         blTmp.Product.DeleteProduct(id);
                     }
                     catch(ProductInOrderException ex)
@@ -162,11 +170,12 @@ internal class Program
                 case ProductMethods.Update:
                    // getting all product details to update
                     Console.WriteLine("enter product id");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
+
                     Console.WriteLine("enter product name");
-                    name = Console.ReadLine();
+                    name = Console.ReadLine()!;
                     Console.WriteLine("enter product price");
-                    price = double.Parse(Console.ReadLine());
+                    double.TryParse(Console.ReadLine(), out price);
                     Console.WriteLine("enter product category");
                     Console.WriteLine("0 for percussions");
                     Console.WriteLine("1 for keyboards");
@@ -175,7 +184,7 @@ internal class Program
                     Console.WriteLine("4 for additional");
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("enter amount in stock");
-                    inStock = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out inStock);
                     tmpProduct = new Product()//creating an instance of product to add
                     {
                         Id = id,
@@ -186,6 +195,7 @@ internal class Program
                     };
                     try
                     {
+                        if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         blTmp.Product.UpdateProduct(tmpProduct);
                     }
                     catch (NoFoundItemExceptions ex)
@@ -231,9 +241,11 @@ internal class Program
                 //add a new product to cart
                 case CartMethod.AddProduct:
                     Console.WriteLine("enter product ID");
-                    int id = int.Parse(Console.ReadLine());
+                    int id;
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         Cart cartTmp = blTmp.Cart.AddProductToCart(id, cart);
                         _print(cartTmp);
                         Console.WriteLine();
@@ -257,11 +269,14 @@ internal class Program
                 //update amount of product in cart
                 case CartMethod.UpdateAmount:
                     Console.WriteLine("enter the product id");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
+
                     Console.WriteLine("enter the new amount");
-                    int newAmount = int.Parse(Console.ReadLine());
+                    int newAmount;
+                    int.TryParse(Console.ReadLine(), out newAmount);
                     try
                     {
+                        if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         Cart cartTmp = blTmp.Cart.UpdateAmountOfProductInCart(id, cart, newAmount);
                         Console.WriteLine("the update cart is: ");
                         _print(cartTmp);
@@ -280,13 +295,14 @@ internal class Program
                 //confirm the order
                 case CartMethod.OrderConfirmation:
                     Console.WriteLine("enter customer name");
-                    string name = Console.ReadLine();
+                    string name = Console.ReadLine()!;
                     Console.WriteLine("enter customer address");
-                    string address = Console.ReadLine();
+                    string address = Console.ReadLine()!;
                     Console.WriteLine("enter customer email");
-                    string email = Console.ReadLine();
+                    string email = Console.ReadLine()!;
                     try
                     {
+                       if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         blTmp.Cart.OrderConfirmation(cart, name, email, address);
                         cart= new Cart { OrderItemList= new List<OrderItem>()};
                     }
@@ -335,6 +351,7 @@ internal class Program
             {
                 //get all orders
                 case OrderMethod.GetAllOrders:
+                    if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                     IEnumerable<OrderForList?> orderForLists = blTmp.Order.GetAllOrders();
                     foreach (var orderForList in orderForLists)//print all the orders
                     {
@@ -345,9 +362,11 @@ internal class Program
                 //get order details by id
                 case OrderMethod.GetOrderDetById:
                     Console.WriteLine("enter the order id");
-                    int id = int.Parse(Console.ReadLine());
+                    int id;
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         Order order = blTmp.Order.GetOrderById(id);
                         _print(order);
                         Console.WriteLine();
@@ -366,9 +385,10 @@ internal class Program
                 //update order status to send
                 case OrderMethod.UpdateOrderStatusToSend:
                     Console.WriteLine("enter order id");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         Order order = blTmp.Order.OrderShippingUpdate(id);
                         _print(order);
                         Console.WriteLine();
@@ -386,9 +406,10 @@ internal class Program
                     //update order status to supplied
                 case OrderMethod.UpdateOrderStatusToSupplied:
                     Console.WriteLine("enter order id");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         Order order = blTmp.Order.OrderDeliveryUpdate(id);
                         _print(order);
                         Console.WriteLine();
@@ -407,9 +428,10 @@ internal class Program
                     //get order tracking
                 case OrderMethod.OrderTracking:
                     Console.WriteLine("enter order id");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         OrderTracking orderTracking = blTmp.Order.Ordertracking(id);
                         _print(orderTracking);
                         Console.WriteLine();
@@ -427,13 +449,17 @@ internal class Program
                 ///exit and return us to the main
                 case OrderMethod.UpdateOrder:
                     Console.WriteLine("enter id of order");
-                    int orderId=int.Parse(Console.ReadLine());
+                    int orderId;
+                    int.TryParse(Console.ReadLine(), out orderId);
                     Console.WriteLine("enter id of product");
-                    int productId=int.Parse(Console.ReadLine());
+                    int productId;
+                    int.TryParse(Console.ReadLine(), out productId);
                     Console.WriteLine("enter amount to change, to delete enter 0");
-                    int amount=int.Parse(Console.ReadLine());
+                    int amount;
+                    int.TryParse(Console.ReadLine(), out amount);
                     try
                     {
+                        if (blTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         blTmp.Order.UpdateOrder(orderId, productId, amount);
                     }
                     catch (Exception ex)
