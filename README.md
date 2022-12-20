@@ -114,3 +114,5 @@ stage2: this is the method to update, we tryed it and its work:
     to the static member of the nested class, which only occurs in Instance.
     We also used a locking function, 
     locking is used so that only one thread can enter valid code snippets at a time.
+    we can also use Lazy class for it and in the default itis also safetly,
+    but we used the nested class because its was in the presentation of the material
