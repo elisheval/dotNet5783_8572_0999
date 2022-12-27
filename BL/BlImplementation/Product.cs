@@ -5,7 +5,7 @@ namespace BlImplementation;
 
 internal class Product : IProduct
 {
-    private DalApi.IDal _dal = new Dal.DalList();
+    DalApi.IDal? _dal = DalApi.Factory.Get();
 
     #region Get All Product
     /// <summary>
@@ -139,6 +139,12 @@ internal class Product : IProduct
             throw new BO.InvalidValueException("invalid price");
         if (myProduct.InStock < 0)
             throw new BO.InvalidValueException("invalid amount in stock");
+        if(myProduct.Name=="")
+            throw new BO.InvalidValueException("invalid name");
+        if(myProduct.Category==null)
+            throw new BO.InvalidValueException("invalid category");
+
+
         try
         {
             DO.Product productToAdd = new () { Id = myProduct.Id, Name = myProduct.Name, Price = myProduct.Price, Category = (DO.Enums.Category?)myProduct.Category, InStock = myProduct.InStock };

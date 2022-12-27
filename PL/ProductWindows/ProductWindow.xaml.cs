@@ -1,21 +1,10 @@
-﻿using BlApi;
-using BlImplementation;
-using BO;
+﻿using BO;
 using System;
-using System.Collections.Generic;
-//using System.Diagnostics.Metrics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Xaml;
 using System.Text.RegularExpressions;
 
 namespace PL.ProductWindows;
@@ -25,8 +14,10 @@ namespace PL.ProductWindows;
 /// </summary>
 public partial class ProductWindow : Window
 {
-    IBl bl = new Bl();
+    BlApi.IBl? bl = BlApi.Factory.Get();
 
+
+    #region AddButton_Click
     /// <summary>
     /// add new product or update existing product
     /// </summary>
@@ -34,33 +25,52 @@ public partial class ProductWindow : Window
     /// <param name="e"></param>
     private void AddButton_Click(object sender, RoutedEventArgs e)
     {
-        BO.Product p = new BO.Product()//create bl product
-        {
-            Id = int.Parse(ProductId.Text),
-            Price = double.Parse(ProductPrice.Text),
-            InStock = int.Parse(ProductInStock.Text),
-            Name = ProductName.Text,
-            Category = (BO.Enums.Category?)CategorySelector.SelectedValue
-        };
+        
         try
         {
+            //check validation
+            if (ProductId.Text == "")
+                throw new InvalidValueException("invalid id");
+            if(CategorySelector.Text=="")
+                throw new InvalidValueException("invalid category");
+            if (ProductName.Text == "")
+                throw new InvalidValueException("invalid name");
+            if (ProductPrice.Text == "")
+                throw new InvalidValueException("invalid price");
+            if (ProductInStock.Text == "")
+                throw new InvalidValueException("invalid amount in stock");
+
+            BO.Product p = new()//create bl product
+            {
+                Id = int.Parse(ProductId.Text),
+                Price = double.Parse(ProductPrice.Text),
+                InStock = int.Parse(ProductInStock.Text),
+                Name = ProductName.Text,
+                Category = (BO.Enums.Category?)CategorySelector.SelectedValue
+            };
+
             if (btnAddOrUpdate.Content.ToString() == "update")//update
-                bl.Product.UpdateProduct(p);
+                bl?.Product.UpdateProduct(p);
             else//add
-                bl.Product.AddProduct(p);
+                bl?.Product.AddProduct(p);
             MessageBox.Show("succesfully");
             Close();//close the window
         }
         catch (InvalidValueException ex)
         {
+            //makes the place of lable acording to the type of error
             int place = 0;
             if (ex.Message == "invalid id")
                 place = 122;
             if (ex.Message == "invalid price")
                 place = 271;
+            if (ex.Message == "invalid category")
+                place = 182;
             if (ex.Message == "invalid amount in stock")
                 place = 312;
-            Label invalidValue = new Label()//create label
+            if (ex.Message == "invalid name")
+                place = 231;
+            Label invalidValue = new()//create label under the invalid textBox
             {
                 Name = "invalidValue",
                 Margin = new Thickness(80, place, 0, 0),
@@ -71,26 +81,51 @@ public partial class ProductWindow : Window
             };
             Grid.SetRow(invalidValue, 1); //put the label under the invalid textBox
             MainGrid.Children.Add(invalidValue);
+            _addLableWithErrorMassege(place, "invalidValue", ex.Message);
+
         }
         catch (ItemAlresdyExsistException ex)
         {
-            StackPanel DeptStackPanel = new StackPanel();
-            Label lblAlreadyExists = new Label()//create label
-            {
-                Name = "lblAlreadyExists",
-                Margin = new Thickness(0, 36, 0, 0),
-                Content = ex.Message,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Top,
-                Foreground = new SolidColorBrush(Colors.Red),
-            };
-            Grid.SetRow(lblAlreadyExists, 1);//put the label under the invalid textBox
-            MainGrid.Children.Add(lblAlreadyExists);
-        };
+            _addLableWithErrorMassege(36, "lblAlreadyExists", ex.Message);
+        }
+        
     }
-    
+    #endregion
+
+    #region _addLableWithErrorMassege
     /// <summary>
-    /// c-tor of the add window
+    /// Prepares a lable for notification of an exception in an appropriate location according to the field in which there is an error
+    /// </summary>
+    /// <param name="place">margin where to put the lable</param>
+    /// <param name="name"> name of the lable</param>
+    /// <param name="massege">massege og the exception</param>
+    private void _addLableWithErrorMassege(int place,string name,string massege)
+    {
+        Label lbl = new Label()
+        {
+            Name = name,
+            Margin = new Thickness(0, place, 0, 0),
+            Content = massege,
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Top,
+            Foreground = new SolidColorBrush(Colors.Red),
+        };
+        if (name == "lblAlreadyExists")
+        {
+            Grid.SetRow(lbl, 1);
+            MainGrid.Children.Add(lbl);
+        }
+        if(massege == "invalidValue")
+        {
+            Grid.SetRow(lbl, 1);
+            MainGrid.Children.Add(lbl);
+        }
+    }
+    #endregion
+
+    #region constructors
+    /// <summary>
+    /// constructor for adding product with out getting parameters
     /// </summary>
     public ProductWindow() 
     {
@@ -98,10 +133,10 @@ public partial class ProductWindow : Window
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Enums.Category));
     }
 
-    /// <param name="productId">get product id</param>
     /// <summary>
-    /// c-tor of the update window, the textBoxes filled in the props of the getter productId
+    /// constructor for building update window
     /// </summary>
+    /// <param name="productId">id of product to update</param>
     public ProductWindow(int productId)
     {
 
@@ -117,9 +152,11 @@ public partial class ProductWindow : Window
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Enums.Category));
 
     }
-   
+    #endregion
+
+    #region Text Changed in input
     /// <summary>
-    /// delete the warning labels if the textBox changes
+    /// remove the error massege when the text in the input changes
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -134,7 +171,7 @@ public partial class ProductWindow : Window
     }
     
     /// <summary>
-    /// delete the warning labels if the textBox changes
+    /// remove the error massege when the text in the input changes
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -146,7 +183,7 @@ public partial class ProductWindow : Window
     }
     
     /// <summary>
-    /// delete the warning labels if the textBox changes
+    /// remove the error massege when the text in the input changes
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -156,16 +193,43 @@ public partial class ProductWindow : Window
         if (child != null)
             MainGrid.Children.Remove(child);
     }
-    
+
     /// <summary>
-    /// Prevents the user from entering non-numeric characters
+    /// remove the error massege when the text in the input changes
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void PreviewTextInput(object sender, TextCompositionEventArgs e)
+    private void ProductCategory_TextChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var child = MainGrid.Children.OfType<Control>().Where(x => x.Name == "invalidValue").FirstOrDefault();
+        if (child != null)
+            MainGrid.Children.Remove(child);
+    }
+    /// <summary>
+    /// remove the error massege when the text in the input changes
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void ProductName_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var child = MainGrid.Children.OfType<Control>().Where(x => x.Name == "invalidValue").FirstOrDefault();
+        if (child != null)
+            MainGrid.Children.Remove(child);
+    }
+    #endregion
+
+    #region PreviewTextInput
+
+    private void PreviewTextInputInt(object sender, TextCompositionEventArgs e)
     {
         Regex regex = new ("[^0-9]+");
         e.Handled = regex.IsMatch(e.Text);
     }
+    private void PreviewTextInputDouble(object sender, TextCompositionEventArgs e)
+    {
+        Regex regex = new("[^0-9,.]+");
+        e.Handled = regex.IsMatch(e.Text);
+    }
+    #endregion
 
 }

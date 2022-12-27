@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using BlImplementation;
-using BlApi;
-using System.ComponentModel;
 
 namespace PL.ProductWindows;
 /// <summary>
@@ -22,8 +10,10 @@ namespace PL.ProductWindows;
 /// 
 public partial class ProductList : Window
 {
-    IBl bl = new Bl();
-    
+    BlApi.IBl? bl = BlApi.Factory.Get();
+
+
+    #region constructor
     /// <summary>
     /// constructor
     /// </summary>
@@ -35,20 +25,24 @@ public partial class ProductList : Window
             categorySelector.Items.Add(item);
         categorySelector.Items.Add("");
     }
+    #endregion
 
+    #region ShowProductWindow_Click
     /// <summary>
     /// open the add window
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e">button</param>
-    private void ShowProductsButton_Click(object sender, RoutedEventArgs e)
+    private void ShowProductWindow_Click(object sender, RoutedEventArgs e)
     {
-        new ProductWindow().ShowDialog();
-        ProductListview.ItemsSource = bl.Product.GetAllProduct();//after the add window close updating the list
+        new ProductWindow().ShowDialog();//after the add window close updating the list
+        ProductListview.ItemsSource = bl.Product.GetAllProduct();
     }
-    
+    #endregion
+
+    #region categorySelector_SelectionChanged
     /// <summary>
-    /// select the list by category
+    /// screen out the list of product by category that selected
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -61,7 +55,9 @@ public partial class ProductList : Window
             ProductListview.ItemsSource = bl.Product.GetProductsByCategory((BO.Enums.Category)categorySelector.SelectedValue);
 
     }
-    
+    #endregion
+
+    #region ListView_MouseDoubleClick
     /// <summary>
     /// open the update window with the props of the tapped row
     /// </summary>
@@ -73,5 +69,5 @@ public partial class ProductList : Window
         new ProductWindow(pfl.Id).ShowDialog();//after the add window close updating the list
         ProductListview.ItemsSource = bl.Product.GetAllProduct();
     }
-
+    #endregion
 }

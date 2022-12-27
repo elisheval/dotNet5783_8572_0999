@@ -4,7 +4,8 @@ using System.Net.Mail;
 namespace BlImplementation;
 internal class Cart : ICart
 {
-    private DalApi.IDal _dal = new Dal.DalList();
+    DalApi.IDal? _dal = DalApi.Factory.Get();
+
 
     #region private productInStock
     /// <param name="productId">get id of product</param>
