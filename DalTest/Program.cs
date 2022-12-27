@@ -1,4 +1,5 @@
 ﻿using DO;
+using System.Diagnostics;
 using static DO.Enums;
 
 namespace DalTest;
@@ -8,13 +9,13 @@ public class Program
     private static void _print<T>(T obj)
     {
         var type = obj?.GetType();
-        if(type!=null)
-        foreach (var pInfo in type?.GetProperties())
-        {
-            Console.Write(pInfo.Name+ ": ");
-            Console.WriteLine(pInfo.GetValue(obj, null));
+        if (type != null)
+            foreach (var pInfo in type.GetProperties())
+            {
+                Console.Write(pInfo.Name + ": ");
+                Console.WriteLine(pInfo.GetValue(obj, null));
 
-        }
+            }
     }
     #endregion
 
@@ -50,20 +51,21 @@ public class Program
                 ///add a new order
                 case CRUD.Create:
                     Console.WriteLine("enter customer name");
-                    string name = Console.ReadLine();
+                    string name = Console.ReadLine()!;
                     Console.WriteLine("enter customer email");
-                    string email = Console.ReadLine();
+                    string email = Console.ReadLine()!;
                     Console.WriteLine("enter customer address");
-                    string address = Console.ReadLine();
+                    string address = Console.ReadLine()!;
                     Console.WriteLine("enter order date");
-                    DateTime orderDate = DateTime.Parse(Console.ReadLine());
+                    DateTime orderDate = DateTime.Parse(Console.ReadLine()!);
                     Console.WriteLine("enter ship date");
-                    DateTime shipDate = DateTime.Parse(Console.ReadLine());
+                    DateTime shipDate = DateTime.Parse(Console.ReadLine()!);
                     Console.WriteLine("enter delivery date");
-                    DateTime deliveryDate = DateTime.Parse(Console.ReadLine());
-                    Order orderToAdd = new() { CustomerName=name,CustomerEmail=email,CustomerAddress=address,OrderDate=orderDate,ShipDate=shipDate,DeliveryDate=deliveryDate};
+                    DateTime deliveryDate = DateTime.Parse(Console.ReadLine()!);
+                    Order orderToAdd = new() { CustomerName = name, CustomerEmail = email, CustomerAddress = address, OrderDate = orderDate, ShipDate = shipDate, DeliveryDate = deliveryDate };
                     try
                     {
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         int orderId = dalListTmp.Order.Add(orderToAdd);
                         Console.WriteLine("the id of the order:  " + orderId);
                     }
@@ -75,10 +77,12 @@ public class Program
                 ///get an order by id
                 case CRUD.Read:
                     Console.WriteLine("enter the order id");
-                    int id = int.Parse(Console.ReadLine());
+                    int id;
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
-                        Order orderDetails = dalListTmp.Order.GetByCondition(x=>x!=null&&x?.ID==id);
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
+                        Order orderDetails = dalListTmp.Order.GetByCondition(x => x != null && x?.ID == id);
                         _print(orderDetails);
                         Console.WriteLine();
                     }
@@ -89,7 +93,8 @@ public class Program
                     break;
                 ///get all the orders
                 case CRUD.ReadAll:
-                    IEnumerable<Order?> orderArr =dalListTmp.Order.GetAll();
+                    if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
+                    IEnumerable<Order?> orderArr = dalListTmp.Order.GetAll();
                     foreach (var order in orderArr)
                     {
                         _print(order);
@@ -99,9 +104,10 @@ public class Program
                 ///delete an order by id
                 case CRUD.Delete:
                     Console.WriteLine("enter the order id");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         dalListTmp.Order.Delete(id);
                     }
                     catch (NoFoundItemExceptions ex)
@@ -112,11 +118,12 @@ public class Program
                 ///update an order by id
                 case CRUD.Update:
                     Console.WriteLine("enter the order id");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     Order orderDetailstmp;
                     try
                     {
-                        orderDetailstmp = dalListTmp.Order.GetByCondition(x=>x!=null&&x?.ID==id);
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
+                        orderDetailstmp = dalListTmp.Order.GetByCondition(x => x != null && x?.ID == id);
                         _print(orderDetailstmp);
                         Console.WriteLine();
                     }
@@ -131,27 +138,27 @@ public class Program
                     ///the user dont have to update all the details of the order, 
                     ///so with thisvariable we checks what the user wanted to change and convert it to the currect type
                     Console.WriteLine("enter customer name");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpOrder.CustomerName = input;
                     Console.WriteLine("enter customer email");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpOrder.CustomerEmail = input;
                     Console.WriteLine("enter customer address");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpOrder.CustomerAddress = input;
                     Console.WriteLine("enter order date");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpOrder.OrderDate = DateTime.Parse(input);
                     Console.WriteLine("enter ship date");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpOrder.ShipDate = DateTime.Parse(input);
                     Console.WriteLine("enter delivery date");
-                    input = Console.ReadLine();
+                        input = Console.ReadLine()!;
                     if (input != "")
                         tmpOrder.DeliveryDate = DateTime.Parse(input);
                     dalListTmp.Order.Update(tmpOrder);
@@ -193,25 +200,31 @@ public class Program
                 ///add a new order item
                 case CRUD.Create:
                     Console.WriteLine("enter product ID");
-                    int productID = int.Parse(Console.ReadLine());
+                    int productID;
+                    int.TryParse(Console.ReadLine(), out productID);
                     Console.WriteLine("enter order ID");
-                    int orderID = int.Parse(Console.ReadLine());
+                    int orderID;
+                    int.TryParse(Console.ReadLine(), out orderID);
                     Console.WriteLine("enter order item price");
-                    double price = double.Parse(Console.ReadLine());
+                    double price;
+                    double.TryParse(Console.ReadLine(), out price);
                     Console.WriteLine("enter order item amount");
-                    int amount = int.Parse(Console.ReadLine());
-                    OrderItem tmpOrderItem = new() { ProductId=productID,OrderId=orderID,Price=price,Amount=amount};
+                    int amount;
+                    int.TryParse(Console.ReadLine(), out amount);
+                    OrderItem tmpOrderItem = new() { ProductId = productID, OrderId = orderID, Price = price, Amount = amount };
+                    if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
                     int id = dalListTmp.OrderItem.Add(tmpOrderItem);
                     Console.WriteLine("the id of the order item is: " + id);
                     break;
                 ///get an order item by id
                 case CRUD.Read:
                     Console.WriteLine("enter order item ID");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x => x != null && x?.Id == id);
-                       _print(tmpOrderItem);
+                        _print(tmpOrderItem);
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -220,7 +233,8 @@ public class Program
                     break;
                 ///get all order items
                 case CRUD.ReadAll:
-                    IEnumerable<OrderItem?> ordersItemsArr =dalListTmp.OrderItem.GetAll();
+                    if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
+                    IEnumerable<OrderItem?> ordersItemsArr = dalListTmp.OrderItem.GetAll();
                     foreach (var orderItem in ordersItemsArr)
                     {
                         _print(orderItem);
@@ -230,9 +244,10 @@ public class Program
                 ///delete an order items by id
                 case CRUD.Delete:
                     Console.WriteLine("enter order item ID to delete");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         dalListTmp.OrderItem.Delete(id);
                     }
                     catch (NoFoundItemExceptions ex)
@@ -244,10 +259,11 @@ public class Program
                 case CRUD.Update:
                     Console.WriteLine("enter order item ID to update");
                     tmpOrderItem = new OrderItem();
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
-                        tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x=>x!=null&&x?.Id==id);
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
+                        tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x => x != null && x?.Id == id);
                         _print(tmpOrderItem);
                     }
                     catch (NoFoundItemExceptions ex)
@@ -259,32 +275,34 @@ public class Program
                     ///so with thisvariable we checks what the user wanted to change and convert it to the currect type
                     String input;
                     Console.WriteLine("enter product ID");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpOrderItem.ProductId = int.Parse(input);
                     Console.WriteLine("enter order ID");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpOrderItem.OrderId = int.Parse(input);
                     Console.WriteLine("enter amount of order item");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpOrderItem.Amount = int.Parse(input);
                     Console.WriteLine("enter order item price");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpOrderItem.Price = double.Parse(input);
+                    if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
                     dalListTmp.OrderItem.Update(tmpOrderItem);
                     break;
                 ///get an order item by order id and product id
                 case CRUD.ReadByOrderAndProductIds:
                     Console.WriteLine("enter product id");
-                    productID = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out productID);
                     Console.WriteLine("enter order id");
-                    orderID = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out orderID);
                     try
                     {
-                        tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x => x!=null&&productID == x?.ProductId && orderID == x?.OrderId);
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
+                        tmpOrderItem = dalListTmp.OrderItem.GetByCondition(x => x != null && productID == x?.ProductId && orderID == x?.OrderId);
                         _print(tmpOrderItem);
                         Console.WriteLine();
                     }
@@ -296,10 +314,11 @@ public class Program
                 ///get all order items by order id
                 case CRUD.ReadByOrderId:
                     Console.WriteLine("enter order id");
-                    orderID = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out orderID);
                     try
                     {
-                        IEnumerable<OrderItem?> tmpOrderItemArr =dalListTmp.OrderItem.GetAll(x => x!=null&&orderID == x?.OrderId);
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
+                        IEnumerable<OrderItem?> tmpOrderItemArr = dalListTmp.OrderItem.GetAll(x => x != null && orderID == x?.OrderId);
                         foreach (var orderItem in tmpOrderItemArr)
                         {
                             _print(orderItem);
@@ -348,11 +367,13 @@ public class Program
                 ///add product
                 case CRUD.Create:
                     Console.WriteLine("enter product id");
-                    int id = int.Parse(Console.ReadLine());
+                    int id;
+                    int.TryParse(Console.ReadLine(), out id);
                     Console.WriteLine("enter product name");
-                    string name = Console.ReadLine();
+                    string name = Console.ReadLine()!;
                     Console.WriteLine("enter product price");
-                    double price = double.Parse(Console.ReadLine());
+                    double price;
+                    double.TryParse(Console.ReadLine(),out price);
                     Console.WriteLine("enter product category");
                     Console.WriteLine("0 for percussions");
                     Console.WriteLine("1 for keyboards");
@@ -362,10 +383,12 @@ public class Program
                     Category category;
                     Enum.TryParse(Console.ReadLine(), out category);
                     Console.WriteLine("enter amount in stock");
-                    int inStock = int.Parse(Console.ReadLine());
-                    Product tmpProduct = new() { Id=id,Name=name,Price=price,Category=(Category?)category,InStock=inStock};
+                    int inStock;
+                    int.TryParse(Console.ReadLine(), out inStock);
+                    Product tmpProduct = new() { Id = id, Name = name, Price = price, Category = (Category?)category, InStock = inStock };
                     try
                     {
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         int productID = dalListTmp.Product.Add(tmpProduct);
                         Console.WriteLine("pruduct id you added is: " + productID);
                     }
@@ -377,11 +400,12 @@ public class Program
                 ///get product by id
                 case CRUD.Read:
                     Console.WriteLine("enter product ID");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
-                        tmpProduct = dalListTmp.Product.GetByCondition(x=>x!=null&&x?.Id==id);
-                       _print(tmpProduct);
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
+                        tmpProduct = dalListTmp.Product.GetByCondition(x => x != null && x?.Id == id);
+                        _print(tmpProduct);
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -390,7 +414,8 @@ public class Program
                     break;
                 ///get all products
                 case CRUD.ReadAll:
-                    IEnumerable<Product?> productArr =dalListTmp.Product.GetAll();
+                    if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
+                    IEnumerable<Product?> productArr = dalListTmp.Product.GetAll();
                     foreach (var product in productArr)
                     {
                         _print(product);
@@ -400,9 +425,10 @@ public class Program
                 ///delete product by id
                 case CRUD.Delete:
                     Console.WriteLine("enter product ID to delete");
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         dalListTmp.Product.Delete(id);
                     }
                     catch (NoFoundItemExceptions ex)
@@ -414,9 +440,10 @@ public class Program
                 case CRUD.Update:
                     Console.WriteLine("enter product ID to update");
                     tmpProduct = new Product();
-                    id = int.Parse(Console.ReadLine());
+                    int.TryParse(Console.ReadLine(), out id);
                     try
                     {
+                        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         tmpProduct = dalListTmp.Product.GetByCondition(x => x != null && x?.Id == id);
                         Console.WriteLine(tmpProduct);
                     }
@@ -430,11 +457,11 @@ public class Program
                     ///so with thisvariable we checks what the user wanted to change and convert it to the currect type
                     String input;
                     Console.WriteLine("enter product name");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpProduct.Name = input;
                     Console.WriteLine("enter product price");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpProduct.Price = double.Parse(input);
                     Console.WriteLine("enter product category");
@@ -444,7 +471,7 @@ public class Program
                     Console.WriteLine("2 for exhalation");
                     Console.WriteLine("3 for strings");
                     Console.WriteLine("4 for additional");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                     {
                         Category tmpC;
@@ -452,7 +479,7 @@ public class Program
                         tmpProduct.Category = tmpC;
                     }
                     Console.WriteLine("enter amount in stock");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine()!;
                     if (input != "")
                         tmpProduct.InStock = int.Parse(input);
                     dalListTmp.Product.Update(tmpProduct);
@@ -477,6 +504,7 @@ public class Program
     private static void Main(string[] args)
     {
         //adding item to start the date source class
+        if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
         dalListTmp.OrderItem.Add(new OrderItem(1, 1, 1, 1));
 
         Entity choose;

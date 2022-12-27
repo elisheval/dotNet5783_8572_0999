@@ -36,7 +36,7 @@ public partial class ProductList : Window
     private void ShowProductWindow_Click(object sender, RoutedEventArgs e)
     {
         new ProductWindow().ShowDialog();//after the add window close updating the list
-        ProductListview.ItemsSource = bl.Product.GetAllProduct();
+        ProductListview.ItemsSource = bl?.Product.GetAllProduct();
     }
     #endregion
 
@@ -50,9 +50,9 @@ public partial class ProductList : Window
     {
 
         if (categorySelector.SelectedItem.ToString() == "")
-            ProductListview.ItemsSource = bl.Product.GetAllProduct();
+            ProductListview.ItemsSource = bl?.Product.GetAllProduct();
         else
-            ProductListview.ItemsSource = bl.Product.GetProductsByCategory((BO.Enums.Category)categorySelector.SelectedValue);
+            ProductListview.ItemsSource = bl?.Product.GetProductsByCategory((BO.Enums.Category)categorySelector.SelectedValue);
 
     }
     #endregion
@@ -67,7 +67,7 @@ public partial class ProductList : Window
     {
         BO.ProductForList pfl = (BO.ProductForList)ProductListview.SelectedValue;
         new ProductWindow(pfl.Id).ShowDialog();//after the add window close updating the list
-        ProductListview.ItemsSource = bl.Product.GetAllProduct();
+        ProductListview.ItemsSource = bl?.Product.GetAllProduct();
     }
     #endregion
 }

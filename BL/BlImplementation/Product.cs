@@ -15,6 +15,7 @@ internal class Product : IProduct
     /// <returns>the new logic entity list</returns>
     public IEnumerable<BO.ProductForList?> GetAllProduct()
     {
+        if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll();
         List<BO.ProductForList> productForList = new();
         foreach (var product in productListFromDo)//convert the data entity properties to the logic entity propeties
@@ -49,6 +50,7 @@ internal class Product : IProduct
         {
             try
             {
+                if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
                 DO.Product productFromDo = _dal.Product.GetByCondition(x=>x!?.Id==myId&&x!=null);
                     BO.Product product = new()
                     {
@@ -103,6 +105,7 @@ internal class Product : IProduct
         {
             try
             {
+                if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
                 DO.Product productFromDo = _dal.Product.GetByCondition(x=>x!=null&&x?.Id==myId);//לבדוק
                 BO.ProductItem productItem = new()
                 {
@@ -147,6 +150,7 @@ internal class Product : IProduct
 
         try
         {
+            if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
             DO.Product productToAdd = new () { Id = myProduct.Id, Name = myProduct.Name, Price = myProduct.Price, Category = (DO.Enums.Category?)myProduct.Category, InStock = myProduct.InStock };
             _dal.Product.Add(productToAdd);
         }
@@ -168,6 +172,7 @@ internal class Product : IProduct
     {
         try
         {
+            if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
             DO.Product productListFromDo = _dal.Product.GetByCondition((x) =>x!=null && x?.Id == myId);
             IEnumerable<DO.OrderItem?> orderItems = _dal.OrderItem.GetAll((x) =>x!=null && x?.ProductId == myId&&_dal.Order.GetByCondition((y)=>y!=null && x?.OrderId==y?.ID).ShipDate==null);
             if(orderItems!= null)
@@ -198,6 +203,7 @@ internal class Product : IProduct
             throw new BO.InvalidValueException("invalid amount in stock");
         try
         {
+            if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
             DO.Product product = new(){ Id = myProduct.Id, Name = myProduct.Name, Price = myProduct.Price, Category = (DO.Enums.Category?)myProduct.Category, InStock = myProduct.InStock };
             _dal.Product.Update(product);
         }
@@ -211,7 +217,7 @@ internal class Product : IProduct
     #region GetProductsByCategory
     public IEnumerable<ProductForList?> GetProductsByCategory(BO.Enums.Category category)
     {
-
+        if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll((x) =>x!=null&& x?.Category == (DO.Enums.Category?)category);
         List<BO.ProductForList> productForList = new();
         foreach (var product in productListFromDo)//convert the data entity properties to the logic entity propeties

@@ -7,15 +7,6 @@ bunos:
 stage1: we used tryparse and parse method in the program when we get input from the user.
 stage2: this is the method to update, we tryed it and its work:
     #region UpdateOrder bonus
-    /// <param name="orderId">get order of id</param>
-    /// <param name="productId">get id of product to add, delete or change amount</param>
-    /// <param name="amount">get amount</param>
-    /// <summary>
-    /// the manager can add, delete or change amount of product in confirm order
-    /// </summary>
-    /// <exception cref="BO.InvalidValueException"></exception>
-    /// <exception cref="BO.NoAccessToSentOrder"></exception>
-    /// <exception cref="BO.NoFoundItemExceptions"></exception>
     public void UpdateOrder(int orderId, int productId, int amount)
     {
         try
@@ -100,18 +91,28 @@ stage2: this is the method to update, we tryed it and its work:
     #endregion
 
     stage3:
-    genery function to print object with out getting specific type o the object
+    genery function to print object with out getting specific type of the object
 
     #region print object
     private static void _print<T>(T obj)
     {
         var type = obj?.GetType();
         if (type != null)
-            foreach (var pInfo in type?.GetProperties())
+            foreach (var pInfo in type.GetProperties())
             {
                 Console.Write(pInfo.Name + ": ");
                 Console.WriteLine(pInfo.GetValue(obj, null));
 
             }
     }
+    and we use regular expretion for the input from the client.
     #endregion
+
+    stage4:
+    we used lazy initilize with nested class,
+    so that,instantiation is triggered by the first reference
+    to the static member of the nested class, which only occurs in Instance.
+    We also used a locking function, 
+    locking is used so that only one thread can enter valid code snippets at a time.
+    we can also use Lazy class for it and in the default itis also safetly,
+    but we used the nested class because its was in the presentation of the material

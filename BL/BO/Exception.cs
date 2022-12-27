@@ -144,3 +144,19 @@ public class NoAccessToSentOrder : Exception
 
 }
 #endregion
+
+#region No access to data
+/// <summary>
+/// This exception its when there is no access to the dat layot
+/// </summary>
+public class NoAccessToDataException : Exception
+{
+    public NoAccessToDataException(string massege) : base(massege) { }
+    public override string ToString()
+    {
+        return ($@" exception name: NoAccessTodata,
+                    exception message: {Message}");
+    }
+
+}
+#endregion

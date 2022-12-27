@@ -1,13 +1,26 @@
 ﻿
 using DalApi;
-
 namespace Dal;
 
- internal sealed class DalList:IDal
+internal sealed class DalList : IDal
 {
-    private DalList() { }
-    public static IDal Instance { get; } = new DalList();
+
     public IOrder Order => new DalOrder();
     public IOrderItem OrderItem => new DalOrderItem();
     public IProduct Product => new DalProduct();
+
+    class Nested
+    {
+        static Nested() { }
+        internal static readonly DalList s_instance= new ();
+    }
+
+    static DalList() { }
+    private DalList() { }
+
+    private static readonly object ThreadLock = new();
+    public static IDal Instance{get {lock(ThreadLock){return Nested.s_instance; }}}
+    
+    
+    //public static IDal Instance { get; } = new DalList();
 }
