@@ -1,6 +1,7 @@
 ﻿using DO;
 using System.Collections.Generic;
 using DalApi;
+using System.Linq;
 
 namespace Dal;
 internal class DalProduct:IProduct
@@ -14,16 +15,8 @@ internal class DalProduct:IProduct
     /// <returns>Returns the id of the new order</returns>
     public int Add(Product myProduct)
     {
-        foreach(var product in DataSource.productList)
-        {
-            if (product != null)
-            {
-                if (product?.Id == myProduct.Id)
-                {
-                    throw new ItemAlresdyExsistException("product with this id already exist");
-                }
-            }
-        }
+         if(DataSource.productList.Where(product => product != null&& product?.Id == myProduct.Id).FirstOrDefault()==null)
+            throw new ItemAlresdyExsistException("product with this id already exist");
         DataSource.productList.Add(myProduct);
         return myProduct.Id;
     }
@@ -42,10 +35,7 @@ internal class DalProduct:IProduct
             tmpProductList = DataSource.productList.FindAll(x => func(x));
             return tmpProductList;
         }
-        for (int i = 0; i < DataSource.productList.Count; i++)
-        {
-            tmpProductList.Add(DataSource.productList[i]);
-        }
+            tmpProductList=DataSource.productList;
         return tmpProductList;
     }
     #endregion
@@ -58,17 +48,8 @@ internal class DalProduct:IProduct
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        foreach (var product in DataSource.productList)
-            if (product != null)
-            {
-                if (product?.Id == myId)
-                {
-                    DataSource.productList.Remove(product);
-                    return;
-                }
-            }
-        throw new NoFoundItemExceptions("no product found to delete with this ID");
-
+        int i = DataSource.productList.RemoveAll(x => x != null && x?.Id == myId);
+        if (i == 0) throw new NoFoundItemExceptions("no product found to delete with this ID"); 
     }
     #endregion
 
@@ -82,19 +63,9 @@ internal class DalProduct:IProduct
     /// <exception cref="Exception">If the id does not exist yet</exception>
     public void Update(Product myProduct)
     {
-        for (int i = 0; i < DataSource.productList.Count; i++)
-        {
-            if (DataSource.productList[i] != null)
-            {
-                if (DataSource.productList[i]?.Id == myProduct.Id)
-                {
-                    DataSource.productList[i] = myProduct;
-                    return;
-                }
-            }
-        }
-        throw new NoFoundItemExceptions("no product found to update with this ID");
-
+        int indexToUpdate = DataSource.productList.FindIndex(x => x?.Id == myProduct.Id);
+        if (indexToUpdate >= 0) DataSource.productList[indexToUpdate] = myProduct;
+        else throw new NoFoundItemExceptions("no product found to update with this ID");
     }
     #endregion
 
@@ -107,7 +78,8 @@ internal class DalProduct:IProduct
     /// <exception cref="NoFoundItemExceptions"></exception>
     public Product GetByCondition(Predicate<Product?> func)
     {
-        Product? product1 = DataSource.productList.Find(x => func(x));
+        
+        Product? product1 = DataSource.productList.Where(x => func(x)).FirstOrDefault();
         if (product1 == null)
             throw new NoFoundItemExceptions("no found p with this condition");
         return (Product)product1;

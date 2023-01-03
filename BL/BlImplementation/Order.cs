@@ -16,12 +16,9 @@ internal class Order : IOrder
     {
         double totalPrice = 0;
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-        IEnumerable<DO.OrderItem?> orders = _dal.OrderItem.GetAll((x) => x!=null && x?.OrderId == orderId);
-        foreach (var orderItem in orders)
-        {
-            if (orderItem != null)
-                totalPrice += orderItem?.Price??0 * orderItem?.Amount??0;
-        }
+        IEnumerable<DO.OrderItem?> orders = _dal.OrderItem.GetAll((x) => x != null && x?.OrderId == orderId);
+
+        totalPrice = orders.Where(oi => oi != null).Sum(x => x?.Price ?? 0 * x?.Amount ?? 0);
         return totalPrice;
     }
     #endregion
@@ -52,22 +49,14 @@ internal class Order : IOrder
     {
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.Order?> ordersFromDo = _dal.Order.GetAll();
-        List<BO.OrderForList> ordersForList = new();
-        foreach (var order in ordersFromDo)
+        List<BO.OrderForList> ordersForList = ordersFromDo.Where(order => order != null).Select(order => new BO.OrderForList
         {
-            if (order != null)
-            {
-                BO.OrderForList orderForListToAdd = new()
-                {
-                    Id = order?.ID??0,
-                    CustomerName = order?.CustomerName,
-                    OrderStatus = _orderStatus(order!.Value),
-                    ItemsAmount = _dal.OrderItem.GetAll(x=>x!=null && order?.ID==x?.OrderId).Count(),
-                    TotalPrice = _totalPrice(order?.ID??0)
-                };
-                ordersForList.Add(orderForListToAdd);
-            }
-        }
+            Id = order?.ID ?? 0,
+            CustomerName = order?.CustomerName,
+            OrderStatus = _orderStatus(order!.Value),
+            ItemsAmount = _dal.OrderItem.GetAll(x => x != null && order?.ID == x?.OrderId).Count(),
+            TotalPrice = _totalPrice(order?.ID ?? 0)
+        }).ToList();
         return ordersForList;
     }
     #endregion
@@ -89,38 +78,31 @@ internal class Order : IOrder
         try
         {
             if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-            DO.Order orderFromDo = _dal.Order.GetByCondition((x) => x!=null && orderId == x?.ID);
-            IEnumerable<DO.OrderItem?> orderItemsFromDo = _dal.OrderItem.GetAll((x)=>x!=null&&orderId==x?.OrderId);
-            List<BO.OrderItem> ordersItems = new();
-            foreach (var orderItem in orderItemsFromDo)
+            DO.Order orderFromDo = _dal.Order.GetByCondition((x) => x != null && orderId == x?.ID);
+            IEnumerable<DO.OrderItem?> orderItemsFromDo = _dal.OrderItem.GetAll((x) => x != null && orderId == x?.OrderId);
+            List<BO.OrderItem> ordersItems = orderItemsFromDo.Where(order => order != null).Select(orderItem => new BO.OrderItem
             {
-                if (orderItem != null)
-                {
-                    BO.OrderItem orderToAdd = new()
-                    {
-                        ProductId = orderItem?.Id??0,
-                        ProductName = _dal.Product.GetByCondition(x=>x!=null&&orderItem?.ProductId==x?.Id).Name,
-                        Price = orderItem?.Price??0,
-                        AmountInCart = orderItem?.Amount??0,
-                        TotalPriceForItem = orderItem?.Price??0 * orderItem?.Amount??0
-                    };
-                    ordersItems.Add(orderToAdd);
-                }
-            }
-                BO.Order order = new()
-                {
-                    Id = orderId,
-                    CustomerName = orderFromDo.CustomerName,
-                    CustomerEmail = orderFromDo.CustomerEmail,
-                    CustomerAddress = orderFromDo.CustomerAddress,
-                    OrderStatus = _orderStatus(orderFromDo),
-                    OrderDate = orderFromDo.OrderDate,
-                    ShipDate = orderFromDo.ShipDate,
-                    DeliveryDate = orderFromDo.DeliveryDate,
-                    OrderItemList = ordersItems,
-                    TotalOrderPrice = _totalPrice(orderId)
-                };
-                return order;
+                ProductId = orderItem?.Id ?? 0,
+                ProductName = _dal.Product.GetByCondition(x => x != null && orderItem?.ProductId == x?.Id).Name,
+                Price = orderItem?.Price ?? 0,
+                AmountInCart = orderItem?.Amount ?? 0,
+                TotalPriceForItem = orderItem?.Price ?? 0 * orderItem?.Amount ?? 0
+            }).ToList();
+
+            BO.Order order = new()
+            {
+                Id = orderId,
+                CustomerName = orderFromDo.CustomerName,
+                CustomerEmail = orderFromDo.CustomerEmail,
+                CustomerAddress = orderFromDo.CustomerAddress,
+                OrderStatus = _orderStatus(orderFromDo),
+                OrderDate = orderFromDo.OrderDate,
+                ShipDate = orderFromDo.ShipDate,
+                DeliveryDate = orderFromDo.DeliveryDate,
+                OrderItemList = ordersItems,
+                TotalOrderPrice = _totalPrice(orderId)
+            };
+            return order;
         }
         catch (DO.NoFoundItemExceptions ex)
         {
@@ -139,11 +121,11 @@ internal class Order : IOrder
     /// <exception cref="BO.OrderAlreadySend"></exception>
     public BO.Order OrderShippingUpdate(int orderId)
     {
-        DO.Order dalOrder = new ();
+        DO.Order dalOrder = new();
         try
         {
             if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-            dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x?.ID==orderId);//get the details order
+            dalOrder = _dal.Order.GetByCondition(x => x != null && x?.ID == orderId);//get the details order
         }
         catch (DO.NoFoundItemExceptions exe)//check if exist
         {
@@ -154,25 +136,18 @@ internal class Order : IOrder
             throw new BO.InvalidDateChange("this order already sent");
         }
 
-        IEnumerable<DO.OrderItem?> dalOrderItems =_dal.OrderItem.GetAll(x=>x!=null && x?.OrderId==dalOrder.ID);
-        List<BO.OrderItem> blOrderItems = new();
-        double totalPrice = 0;
-        foreach (var item in dalOrderItems)
-        {
-            if (item != null)
+        IEnumerable<DO.OrderItem?> dalOrderItems = _dal.OrderItem.GetAll(x => x != null && x?.OrderId == dalOrder.ID);
+        List<BO.OrderItem> blOrderItems = dalOrderItems.Where(x => x != null).Select(item =>
+            new BO.OrderItem()
             {
-                BO.OrderItem OrderItemToPush = new();
-                OrderItemToPush.Id = item?.Id??0;
-                OrderItemToPush.ProductId = item?.ProductId??0;
-                OrderItemToPush.ProductName = _dal.Product.GetByCondition(x=>x!=null&&x?.Id==item?.ProductId).Name;
-                OrderItemToPush.Price = item?.Price??0;
-                OrderItemToPush.AmountInCart = item?.Amount??0;
-                OrderItemToPush.TotalPriceForItem = item?.Price * item?.Amount??0;
-                totalPrice += OrderItemToPush.TotalPriceForItem;
-                blOrderItems.Add(OrderItemToPush);
-            }
-        }
-
+                Id = item?.Id ?? 0,
+                ProductId = item?.ProductId ?? 0,
+                ProductName = _dal.Product.GetByCondition(x => x != null && x?.Id == item?.ProductId).Name,
+                Price = item?.Price ?? 0,
+                AmountInCart = item?.Amount ?? 0,
+                TotalPriceForItem = item?.Price * item?.Amount ?? 0
+            }).ToList();
+        var totalPrice = blOrderItems.Where(x => x != null).Sum(x => x?.TotalPriceForItem ?? 0);
         BO.Order blOrder = new();
         blOrder.Id = dalOrder.ID;
         blOrder.CustomerName = dalOrder.CustomerName;
@@ -205,31 +180,25 @@ internal class Order : IOrder
         {
 
             if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-            dalOrder = _dal.Order.GetByCondition((x) => x!=null&&orderId == x?.ID);//get the order details
+            dalOrder = _dal.Order.GetByCondition((x) => x != null && orderId == x?.ID);//get the order details
             if (dalOrder.DeliveryDate != null)// 
             {
                 throw new BO.InvalidDateChange("this order already delivery");
             }
-            if (dalOrder.ShipDate ==null)
+            if (dalOrder.ShipDate == null)
                 throw new BO.InvalidDateChange("the order cannot delivery before send");
-            IEnumerable<DO.OrderItem?> dalOrderItems = _dal.OrderItem.GetAll(x=>x!=null&&x?.OrderId==orderId);
-            List<BO.OrderItem> blOrderItems = new ();
-            double totalPrice = 0;
-            foreach (var item in dalOrderItems)
+            IEnumerable<DO.OrderItem?> dalOrderItems = _dal.OrderItem.GetAll(x => x != null && x?.OrderId == orderId);
+            List<BO.OrderItem> blOrderItems = dalOrderItems.Where(x => x != null).Select(item =>
+            new BO.OrderItem()
             {
-                if (item != null)
-                {
-                    BO.OrderItem OrderItemToPush = new();
-                    OrderItemToPush.Id = item?.Id??0;
-                    OrderItemToPush.ProductId = item?.ProductId??0;
-                    OrderItemToPush.ProductName = _dal.Product.GetByCondition(x=>x!=null&&x?.Id==item?.ProductId).Name;
-                    OrderItemToPush.Price = item?.Price??0;
-                    OrderItemToPush.AmountInCart = item?.Amount??0;
-                    OrderItemToPush.TotalPriceForItem = item?.Price * item?.Amount??0;
-                    totalPrice += OrderItemToPush.TotalPriceForItem;
-                    blOrderItems.Add(OrderItemToPush);
-                }
-            }
+                Id = item?.Id ?? 0,
+                ProductId = item?.ProductId ?? 0,
+                ProductName = _dal.Product.GetByCondition(x => x != null && x?.Id == item?.ProductId).Name,
+                Price = item?.Price ?? 0,
+                AmountInCart = item?.Amount ?? 0,
+                TotalPriceForItem = item?.Price * item?.Amount ?? 0
+            }).ToList();
+            var totalPrice = blOrderItems.Where(x => x != null).Sum(x => x?.TotalPriceForItem ?? 0);
 
             BO.Order blOrder = new();
             blOrder.Id = dalOrder.ID;
@@ -270,7 +239,7 @@ internal class Order : IOrder
         try
         {
             if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-            dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x?.ID==orderId);//מקבל את פרטי ההזמנה  
+            dalOrder = _dal.Order.GetByCondition(x => x != null && x?.ID == orderId);//מקבל את פרטי ההזמנה  
         }
         catch (DO.NoFoundItemExceptions exe)//בודק שההזמנה קיימת
         {
@@ -283,12 +252,12 @@ internal class Order : IOrder
         {
             orderTracking.DetailOrderStatuses.Add((dalOrder.OrderDate, "order created"));
         }
-        if (dalOrder.ShipDate !=null)
+        if (dalOrder.ShipDate != null)
         {
             tracking = BO.Enums.OrderStatus.Sent;
             orderTracking.DetailOrderStatuses.Add((dalOrder.ShipDate, "order shipped"));
         }
-        if (dalOrder.DeliveryDate !=null)
+        if (dalOrder.DeliveryDate != null)
         {
             tracking = BO.Enums.OrderStatus.Supplied;
             orderTracking.DetailOrderStatuses.Add((dalOrder.DeliveryDate, "order delivred"));
@@ -317,15 +286,15 @@ internal class Order : IOrder
                 throw new BO.InvalidValueException("invalid order id");
             if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
             DO.Order dalOrder = new DO.Order();
-            dalOrder = _dal.Order.GetByCondition(x=>x!=null&&x?.ID==orderId);
-            if (dalOrder.ShipDate !=null)//if the order sent the manager cannot change it
+            dalOrder = _dal.Order.GetByCondition(x => x != null && x?.ID == orderId);
+            if (dalOrder.ShipDate != null)//if the order sent the manager cannot change it
                 throw new BO.NoAccessToSentOrder("the order already sent, you can't change the date");
             if (amount < 0)//invalid
                 throw new BO.InvalidValueException("invalid amount of product");
             if (amount == 0)//This is a sign that the manager wants to delete
             {
-                DO.Product p = _dal.Product.GetByCondition(x=>x!=null&&x?.Id==productId);
-                DO.OrderItem orderitem = _dal.OrderItem.GetByCondition(x=>x!=null&&x?.ProductId==productId &&x?.OrderId==orderId);
+                DO.Product p = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
+                DO.OrderItem orderitem = _dal.OrderItem.GetByCondition(x => x != null && x?.ProductId == productId && x?.OrderId == orderId);
                 p.InStock += orderitem.Amount;
                 _dal.OrderItem.Delete(orderitem.Id);
                 _dal.Product.Update(p);
@@ -333,42 +302,34 @@ internal class Order : IOrder
             else
             {
                 IEnumerable<DO.OrderItem?> OrderItems = _dal.OrderItem.GetAll();
-                bool flag = false;
-                foreach (var oi in OrderItems)//look for the order item,
-                {
-                    if (oi!=null){
-                        if (oi?.ProductId == productId && oi?.OrderId == orderId)//if the product exist- change the amount to be the getter amount
+                var orderItem = OrderItems.Where(oi => oi != null).Where(oi => oi?.ProductId == productId && oi?.OrderId == orderId).FirstOrDefault();
+                if (orderItem != null) {
+                    if (orderItem?.Amount != amount)
+                    {
+                        DO.Product p = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
+                        DO.OrderItem OItoChange = new()
                         {
-                            flag = true;
-                            if (oi?.Amount != amount)
-                            {
-                                DO.Product p = _dal.Product.GetByCondition(x=> x != null && x?.Id == productId);
-                                DO.OrderItem OItoChange = new()
-                                {
-                                    OrderId = oi?.OrderId??0,
-                                    Id = oi?.Id??0,
-                                    Price = oi?.Price??0,
-                                    ProductId = oi?.ProductId??0
-                                };
-                                if (p.InStock < amount)
-                                {
-                                    OItoChange.Amount = oi?.Amount??0 + p.InStock;
-                                    p.InStock = 0;
-                                }
-                                else
-                                {
-                                    OItoChange.Amount = amount;
-                                    p.InStock -= amount - oi?.Amount??0;
-                                }
-                                _dal.Product.Update(p);
-                                _dal.OrderItem.Update(OItoChange);
-                            }
+                            OrderId = orderItem?.OrderId ?? 0,
+                            Id = orderItem?.Id ?? 0,
+                            Price = orderItem?.Price ?? 0,
+                            ProductId = orderItem?.ProductId ?? 0
+                        };
+                        if (p.InStock < amount)
+                        {
+                            OItoChange.Amount = orderItem?.Amount ?? 0 + p.InStock;
+                            p.InStock = 0;
                         }
+                        else
+                        {
+                            OItoChange.Amount = amount;
+                            p.InStock -= amount - orderItem?.Amount ?? 0;
+                        }
+                        _dal.Product.Update(p);
+                        _dal.OrderItem.Update(OItoChange);
                     }
                 }
-                if (!flag)//if not exist enter the product to the order
-                {
-                    DO.Product p = _dal.Product.GetByCondition(x=>x != null && x?.Id == productId);
+                else { 
+                    DO.Product p = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
                     if (p.InStock < amount)
                     {
                         p.InStock = 0;
@@ -378,7 +339,7 @@ internal class Order : IOrder
                     {
                         p.InStock -= amount;
                     }
-                    DO.OrderItem d1 = new() { ProductId=productId,OrderId=orderId,Price= p.Price,Amount=amount };
+                    DO.OrderItem d1 = new() { ProductId = productId, OrderId = orderId, Price = p.Price, Amount = amount };
                     _dal.OrderItem.Add(d1);
                     _dal.Product.Update(p);
 

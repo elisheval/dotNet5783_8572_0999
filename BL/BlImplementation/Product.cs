@@ -17,21 +17,13 @@ internal class Product : IProduct
     {
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll();
-        List<BO.ProductForList> productForList = new();
-        foreach (var product in productListFromDo)//convert the data entity properties to the logic entity propeties
+        List<BO.ProductForList> productForList = productListFromDo.Where(product=>product!=null).Select(product => new BO.ProductForList
         {
-            if (product != null)
-            {
-                BO.ProductForList tmp = new()
-                {
-                    Id = product?.Id??0,
-                    Price = product?.Price??0,
-                    Name = product?.Name,
-                    Category = (BO.Enums.Category?)product?.Category
-                };
-                productForList.Add(tmp);//add the new item to the list
-            }
-        }
+            Id = product?.Id ?? 0,
+            Price = product?.Price ?? 0,
+            Name = product?.Name,
+            Category = (BO.Enums.Category?)product?.Category
+        }).ToList();
         return productForList;
     }
     #endregion
@@ -219,23 +211,15 @@ internal class Product : IProduct
     {
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll((x) =>x!=null&& x?.Category == (DO.Enums.Category?)category);
-        List<BO.ProductForList> productForList = new();
-        foreach (var product in productListFromDo)//convert the data entity properties to the logic entity propeties
+       
+        List<BO.ProductForList> productForList = productListFromDo.Where(product => product != null).Select(product => new BO.ProductForList
         {
-            if (product != null)
-            {
-                BO.ProductForList tmp = new BO.ProductForList()
-                {
-                    Id = product?.Id??0,
-                    Price = product?.Price??0,
-                    Name = product?.Name,
-                    Category = (BO.Enums.Category?)product?.Category
-                };
-                productForList.Add(tmp);//add the new item to the list
-            }
-        }
+            Id = product?.Id ?? 0,
+            Price = product?.Price ?? 0,
+            Name = product?.Name,
+            Category = (BO.Enums.Category?)product?.Category
+        }).ToList();
         return productForList;
     }
     #endregion
 }
-

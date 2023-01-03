@@ -34,8 +34,7 @@ internal class DalOrderItem : IOrderItem
             tmpOrderItemsList = DataSource.orderItemsList.FindAll(x => func(x));
             return tmpOrderItemsList;
         }
-        for (int i = 0; i < DataSource.orderItemsList.Count; i++)
-            tmpOrderItemsList.Add(DataSource.orderItemsList[i]);
+        tmpOrderItemsList = DataSource.orderItemsList;
         return tmpOrderItemsList;
     }
 
@@ -49,18 +48,8 @@ internal class DalOrderItem : IOrderItem
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        foreach (var item in DataSource.orderItemsList)
-        {
-            if (item != null)
-            {
-                if (item?.Id == myId)
-                {
-                    DataSource.orderItemsList.Remove(item);
-                    return;
-                }
-            }
-        }
-        throw new NoFoundItemExceptions("no orderItem found to delete with this ID");
+        int i = DataSource.orderItemsList.RemoveAll(x => x != null && x?.Id == myId);
+        if (i == 0) throw new NoFoundItemExceptions("no orderItem found to delete with this ID");
     }
     #endregion
 
@@ -74,16 +63,9 @@ internal class DalOrderItem : IOrderItem
     /// <exception cref="Exception">If the id does not exist yet</exception>
     public void Update(OrderItem myOrderItem)
     {
-        for (int i = 0; i < DataSource.orderItemsList.Count; i++)
-        {
-            if (DataSource.orderItemsList[i] != null)
-                if (DataSource.orderItemsList[i]?.Id == myOrderItem.Id)
-                {
-                    DataSource.orderItemsList[i] = myOrderItem;
-                    return;
-                }
-        }
-        throw new NoFoundItemExceptions("no orderItem found to update with this ID");
+        int indexToUpdate = DataSource.orderItemsList.FindIndex(x => x?.Id == myOrderItem.Id);
+        if (indexToUpdate >= 0) DataSource.orderItemsList[indexToUpdate] = myOrderItem;
+        else throw new NoFoundItemExceptions("no orderItem found to update with this ID");
 
     }
     #endregion
@@ -97,11 +79,10 @@ internal class DalOrderItem : IOrderItem
     /// <exception cref="NoFoundItemExceptions"></exception>
     public OrderItem GetByCondition(Predicate<OrderItem?> func)
     {
-        OrderItem? orderItem1 = DataSource.orderItemsList.Find(x => func(x));
+        OrderItem? orderItem1 = DataSource.orderItemsList.Where(x => func(x)).FirstOrDefault();
         if (orderItem1 == null)
             throw new NoFoundItemExceptions("no found order item with this condition");
         return (OrderItem)orderItem1;
-
     }
     #endregion
 }

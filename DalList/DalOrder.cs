@@ -63,8 +63,9 @@ internal class DalOrder : IOrder
     /// <exception cref="Exception">If the id does not exist yet</exception>
     public void Update(Order myOrder)
     {
-        DataSource.orderList.Where(x => x != null && x?.ID == myOrder.ID).ToList().ForEach(w => w =myOrder); return;
-        throw new NoFoundItemExceptions("no order found to update with this ID");
+        int indexToUpdate = DataSource.orderList.FindIndex(x => x?.ID == myOrder.ID);
+        if(indexToUpdate>=0) DataSource.orderList[indexToUpdate] = myOrder; 
+        else throw new NoFoundItemExceptions("no order found to update with this ID");
     }
     #endregion
 
