@@ -16,9 +16,6 @@ public partial class MainWindow : Window
         new ProductList().Show();
         this.Close();
     }
-    #endregion
-
-    #region constractor
     public MainWindow()
     {
         InitializeComponent();

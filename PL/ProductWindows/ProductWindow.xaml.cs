@@ -79,7 +79,7 @@ public partial class ProductWindow : Window
                 VerticalAlignment = VerticalAlignment.Top,
                 Foreground = new SolidColorBrush(Colors.Red),
             };
-            Grid.SetRow(invalidValue, 1);
+            Grid.SetRow(invalidValue, 1); //put the label under the invalid textBox
             MainGrid.Children.Add(invalidValue);
             _addLableWithErrorMassege(place, "invalidValue", ex.Message);
 
@@ -127,7 +127,7 @@ public partial class ProductWindow : Window
     /// <summary>
     /// constructor for adding product with out getting parameters
     /// </summary>
-    public ProductWindow()
+    public ProductWindow() 
     {
         InitializeComponent();
         CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Enums.Category));
@@ -169,6 +169,7 @@ public partial class ProductWindow : Window
         if (child2 != null)
             MainGrid.Children.Remove(child2);
     }
+    
     /// <summary>
     /// remove the error massege when the text in the input changes
     /// </summary>
@@ -180,6 +181,7 @@ public partial class ProductWindow : Window
         if (child != null)
             MainGrid.Children.Remove(child);
     }
+    
     /// <summary>
     /// remove the error massege when the text in the input changes
     /// </summary>
