@@ -22,5 +22,7 @@ internal sealed class DalList : IDal
     public static IDal Instance{get {lock(ThreadLock){return Nested.s_instance; }}}
     
     
-    //public static IDal Instance { get; } = new DalList();
+    //we can also use this code:
+    //private static readonly Lazy<IDal> s_instance=new (()=>new DalList());
+    //public static IDal Instance { get{ return s_instance.Value; } }
 }

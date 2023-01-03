@@ -37,6 +37,7 @@ internal class Cart : ICart
     {
 
         foreach (var orderItem in myCart.OrderItemList!)
+        {
             if (orderItem != null)
             {
                 if (orderItem.ProductId == productId)
@@ -58,6 +59,7 @@ internal class Cart : ICart
                     }
                 }
             }
+        }
         //the product is not in the cart
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         DO.Product product1 = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);

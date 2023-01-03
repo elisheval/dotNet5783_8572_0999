@@ -18,6 +18,7 @@ public partial class ProductList : Window
     /// constructor
     /// </summary>
     public ProductList()
+
     {
         InitializeComponent();
         ProductListview.ItemsSource = bl.Product.GetAllProduct();//get all the products

@@ -1,6 +1,7 @@
 ﻿using DO;
 using System.Collections.Generic;
 using DalApi;
+using System.Security.Cryptography;
 
 namespace Dal;
 internal class DalOrder : IOrder
@@ -34,8 +35,7 @@ internal class DalOrder : IOrder
             tmpOrderList = DataSource.orderList.FindAll(x => func(x));
             return tmpOrderList;
         }
-        foreach (var myOrder in DataSource.orderList)
-            tmpOrderList.Add(myOrder);
+        tmpOrderList= DataSource.orderList;
         return tmpOrderList;
     }
     #endregion
@@ -48,17 +48,8 @@ internal class DalOrder : IOrder
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        for (int i = 0; i < DataSource.orderList.Count; i++)
-        {
-            if (DataSource.orderList[i]!=null&&DataSource.orderList[i]?.ID == myId)
-            {
-                DataSource.orderList.Remove(DataSource.orderList[i]);
-                return;
-            }
-
-        }
-        throw new NoFoundItemExceptions("no order found to delete with this ID");
-
+        int i=DataSource.orderList.RemoveAll(x=>x!=null&&x?.ID== myId);
+        if(i==0)throw new NoFoundItemExceptions("no order found to delete with this ID");
     }
     #endregion
 
@@ -72,16 +63,8 @@ internal class DalOrder : IOrder
     /// <exception cref="Exception">If the id does not exist yet</exception>
     public void Update(Order myOrder)
     {
-        for (int i = 0; i < DataSource.orderList.Count; i++)
-        {
-            if (DataSource.orderList[i]!=null&&DataSource.orderList[i]?.ID == myOrder.ID)
-            {
-                DataSource.orderList[i] = myOrder;
-                return;
-            }
-        }
+        DataSource.orderList.Where(x => x != null && x?.ID == myOrder.ID).ToList().ForEach(w => w =myOrder); return;
         throw new NoFoundItemExceptions("no order found to update with this ID");
-
     }
     #endregion
 
@@ -94,7 +77,7 @@ internal class DalOrder : IOrder
     /// <exception cref="NoFoundItemExceptions"> if the </exception>
     public Order GetByCondition(Predicate<Order?> func)
     {
-        Order? order1 = DataSource.orderList.Find(x => func(x));
+        Order? order1 = DataSource.orderList.Where(x => func(x)).FirstOrDefault();
         if (order1 == null)
             throw new NoFoundItemExceptions("no found order with this condition");
         return (Order)order1;
