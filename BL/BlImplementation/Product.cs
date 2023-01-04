@@ -1,5 +1,7 @@
 ﻿using BlApi;
 using BO;
+using DO;
+using System.Runtime.Intrinsics.Arm;
 
 namespace BlImplementation;
 
@@ -17,14 +19,16 @@ internal class Product : IProduct
     {
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll();
-        List<BO.ProductForList> productForList = productListFromDo.Where(product=>product!=null).Select(product => new BO.ProductForList
-        {
-            Id = product?.Id ?? 0,
-            Price = product?.Price ?? 0,
-            Name = product?.Name,
-            Category = (BO.Enums.Category?)product?.Category
-        }).ToList();
-        return productForList;
+        return from product in productListFromDo
+               where product != null
+               orderby product?.Category
+               select new BO.ProductForList()
+               {
+                   Id = product?.Id ?? 0,
+                   Price = product?.Price ?? 0,
+                   Name = product?.Name,
+                   Category = (BO.Enums.Category?)product?.Category
+               };
     }
     #endregion
 
@@ -72,11 +76,10 @@ internal class Product : IProduct
     /// <returns>return the amount of this product</returns>
     private int _amountOfProductInCart(int myId, BO.Cart cart)
     {
-        if (cart.OrderItemList != null)
-            foreach (var orderItem in cart.OrderItemList)
-            {
-                if (orderItem.ProductId == myId)
-                    return orderItem.AmountInCart;
+        if (cart.OrderItemList != null) { 
+            var orderItem = cart.OrderItemList?.Where(x => x != null && x?.Id == myId).FirstOrDefault();
+            if (orderItem != null)
+            return orderItem.AmountInCart;
             }
         return 0;
     }
@@ -211,15 +214,15 @@ internal class Product : IProduct
     {
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll((x) =>x!=null&& x?.Category == (DO.Enums.Category?)category);
-       
-        List<BO.ProductForList> productForList = productListFromDo.Where(product => product != null).Select(product => new BO.ProductForList
-        {
-            Id = product?.Id ?? 0,
-            Price = product?.Price ?? 0,
-            Name = product?.Name,
-            Category = (BO.Enums.Category?)product?.Category
-        }).ToList();
-        return productForList;
+        return from product in productListFromDo
+               where product != null
+               select new BO.ProductForList()
+               {
+                   Id = product?.Id ?? 0,
+                   Price = product?.Price ?? 0,
+                   Name = product?.Name,
+                   Category = (BO.Enums.Category?)product?.Category
+               };
     }
     #endregion
 }
