@@ -1,5 +1,5 @@
 ﻿using BlApi;
-using System.Security.Cryptography.X509Certificates;
+using System.Diagnostics;
 
 namespace BlImplementation;
 internal class Order : IOrder
@@ -49,15 +49,17 @@ internal class Order : IOrder
     {
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.Order?> ordersFromDo = _dal.Order.GetAll();
-        List<BO.OrderForList> ordersForList = ordersFromDo.Where(order => order != null).Select(order => new BO.OrderForList
-        {
-            Id = order?.ID ?? 0,
-            CustomerName = order?.CustomerName,
-            OrderStatus = _orderStatus(order!.Value),
-            ItemsAmount = _dal.OrderItem.GetAll(x => x != null && order?.ID == x?.OrderId).Count(),
-            TotalPrice = _totalPrice(order?.ID ?? 0)
-        }).ToList();
-        return ordersForList;
+        return from order in ordersFromDo
+               where order != null
+               select new BO.OrderForList() {
+
+                   Id = order?.ID ?? 0,
+                   CustomerName = order?.CustomerName,
+                   OrderStatus = _orderStatus(order!.Value),
+                   ItemsAmount = _dal.OrderItem.GetAll(x => x != null && order?.ID == x?.OrderId).Count(),
+                   TotalPrice = _totalPrice(order?.ID ?? 0)
+               };
+
     }
     #endregion
 
@@ -304,7 +306,10 @@ internal class Order : IOrder
             else
             {
                 IEnumerable<DO.OrderItem?> OrderItems = _dal.OrderItem.GetAll();
-                var orderItem = OrderItems.Where(oi => oi != null).Where(oi => oi?.ProductId == productId && oi?.OrderId == orderId).FirstOrDefault();
+                var orderItem = (from oi in OrderItems
+                                where oi != null
+                                where oi?.ProductId == productId && oi?.OrderId == orderId
+                                select oi).FirstOrDefault();
                 if (orderItem != null) {
                     if (orderItem?.Amount != amount)
                     {

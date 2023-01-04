@@ -1,5 +1,6 @@
 ﻿using BlApi;
 using BO;
+using DO;
 using System.Net.Mail;
 
 namespace BlImplementation;
@@ -35,31 +36,25 @@ internal class Cart : ICart
     /// <exception cref="BO.NoFoundItemExceptions">if not exist product with that id</exception>
     public BO.Cart AddProductToCart(int productId, BO.Cart myCart)
     {
-
-        foreach (var orderItem in myCart.OrderItemList!)
-        {
-            if (orderItem != null)
+        var orderItem = myCart.OrderItemList!.FirstOrDefault(orderItem => orderItem != null && orderItem.ProductId == productId);
+        if (orderItem != null) {
+            if (ProductInStock(productId))
             {
-                if (orderItem.ProductId == productId)
-                {
-                    if (ProductInStock(productId))
-                    {
-                        if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
+                if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
 
-                        DO.Product product = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
-                        orderItem.AmountInCart++;
-                        myCart.TotalOrderPrice += product.Price * orderItem.AmountInCart - orderItem.TotalPriceForItem;
-                        orderItem.TotalPriceForItem = product.Price * orderItem.AmountInCart;
-                        orderItem.Price = product.Price;
-                        return myCart;
-                    }
-                    else
-                    {
-                        throw new BO.ProductOutOfStockException("Product is out of stock");
-                    }
-                }
+                DO.Product product = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
+                orderItem.AmountInCart++;
+                myCart.TotalOrderPrice += product.Price * orderItem.AmountInCart - orderItem.TotalPriceForItem;
+                orderItem.TotalPriceForItem = product.Price * orderItem.AmountInCart;
+                orderItem.Price = product.Price;
+                return myCart;
+            }
+            else
+            {
+                throw new BO.ProductOutOfStockException("Product is out of stock");
             }
         }
+
         //the product is not in the cart
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         DO.Product product1 = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
@@ -74,7 +69,7 @@ internal class Cart : ICart
             TotalPriceForItem = product1.Price
         };
         myCart.TotalOrderPrice += product1.Price;
-        myCart.OrderItemList.Add(orderItemToAddToCart);
+        myCart.OrderItemList!.Add(orderItemToAddToCart);
         return myCart;
     }
 
@@ -99,49 +94,38 @@ internal class Cart : ICart
             throw new BO.InvalidValueException("invalid amount");
         if (productId < 0)
             throw new BO.InvalidValueException("invalid product id");
-        foreach (BO.OrderItem orderItem in myCart.OrderItemList!)
+        var orderItem = myCart.OrderItemList!.FirstOrDefault(x => x.ProductId == productId);
+         if(orderItem != null)
         {
-            if (orderItem.ProductId == productId)
+            if (newAmount == 0)
             {
-                if (newAmount == 0)
+                myCart.OrderItemList!.Remove(orderItem);
+            }
+            else
+            {
+                if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
+                DO.Product? product = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
+                if(product?.InStock == 0)
+                    throw new BO.ProductOutOfStockException("product is out of stock");
+                else if (product?.InStock >= newAmount)
                 {
-                    myCart.OrderItemList.Remove(orderItem);
+                    myCart.TotalOrderPrice += product?.Price * newAmount - orderItem.TotalPriceForItem;
+                    orderItem.TotalPriceForItem = newAmount * product?.Price ?? 0;
+                    orderItem.AmountInCart = newAmount;
+                    orderItem.Price = product?.Price ?? 0;
+                    return myCart;
                 }
-                else
+                else if (product?.InStock < newAmount)
                 {
-                    if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-                    IEnumerable<DO.Product?> products = _dal.Product.GetAll();
-                    foreach (var product in products)
+                    if (product?.InStock > orderItem.AmountInCart)
                     {
-                        if (product != null)
-                        {
-                            if (product?.Id == productId)
-                            {
-                                if (product?.InStock == 0)
-                                    throw new BO.ProductOutOfStockException("product is out of stock");
-                                else if (product?.InStock >= newAmount)
-                                {
-                                    myCart.TotalOrderPrice += product?.Price * newAmount - orderItem.TotalPriceForItem;
-                                    orderItem.TotalPriceForItem = newAmount * product?.Price??0;
-                                    orderItem.AmountInCart = newAmount;
-                                    orderItem.Price = product?.Price??0;
-                                    return myCart;
-                                }
-                                else if (product?.InStock < newAmount)
-                                {
-                                    if (product?.InStock > orderItem.AmountInCart)
-                                    {
-                                        myCart.TotalOrderPrice += product?.Price * product?.InStock - orderItem.TotalPriceForItem;
-                                        orderItem.TotalPriceForItem = product?.InStock??0 * product?.Price??0;
-                                        orderItem.AmountInCart = product?.InStock??0;
-                                        orderItem.Price = product?.Price??0;
-                                        return myCart;
-                                    }
-                                    throw new BO.ProductOutOfStockException("It is not possible to add in quantity because it is out of stock\r\n\r\n");
-                                }
-                            }
-                        }
+                        myCart.TotalOrderPrice += product?.Price * product?.InStock - orderItem.TotalPriceForItem;
+                        orderItem.TotalPriceForItem = product?.InStock ?? 0 * product?.Price ?? 0;
+                        orderItem.AmountInCart = product?.InStock ?? 0;
+                        orderItem.Price = product?.Price ?? 0;
+                        return myCart;
                     }
+                    throw new BO.ProductOutOfStockException("It is not possible to add in quantity because it is out of stock\r\n\r\n");
                 }
             }
         }
