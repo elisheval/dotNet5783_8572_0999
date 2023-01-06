@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Content="product list" FontSize="50" Background="Aqua" Click="ShowProductsButton_Click" Margin="40,55,346,237"/>
-    </Grid>
+    <StackPanel>
+        <Button Content="manager" FontSize="50" Background="Aqua" Click="NavigateToManagerWindow"/>
+        <Button Content="new order" FontSize="50" Background="Aqua" Click="NavigateToOrderWindow"/>
+        <Button Content="order tracking" FontSize="50" Background="Aqua" Click="NavigateToOrderTrackingWindow"/>
+    </StackPanel>
 </Window>

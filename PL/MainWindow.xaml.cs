@@ -1,6 +1,5 @@
-﻿using PL.ProductWindows;
-using System.Windows;
-
+﻿using System.Windows;
+using PL.Manager;
 namespace PL;
 
 /// <summary>
@@ -10,15 +9,26 @@ public partial class MainWindow : Window
 {
     BlApi.IBl? bl = BlApi.Factory.Get();
 
-    #region ShowProductsButton_Click
-    private void ShowProductsButton_Click(object sender, RoutedEventArgs e)//button to show all products
-    {
-        new ProductList().Show();
-        this.Close();
-    }
     public MainWindow()
     {
         InitializeComponent();
     }
-    #endregion
+
+    private void NavigateToManagerWindow(object sender, RoutedEventArgs e)
+    {
+        new ManagerWindow().Show();
+        this.Close();
+    }
+
+    private void NavigateToOrderWindow(object sender, RoutedEventArgs e)
+    {
+        //new OrderWindow().Show();
+        //this.Close();
+    }
+
+    private void NavigateToOrderTrackingWindow(object sender, RoutedEventArgs e)
+    {
+        //new OrderTracking().Show();
+        //this.Close();
+    }
 }

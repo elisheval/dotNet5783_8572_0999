@@ -29,14 +29,12 @@ internal class DalOrder : IOrder
     public IEnumerable<Order?> GetAll(Predicate<Order?>? func = null)
     {
 
-        List<Order?> tmpOrderList = new();
+
         if (func != null)
         {
-            tmpOrderList = DataSource.orderList.FindAll(x => func(x));
-            return tmpOrderList;
+            return DataSource.orderList.Where(x => func(x)).ToList();
         }
-        tmpOrderList= DataSource.orderList;
-        return tmpOrderList;
+        return DataSource.orderList;
     }
     #endregion
 
@@ -48,8 +46,8 @@ internal class DalOrder : IOrder
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        int i=DataSource.orderList.RemoveAll(x=>x!=null&&x?.ID== myId);
-        if(i==0)throw new NoFoundItemExceptions("no order found to delete with this ID");
+        if(DataSource.orderList.RemoveAll(x => x != null && x?.ID == myId) == 0)
+            throw new NoFoundItemExceptions("no order found to delete with this ID");
     }
     #endregion
 
@@ -78,11 +76,8 @@ internal class DalOrder : IOrder
     /// <exception cref="NoFoundItemExceptions"> if the </exception>
     public Order GetByCondition(Predicate<Order?> func)
     {
-        Order? order1 = DataSource.orderList.Where(x => func(x)).FirstOrDefault();
-        if (order1 == null)
+        return DataSource.orderList.Where(x => func(x)).FirstOrDefault()??
             throw new NoFoundItemExceptions("no found order with this condition");
-        return (Order)order1;
-       
     }
     #endregion
 

@@ -6,7 +6,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.ProductWindows"
         mc:Ignorable="d"
-        Title="ProductWindow" Height="450" Width="800">
+        Title="ProductWindow" Height="450" Width="800"
+        DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     <Grid Name="MainGrid">
         <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
             VerticalAlignment="Stretch" Width="auto">
@@ -23,8 +24,8 @@
         <Label Content="price" HorizontalAlignment="Left" Margin="323,257,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.587,2.18"/>
         <Label Content="in stock" HorizontalAlignment="Left" Margin="313,294,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.724,2.419"/>
         <TextBox Name="ProductId"  HorizontalAlignment="Left" Margin="400,112,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.149,-0.44" TextChanged="ProductId_TextChanged" Text=""/>
-        <ComboBox SelectionChanged="ProductCategory_TextChanged" Name="CategorySelector" HorizontalAlignment="Left" Margin="400,159,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120"/>
-        <TextBox TextChanged="ProductName_TextChanged" Name="ProductName" HorizontalAlignment="Left" Margin="400,213,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <ComboBox ItemsSource="{Binding categoryItems}" SelectionChanged="ProductCategory_TextChanged" Name="CategorySelector" HorizontalAlignment="Left" Margin="400,159,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120"/>
+        <TextBox   TextChanged="ProductName_TextChanged" Name="ProductName" HorizontalAlignment="Left" Margin="400,213,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox TextChanged="ProductPrice_TextChanged" Name="ProductPrice" PreviewTextInput="PreviewTextInputDouble" HorizontalAlignment="Left" Margin="400,261,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox TextChanged="ProductInStock_TextChanged" Name="ProductInStock" PreviewTextInput="PreviewTextInputInt" HorizontalAlignment="Left" Margin="400,302,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
 

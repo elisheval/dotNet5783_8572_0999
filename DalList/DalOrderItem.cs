@@ -28,14 +28,11 @@ internal class DalOrderItem : IOrderItem
     /// <returns>the temp array</returns>
     public IEnumerable<OrderItem?> GetAll(Predicate<OrderItem?>? func = null)
     {
-        List<OrderItem?> tmpOrderItemsList = new();
         if (func != null)
         {
-            tmpOrderItemsList = DataSource.orderItemsList.FindAll(x => func(x));
-            return tmpOrderItemsList;
+            return DataSource.orderItemsList.Where(x => func(x)).ToList();
         }
-        tmpOrderItemsList = DataSource.orderItemsList;
-        return tmpOrderItemsList;
+        return DataSource.orderItemsList;
     }
 
     #endregion
@@ -48,8 +45,8 @@ internal class DalOrderItem : IOrderItem
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        int i = DataSource.orderItemsList.RemoveAll(x => x != null && x?.Id == myId);
-        if (i == 0) throw new NoFoundItemExceptions("no orderItem found to delete with this ID");
+        if (DataSource.orderItemsList.RemoveAll(x => x != null && x?.Id == myId) == 0) 
+            throw new NoFoundItemExceptions("no orderItem found to delete with this ID");
     }
     #endregion
 
@@ -79,10 +76,8 @@ internal class DalOrderItem : IOrderItem
     /// <exception cref="NoFoundItemExceptions"></exception>
     public OrderItem GetByCondition(Predicate<OrderItem?> func)
     {
-        OrderItem? orderItem1 = DataSource.orderItemsList.Where(x => func(x)).FirstOrDefault();
-        if (orderItem1 == null)
-            throw new NoFoundItemExceptions("no found order item with this condition");
-        return (OrderItem)orderItem1;
+        return DataSource.orderItemsList.Where(x => func(x)).FirstOrDefault()??
+        throw new NoFoundItemExceptions("no found order item with this condition");
     }
     #endregion
 }

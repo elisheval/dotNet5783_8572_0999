@@ -15,8 +15,6 @@ namespace PL.ProductWindows;
 public partial class ProductWindow : Window
 {
     BlApi.IBl? bl = BlApi.Factory.Get();
-
-
     #region AddButton_Click
     /// <summary>
     /// add new product or update existing product
@@ -130,7 +128,7 @@ public partial class ProductWindow : Window
     public ProductWindow() 
     {
         InitializeComponent();
-        CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Enums.Category));
+        var categoryItems = Enum.GetValues(typeof(BO.Enums.Category));
     }
 
     /// <summary>

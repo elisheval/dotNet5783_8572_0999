@@ -15,7 +15,7 @@ internal class DalProduct:IProduct
     /// <returns>Returns the id of the new order</returns>
     public int Add(Product myProduct)
     {
-         if(DataSource.productList.Where(product => product != null&& product?.Id == myProduct.Id).FirstOrDefault()==null)
+         if(DataSource.productList.Where(product => product != null&& product?.Id == myProduct.Id).FirstOrDefault()!=null)
             throw new ItemAlresdyExsistException("product with this id already exist");
         DataSource.productList.Add(myProduct);
         return myProduct.Id;
@@ -29,14 +29,11 @@ internal class DalProduct:IProduct
     /// <returns>the temp array</returns>
     public IEnumerable<Product?> GetAll(Predicate<Product?>? func=null)
     {
-        List<Product?> tmpProductList = new();
         if (func != null)
         {
-            tmpProductList = DataSource.productList.FindAll(x => func(x));
-            return tmpProductList;
+            return DataSource.productList.Where(x => func(x));
         }
-            tmpProductList=DataSource.productList;
-        return tmpProductList;
+        return DataSource.productList;
     }
     #endregion
 
@@ -48,8 +45,8 @@ internal class DalProduct:IProduct
     /// <exception cref="Exception">Throw exception if not exists</exception>
     public void Delete(int myId)
     {
-        int i = DataSource.productList.RemoveAll(x => x != null && x?.Id == myId);
-        if (i == 0) throw new NoFoundItemExceptions("no product found to delete with this ID"); 
+        if (DataSource.productList.RemoveAll(x => x != null && x?.Id == myId) == 0) 
+            throw new NoFoundItemExceptions("no product found to delete with this ID"); 
     }
     #endregion
 
@@ -79,10 +76,8 @@ internal class DalProduct:IProduct
     public Product GetByCondition(Predicate<Product?> func)
     {
         
-        Product? product1 = DataSource.productList.Where(x => func(x)).FirstOrDefault();
-        if (product1 == null)
+        return DataSource.productList.Where(x => func(x)).FirstOrDefault()??
             throw new NoFoundItemExceptions("no found p with this condition");
-        return (Product)product1;
     }
     #endregion
 }

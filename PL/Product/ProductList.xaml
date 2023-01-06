@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.ProductWindows"
         mc:Ignorable="d"
-        Title="ProductList" Height="640" Width="800">
+        Title="ProductList" Height="640" Width="800"
+        DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     <Grid Name="MainGrid">
         <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
             VerticalAlignment="Stretch" Width="auto">
@@ -22,7 +23,7 @@
                   Grid.Column="1" SelectionChanged="categorySelector_SelectionChanged">
 
         </ComboBox>
-        <ListView Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" x:Name="ProductListview" MouseDoubleClick="ListView_MouseDoubleClick"  >
+        <ListView Grid.Row="1" ItemsSource="{Binding productList }" SelectedItem="{Binding productSelected, Mode=TwoWay}" MouseDoubleClick="ListView_MouseDoubleClick"  >
             <ListView.View>
                 <GridView x:Name="GridView1">
                     <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=Id}" 
