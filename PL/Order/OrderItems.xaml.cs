@@ -19,6 +19,17 @@ namespace PL.Order;
 /// </summary>
 public partial class OrderItems : Window
 {
+    bool manager;
+
+    public BO.OrderItem selectedOrderItem
+    {
+        get { return (BO.OrderItem)GetValue(orderItemProperty); }
+        set { SetValue(orderItemProperty, value); }
+    }
+    // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty orderItemProperty =
+        DependencyProperty.Register("selectedOrderItem", typeof(BO.OrderItem), typeof(OrderItems));
+
     public IEnumerable<BO.OrderItem?> orderItemsList
     {
         get { return (IEnumerable<BO.OrderItem?>)GetValue(orderItemsListProperty); }
@@ -28,10 +39,18 @@ public partial class OrderItems : Window
     public static readonly DependencyProperty orderItemsListProperty =
         DependencyProperty.Register("orderItemsList", typeof(IEnumerable<BO.OrderItem?>), typeof(OrderItems));
 
-    public OrderItems(List<BO.OrderItem>? orderItems )
+    public OrderItems(List<BO.OrderItem>? orderItems, bool manager)
     {
-        if(orderItems != null)
-        orderItemsList = orderItems;
+        if (orderItems != null)
+            orderItemsList = orderItems;
+            this.manager = manager;
         InitializeComponent();
+    }
+
+    private void updateOrderItem(object sender, MouseButtonEventArgs e)
+    {
+        MessageBox.Show(manager.ToString());
+        if(manager)
+            new OrderItem(selectedOrderItem).ShowDialog();
     }
 }

@@ -48,7 +48,15 @@ public partial class OrderList : Window
     private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         MessageBox.Show(orderSelected.ToString());
-        new OrderWindow(orderSelected.Id,false).ShowDialog();//after the add window close updating the list
+        bool sent = false;
+        bool supplied = false;
+        if (orderSelected.OrderStatus == (BO.Enums.OrderStatus)0)
+            sent = true;
+        else if (orderSelected.OrderStatus == (BO.Enums.OrderStatus)1)
+            supplied = true;
+        
+
+            new OrderWindow(orderSelected.Id,sent, supplied, true ).ShowDialog();//after the add window close updating the list
         if(bl!=null) orderList = bl.Order.GetAllOrders();
     }
 }

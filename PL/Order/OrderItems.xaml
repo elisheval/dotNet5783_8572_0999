@@ -8,7 +8,7 @@
         Title="OrderItems" Height="450" Width="800"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     <StackPanel>
-        <ListView ItemsSource="{Binding orderItemsList }">
+        <ListView ItemsSource="{Binding orderItemsList}" SelectedItem="{Binding selectedOrderItem}" MouseDoubleClick="updateOrderItem" >
             <ListView.View>
                 <GridView x:Name="GridView1">
                     <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=ProductId}" 

@@ -43,6 +43,6 @@ public partial class OrderTracking : Window
 
     private void showAllDetailsOfOrder(object sender, RoutedEventArgs e)
     {
-        new OrderWindow(orderId,true).Show();
+        new OrderWindow(orderId,false,false).Show();
     }
 }

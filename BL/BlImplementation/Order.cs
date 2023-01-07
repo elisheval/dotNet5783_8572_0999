@@ -17,7 +17,7 @@ internal class Order : IOrder
         double totalPrice = 0;
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.OrderItem?> orders = _dal.OrderItem.GetAll((x) => x != null && x?.OrderId == orderId);
-        totalPrice = orders.Where(oi => oi != null).Sum(x => x?.Price ?? 0 * x?.Amount ?? 0);
+        totalPrice = orders.Where(oi => oi != null).Sum(x => (x?.Price ?? 0) * (x?.Amount ?? 0));
         return totalPrice;
     }
     #endregion

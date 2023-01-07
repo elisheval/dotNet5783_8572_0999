@@ -12,18 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace PL.OrderWindows
+namespace PL.Order
 {
     /// <summary>
-    /// Interaction logic for OrderWindow.xaml
+    /// Interaction logic for OrderItem.xaml
     /// </summary>
-    public partial class OrderWindow : Window
+    public partial class OrderItem : Window
     {
-        public OrderWindow()
+        public OrderItem(BO.OrderItem selectedOrderItem)
         {
             InitializeComponent();
         }
-
-        
     }
 }
