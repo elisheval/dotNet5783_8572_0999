@@ -148,18 +148,19 @@ internal class Order : IOrder
                 TotalPriceForItem = item?.Price * item?.Amount ?? 0
             }).ToList();
         var totalPrice = blOrderItems.Where(x => x != null).Sum(x => x?.TotalPriceForItem ?? 0);
-        BO.Order blOrder = new();
-        blOrder.Id = dalOrder.ID;
-        blOrder.CustomerName = dalOrder.CustomerName;
-        blOrder.CustomerEmail = dalOrder.CustomerEmail;
-        blOrder.CustomerAddress = dalOrder.CustomerAddress;
-        blOrder.OrderStatus = BO.Enums.OrderStatus.Sent;
-        blOrder.OrderDate = dalOrder.OrderDate;
-        blOrder.DeliveryDate = dalOrder.DeliveryDate;
-        blOrder.OrderItemList = blOrderItems;
         dalOrder.ShipDate = DateTime.Now;
-        blOrder.ShipDate = dalOrder.ShipDate;
-        blOrder.TotalOrderPrice = totalPrice;
+        BO.Order blOrder = new() {
+            Id = dalOrder.ID,
+            CustomerName = dalOrder.CustomerName,
+            CustomerEmail = dalOrder.CustomerEmail,
+            CustomerAddress = dalOrder.CustomerAddress,
+            OrderStatus = BO.Enums.OrderStatus.Sent,
+            OrderDate = dalOrder.OrderDate,
+            DeliveryDate = dalOrder.DeliveryDate,
+            OrderItemList = blOrderItems,
+            ShipDate = dalOrder.ShipDate,
+            TotalOrderPrice = totalPrice
+        };
         _dal.Order.Update(dalOrder);
         return blOrder;
     }
@@ -199,19 +200,20 @@ internal class Order : IOrder
                 TotalPriceForItem = item?.Price * item?.Amount ?? 0
             }).ToList();
             var totalPrice = blOrderItems.Where(x => x != null).Sum(x => x?.TotalPriceForItem ?? 0);
-
-            BO.Order blOrder = new();
-            blOrder.Id = dalOrder.ID;
-            blOrder.CustomerName = dalOrder.CustomerName;
-            blOrder.CustomerEmail = dalOrder.CustomerEmail;
-            blOrder.CustomerAddress = dalOrder.CustomerAddress;
-            blOrder.OrderStatus = BO.Enums.OrderStatus.Sent;
-            blOrder.OrderDate = dalOrder.OrderDate;
-            blOrder.ShipDate = dalOrder.ShipDate;
-            blOrder.OrderItemList = blOrderItems;
             dalOrder.DeliveryDate = DateTime.Now;
-            blOrder.DeliveryDate = dalOrder.DeliveryDate;
-            blOrder.TotalOrderPrice = totalPrice;
+            BO.Order blOrder = new()
+            {
+                Id = dalOrder.ID,
+                CustomerName = dalOrder.CustomerName,
+                CustomerEmail = dalOrder.CustomerEmail,
+                CustomerAddress = dalOrder.CustomerAddress,
+                OrderStatus = BO.Enums.OrderStatus.Sent,
+                OrderDate = dalOrder.OrderDate,
+                ShipDate = dalOrder.ShipDate,
+                OrderItemList = blOrderItems,
+                DeliveryDate = dalOrder.DeliveryDate,
+                TotalOrderPrice = totalPrice
+            };
             _dal.Order.Update(dalOrder);
             return blOrder;
 
