@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using PL.Manager;
+using PL.Order;
 namespace PL;
 
 /// <summary>
@@ -28,7 +29,7 @@ public partial class MainWindow : Window
 
     private void NavigateToOrderTrackingWindow(object sender, RoutedEventArgs e)
     {
-        //new OrderTracking().Show();
-        //this.Close();
+        new OrderTracking().Show();
+        this.Close();
     }
 }

@@ -8,6 +8,6 @@
         Title="managerWindow" Height="450" Width="800">
     <StackPanel>
         <Button Content="all product list" Click="NavigateToProductListWindow"/>
-        <Button Content="all order list"/>
+        <Button Content="all order list" Click="NavigateToOrderListWindow"/>
     </StackPanel>
 </Window>

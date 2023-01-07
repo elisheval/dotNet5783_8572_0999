@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using PL.ProductWindows;
+using PL.Order;
 namespace PL.Manager;
 
 /// <summary>
@@ -27,6 +28,11 @@ public partial class ManagerWindow : Window
     private void NavigateToProductListWindow(object sender, RoutedEventArgs e)
     {
         new ProductList().Show();
+        this.Close();
+    }
+    private void NavigateToOrderListWindow(object sender, RoutedEventArgs e)
+    {
+        new OrderList().Show();
         this.Close();
     }
 }

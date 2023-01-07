@@ -1,0 +1,42 @@
+﻿<Window x:Class="PL.Order.OrderList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Order"
+        mc:Ignorable="d"
+        Title="OrderList" Height="450" Width="800"
+    DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
+    <Grid Name="MainGrid">
+        <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
+            VerticalAlignment="Stretch" Width="auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions >
+        </Grid>
+        <ListView Grid.Row="1" ItemsSource="{Binding orderList }" SelectedItem="{Binding orderSelected, Mode=TwoWay}" MouseDoubleClick="ListView_MouseDoubleClick"  >
+            <ListView.View>
+                <GridView x:Name="GridView1">
+                    <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=Id}" 
+                                Header="Id" Width="120"/>
+                    <GridViewColumn DisplayMemberBinding= "{Binding Path=CustomerName}" 
+                                Header="CustomerName" Width="120"/>
+                    <GridViewColumn DisplayMemberBinding= "{Binding Path=OrderStatus}" 
+                                Header="OrderStatus" Width="120"/>
+                    <GridViewColumn DisplayMemberBinding= "{Binding Path=ItemsAmount}" 
+                                Header="ItemsAmount" Width="120"/>
+                    <GridViewColumn DisplayMemberBinding= "{Binding Path=TotalPrice}" 
+                                Header="TotalPrice" Width="120"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="500*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+    </Grid>
+
+</Window>

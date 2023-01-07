@@ -1,0 +1,35 @@
+﻿<Window x:Class="PL.Order.OrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Order"
+        mc:Ignorable="d"
+        Title="OrderWindow" Height="450" Width="800"
+        DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
+
+    <Grid>
+        <Label Content="Id" HorizontalAlignment="Left" Margin="286,73,0,0" VerticalAlignment="Top"/>
+        <Label Content="CustomerName" HorizontalAlignment="Left" Margin="286,104,0,0" VerticalAlignment="Top"/>
+        <Label Content="CustomerEmail" HorizontalAlignment="Left" Margin="286,135,0,0" VerticalAlignment="Top"/>
+        <Label Content="CustomerAddress" HorizontalAlignment="Left" Margin="286,168,0,0" VerticalAlignment="Top"/>
+        <Label Content="OrderStatus" HorizontalAlignment="Left" Margin="286,197,0,0" VerticalAlignment="Top"/>
+        <Label Content="OrderDate" HorizontalAlignment="Left" Margin="286,228,0,0" VerticalAlignment="Top"/>
+        <Label Content="ShipDate" HorizontalAlignment="Left" Margin="286,259,0,0" VerticalAlignment="Top"/>
+        <Label Content="DeliveryDate" HorizontalAlignment="Left" Margin="286,290,0,0" VerticalAlignment="Top"/>
+        <Label Content="TotalOrderPrice" HorizontalAlignment="Left" Margin="287,326,0,0" VerticalAlignment="Top"/>
+        <TextBox IsReadOnly="True" Text="{Binding order.Id}" HorizontalAlignment="Left" Margin="390,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="True" Text="{Binding order.CustomerName}" HorizontalAlignment="Left" Margin="390,104,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="True" Text="{Binding order.CustomerEmail}" HorizontalAlignment="Left" Margin="390,135,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="True" Text="{Binding order.CustomerAddress}" HorizontalAlignment="Left" Margin="390,168,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="True" Text="{Binding order.OrderStatus}" HorizontalAlignment="Left" Margin="390,201,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="True" Text="{Binding order.OrderDate}" HorizontalAlignment="Left" Margin="390,232,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="True" Text="{Binding order.ShipDate}" HorizontalAlignment="Left" Margin="390,263,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="True" Text="{Binding order.DeliveryDate}" HorizontalAlignment="Left" Margin="390,294,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="True" Text="{Binding order.TotalOrderPrice}" HorizontalAlignment="Left" Margin="390,330,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="NewOrder" HorizontalAlignment="Center" Margin="0,42,0,0" VerticalAlignment="Top"/>
+        <Button Content="show all order items" HorizontalAlignment="Left" Margin="676,381,0,0" VerticalAlignment="Top" Click="ShowAllOrderItems"/>
+        <Button Content="confirm ship" Visibility="{Binding displaybtnShip}"  VerticalAlignment="Top" Width="120" HorizontalAlignment="Left" Margin="390,263,0,0"></Button>
+        <Button Content="confirm delivery" Visibility="{Binding displaybtnDelivery}" VerticalAlignment="Top" Width="120" HorizontalAlignment="Left" Margin="390,294,0,0"></Button>
+    </Grid>
+</Window>

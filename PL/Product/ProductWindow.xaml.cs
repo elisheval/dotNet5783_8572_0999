@@ -15,6 +15,19 @@ namespace PL.ProductWindows;
 public partial class ProductWindow : Window
 {
     BlApi.IBl? bl = BlApi.Factory.Get();
+    public string btnAddOrUpdateContent
+    {
+        get { return (string)GetValue(btnAddOrUpdateContentProperty); }
+        set { SetValue(btnAddOrUpdateContentProperty, value); }
+    }
+    // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty btnAddOrUpdateContentProperty =
+        DependencyProperty.Register("btnAddOrUpdateContent", typeof(string), typeof(ProductWindow));
+
+    public bool idIsReadOnly { get; set; }=false;
+    public BO.Product product { get; set; } = new();
+    public System.Array categoryItems { get; set; }=Enum.GetValues(typeof(BO.Enums.Category));
+
     #region AddButton_Click
     /// <summary>
     /// add new product or update existing product
@@ -23,34 +36,26 @@ public partial class ProductWindow : Window
     /// <param name="e"></param>
     private void AddButton_Click(object sender, RoutedEventArgs e)
     {
-        
         try
         {
             //check validation
-            if (ProductId.Text == "")
+            if (product.Id ==0)
                 throw new InvalidValueException("invalid id");
-            if(CategorySelector.Text=="")
+            if (product.Category.ToString() == "")
                 throw new InvalidValueException("invalid category");
-            if (ProductName.Text == "")
+            if (product.Name == null)
                 throw new InvalidValueException("invalid name");
-            if (ProductPrice.Text == "")
+            if (product.Price==0)
                 throw new InvalidValueException("invalid price");
-            if (ProductInStock.Text == "")
+            if (product.InStock == 0)
                 throw new InvalidValueException("invalid amount in stock");
 
-            BO.Product p = new()//create bl product
-            {
-                Id = int.Parse(ProductId.Text),
-                Price = double.Parse(ProductPrice.Text),
-                InStock = int.Parse(ProductInStock.Text),
-                Name = ProductName.Text,
-                Category = (BO.Enums.Category?)CategorySelector.SelectedValue
-            };
-
-            if (btnAddOrUpdate.Content.ToString() == "update")//update
-                bl?.Product.UpdateProduct(p);
+            if (btnAddOrUpdateContent == "update")
+            { //update
+                bl?.Product.UpdateProduct(product);
+            }
             else//add
-                bl?.Product.AddProduct(p);
+                bl?.Product.AddProduct(product);
             MessageBox.Show("succesfully");
             Close();//close the window
         }
@@ -127,8 +132,8 @@ public partial class ProductWindow : Window
     /// </summary>
     public ProductWindow() 
     {
+        btnAddOrUpdateContent = "add";
         InitializeComponent();
-        var categoryItems = Enum.GetValues(typeof(BO.Enums.Category));
     }
 
     /// <summary>
@@ -137,18 +142,11 @@ public partial class ProductWindow : Window
     /// <param name="productId">id of product to update</param>
     public ProductWindow(int productId)
     {
-
-        InitializeComponent();
+        idIsReadOnly = true;
         BO.Product p = bl.Product.GetProductById(productId);
-        btnAddOrUpdate.Content = "update";
-        ProductId.Text = p.Id.ToString();
-        ProductId.IsReadOnly = true;
-        ProductPrice.Text = p.Price.ToString();
-        ProductInStock.Text = p.InStock.ToString();
-        ProductName.Text = p.Name;
-        CategorySelector.SelectedItem = p.Category;
-        CategorySelector.ItemsSource = Enum.GetValues(typeof(BO.Enums.Category));
-
+        product = new() { Name = p.Name, Id = p.Id, InStock = p.InStock, Price = p.Price, Category = p.Category };
+        btnAddOrUpdateContent = "update";
+        InitializeComponent();
     }
     #endregion
 

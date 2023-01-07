@@ -87,9 +87,8 @@ internal class Order : IOrder
                 ProductName = _dal.Product.GetByCondition(x => x != null && orderItem?.ProductId == x?.Id).Name,
                 Price = orderItem?.Price ?? 0,
                 AmountInCart = orderItem?.Amount ?? 0,
-                TotalPriceForItem = orderItem?.Price ?? 0 * orderItem?.Amount ?? 0
+                TotalPriceForItem = (orderItem?.Price ??0)*( orderItem?.Amount ?? 0)
             }).ToList();
-
             BO.Order order = new()
             {
                 Id = orderId,

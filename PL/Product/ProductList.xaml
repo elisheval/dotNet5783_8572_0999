@@ -16,7 +16,7 @@
             </Grid.ColumnDefinitions >
         </Grid>
         <Label Height="44" FontSize="33" Grid.Column="0">Category</Label>
-        <ComboBox HorizontalAlignment="Stretch"
+        <ComboBox ItemsSource="{Binding categoryItems}" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
                   Width="120"
                   Name="categorySelector"

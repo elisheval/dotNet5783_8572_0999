@@ -1,0 +1,20 @@
+﻿<Window x:Class="PL.Order.OrderTracking"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL.Order"
+        mc:Ignorable="d"
+        Title="OrderTracking" Height="450" Width="800"
+        DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
+
+    <StackPanel>
+        <Label Content="enter order id"></Label>
+        <TextBox Text="{Binding orderId, Mode=TwoWay}"></TextBox>
+        <Button Content="order tracking" Click="Button_Click"></Button>
+        <Label Content="{Binding orderTracking.OrderStatus}"></Label>
+        <ListView ItemsSource="{Binding orderTracking.DetailOrderStatuses }">
+        </ListView>
+        <Button Content="display all details of order" Click="showAllDetailsOfOrder"></Button>
+    </StackPanel>
+</Window>
