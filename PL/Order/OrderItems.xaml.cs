@@ -20,7 +20,8 @@ namespace PL.Order;
 public partial class OrderItems : Window
 {
     bool manager;
-
+    bool notSent;
+    int orderId;
     public BO.OrderItem selectedOrderItem
     {
         get { return (BO.OrderItem)GetValue(orderItemProperty); }
@@ -39,18 +40,21 @@ public partial class OrderItems : Window
     public static readonly DependencyProperty orderItemsListProperty =
         DependencyProperty.Register("orderItemsList", typeof(IEnumerable<BO.OrderItem?>), typeof(OrderItems));
 
-    public OrderItems(List<BO.OrderItem>? orderItems, bool manager)
+    public OrderItems(List<BO.OrderItem>? orderItems, bool manager, bool notSent, int orderId )
     {
         if (orderItems != null)
+        {
             orderItemsList = orderItems;
             this.manager = manager;
+            this.notSent = notSent;
+            this.orderId = orderId;
+        }
         InitializeComponent();
     }
 
     private void updateOrderItem(object sender, MouseButtonEventArgs e)
     {
-        MessageBox.Show(manager.ToString());
-        if(manager)
-            new OrderItem(selectedOrderItem).ShowDialog();
+        if (manager && notSent)
+            new OrderItem(selectedOrderItem, orderId).ShowDialog();
     }
 }

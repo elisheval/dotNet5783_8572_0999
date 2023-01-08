@@ -347,7 +347,6 @@ internal class Order : IOrder
                     DO.OrderItem d1 = new() { ProductId = productId, OrderId = orderId, Price = p.Price, Amount = amount };
                     _dal.OrderItem.Add(d1);
                     _dal.Product.Update(p);
-
                 }
             }
         }
@@ -355,7 +354,6 @@ internal class Order : IOrder
         {
             throw new BO.NoFoundItemExceptions(exe.Message, exe);
         }
-
     }
     #endregion
 }

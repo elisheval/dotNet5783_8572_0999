@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Order"
         mc:Ignorable="d"
-        Title="OrderItem" Height="450" Width="800">
-    <Grid>
-        
+        Title="OrderItem" Height="450" Width="800"
+    DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
+
+    <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Content="product id" Margin="267,137,405,268" Grid.Column="1"/>
+        <Label Content="product name" Margin="267,177,432,232" Grid.Column="1"/>
+        <Label Content="price" Margin="267,211,432,193" Grid.Column="1"/>
+        <Label Content="amount in cart" Margin="267,251,442,159" Grid.Column="1" />
+        <Label Content="total price for item" Margin="267,291,415,113" Grid.Column="1"/>
+        <TextBox Text="{Binding selectedOrderItem.ProductId}" IsReadOnly="True" Grid.Column="1" HorizontalAlignment="Left" Margin="400,137,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120" Height="18"/>
+        <TextBox Text="{Binding selectedOrderItem.ProductName}" IsReadOnly="True" Grid.Column="1" HorizontalAlignment="Left" Margin="400,177,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="18"/>
+        <TextBox Text="{Binding selectedOrderItem.Price}" IsReadOnly="True" Grid.Column="1" HorizontalAlignment="Left" Margin="400,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="18"/>
+        <TextBox Text="{Binding selectedOrderItem.AmountInCart}"  Grid.Column="1" HorizontalAlignment="Left" Margin="400,257,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="18"/>
+        <TextBox Text="{Binding selectedOrderItem.TotalPriceForItem}" IsReadOnly="True" Grid.Column="1" HorizontalAlignment="Left" Margin="400,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="18"/>
+        <Button Content="Delete item from order" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="34" Margin="601,355,0,0" VerticalAlignment="Top" Width="143" Click="Button_Click" />
+
     </Grid>
 </Window>

@@ -54,9 +54,7 @@ public partial class OrderList : Window
             sent = true;
         else if (orderSelected.OrderStatus == (BO.Enums.OrderStatus)1)
             supplied = true;
-        
-
-            new OrderWindow(orderSelected.Id,sent, supplied, true ).ShowDialog();//after the add window close updating the list
+        new OrderWindow(orderSelected.Id,sent, supplied, true ).ShowDialog();//after the add window close updating the list
         if(bl!=null) orderList = bl.Order.GetAllOrders();
     }
 }
