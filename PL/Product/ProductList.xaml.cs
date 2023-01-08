@@ -13,6 +13,14 @@ namespace PL.ProductWindows;
 public partial class ProductList : Window
 {
     BlApi.IBl? bl = BlApi.Factory.Get();
+    public BO.Enums.Category? selectedCategory
+    {
+        get { return (BO.Enums.Category?)GetValue(selectedCategoryProperty); }
+        set { SetValue(selectedCategoryProperty, value); }
+    }
+    // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty selectedCategoryProperty =
+        DependencyProperty.Register("selectedCategory", typeof(BO.Enums.Category?), typeof(ProductList));
     public System.Array categoryItems { get; set; }=Enum.GetValues(typeof(BO.Enums.Category));
     public IEnumerable<BO.ProductForList?> productList
     {
@@ -37,6 +45,7 @@ public partial class ProductList : Window
     /// </summary>
     public ProductList()
     {
+        selectedCategory = null;
         productList =bl.Product.GetAllProduct();//get all the products
         InitializeComponent();
     }
@@ -66,7 +75,7 @@ public partial class ProductList : Window
     /// <param name="e"></param>
     private void categorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (bl != null)productList =bl.Product.GetProductsByCategory((BO.Enums.Category)productSelected.Category!);
+        if (bl != null)productList =bl.Product.GetProductsByCategory((BO.Enums.Category)selectedCategory);
     }
     #endregion
 

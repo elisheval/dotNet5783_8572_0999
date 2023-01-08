@@ -16,12 +16,11 @@
             </Grid.ColumnDefinitions >
         </Grid>
         <Label Height="44" FontSize="33" Grid.Column="0">Category</Label>
-        <ComboBox ItemsSource="{Binding categoryItems}" HorizontalAlignment="Stretch"
+        <ComboBox Text="" SelectedItem="{Binding selectedCategory, Mode=TwoWay}" ItemsSource="{Binding categoryItems}" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
                   Width="120"
                   Name="categorySelector"
                   Grid.Column="1" SelectionChanged="categorySelector_SelectionChanged">
-
         </ComboBox>
         <ListView Grid.Row="1" ItemsSource="{Binding productList }" SelectedItem="{Binding productSelected, Mode=TwoWay}" MouseDoubleClick="ListView_MouseDoubleClick"  >
             <ListView.View>

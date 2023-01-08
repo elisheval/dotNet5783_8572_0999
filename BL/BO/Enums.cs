@@ -27,7 +27,7 @@ public class Enums
         keyboards,//כלי מקלדת
         exhalation,//כלי נשיפה
         strings,//כלי מיתר
-        additional//נלווים 
+        additional,//נלווים 
     }
     #endregion
 
