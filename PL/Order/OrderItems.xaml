@@ -12,6 +12,8 @@
             <ListView ItemsSource="{Binding orderItemsList}" SelectedItem="{Binding selectedOrderItem}" MouseDoubleClick="updateOrderItem" >
                 <ListView.View>
                     <GridView x:Name="GridView1">
+                        <GridViewColumn x:Name="idOrderItem" DisplayMemberBinding= "{Binding Path=Id}" 
+                                Header="orderItem_id" Width="0" />
                         <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=ProductId}" 
                                 Header="product_id" Width="100"/>
                         <GridViewColumn DisplayMemberBinding= "{Binding Path=Price}" 
@@ -27,6 +29,6 @@
             </ListView>
         </StackPanel>
 
-        <Button Visibility="Visible" Content="add new orderItem" Margin="638,368,10,10"/>
+        <Button Visibility="Visible" Content="add new orderItem" Margin="638,368,10,10" Click="Button_Click" />
     </Grid>
 </Window>

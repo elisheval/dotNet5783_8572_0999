@@ -19,6 +19,8 @@ namespace PL.Order;
 /// </summary>
 public partial class OrderItems : Window
 {
+    BlApi.IBl? bl = BlApi.Factory.Get();
+
     bool manager;
     bool notSent;
     int orderId;
@@ -54,7 +56,18 @@ public partial class OrderItems : Window
 
     private void updateOrderItem(object sender, MouseButtonEventArgs e)
     {
-        if (manager && notSent)
+        if (manager && notSent&&bl!=null)
+        {
+            this.Hide();
             new OrderItem(selectedOrderItem, orderId).ShowDialog();
+           orderItemsList = bl.Order.GetOrderById(orderId).OrderItemList!;
+            this.Show();
+        }
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    { 
+        new OrderItem(selectedOrderItem, orderId).ShowDialog();
+        this.Close();
     }
 }

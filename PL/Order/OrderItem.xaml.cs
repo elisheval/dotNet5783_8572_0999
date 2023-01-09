@@ -36,21 +36,29 @@ namespace PL.Order
         {
             if (selectedOrderItem != null)
             {
+                //MessageBox.Show(selectedOrderItem.ToString());
+
                 this.selectedOrderItem = selectedOrderItem;
                 this.orderId = orderId;
                 InitializeComponent();
             }
         }
-
-       
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void confirmDelete(object sender, RoutedEventArgs e)
         {
             if (bl != null)
             {
-                bl.Order.UpdateOrder(orderId, selectedOrderItem.Id, 0);
-                this.Close();
+                bl.Order.UpdateOrder(orderId, selectedOrderItem.ProductId, 0);
+                this.Hide();
             }
         }
+        private void confirmUpdate(object sender, RoutedEventArgs e)
+        {
+            if (bl != null)
+            {
+                bl.Order.UpdateOrder(orderId, selectedOrderItem.ProductId, selectedOrderItem.AmountInCart);
+                this.Hide();
+            }
+        }
+
     }
 }

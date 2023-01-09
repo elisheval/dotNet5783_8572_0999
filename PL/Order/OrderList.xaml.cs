@@ -47,14 +47,16 @@ public partial class OrderList : Window
     }
     private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        MessageBox.Show(orderSelected.ToString());
-        bool sent = false;
-        bool supplied = false;
+        //MessageBox.Show(orderSelected.ToString());
+        bool ifSent = false;
+        bool ifSupplied = false;
         if (orderSelected.OrderStatus == (BO.Enums.OrderStatus)0)
-            sent = true;
+            ifSent = true;
         else if (orderSelected.OrderStatus == (BO.Enums.OrderStatus)1)
-            supplied = true;
-        new OrderWindow(orderSelected.Id,sent, supplied, true ).ShowDialog();//after the add window close updating the list
+            ifSupplied = true;
+        this.Hide();
+        new OrderWindow(orderSelected.Id, ifSent, ifSupplied, true ).ShowDialog();//after the add window close updating the list
         if(bl!=null) orderList = bl.Order.GetAllOrders();
+        //this.Show();
     }
 }

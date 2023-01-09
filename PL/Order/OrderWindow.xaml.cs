@@ -53,15 +53,19 @@ public partial class OrderWindow : Window
     {
         visiblityShip= visibleShip;
         visiblityDelivery = visibleDelivery;
-        if (bl!=null)order=bl.Order.GetOrderById(orderId);
+        if (bl != null) order=bl.Order.GetOrderById(orderId);
         this.manager = manager;
         InitializeComponent();
     }
     
     private void ShowAllOrderItems(object sender, RoutedEventArgs e)
     {
+        this.Hide();
         new OrderItems(order.OrderItemList, manager, visiblityShip, order.Id).ShowDialog();
+        if (bl != null) order = bl.Order.GetOrderById(order.Id);
+        this.Show();
     }
+
     private void btnConfirmShip(object sender, RoutedEventArgs e)
     {
         if (bl != null)
