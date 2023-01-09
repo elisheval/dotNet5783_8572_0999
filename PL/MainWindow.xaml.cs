@@ -25,7 +25,7 @@ public partial class MainWindow : Window
 
     private void NavigateToCatalogWindow(object sender, RoutedEventArgs e)
     {
-        new ProductCatalog().Show();
+        new ProductCatalog().Show(); 
     }
 
     private void NavigateToOrderTrackingWindow(object sender, RoutedEventArgs e)
