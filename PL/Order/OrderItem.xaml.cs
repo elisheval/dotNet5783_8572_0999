@@ -32,23 +32,40 @@ namespace PL.Order
         public static readonly DependencyProperty OIProperty =
             DependencyProperty.Register("selectedOrderItem", typeof(BO.OrderItem), typeof(OrderItem));
 
+
+        public bool ReadOnly
+        {
+            get { return (bool)GetValue(ReadOnlyProp); }
+            set { SetValue(ReadOnlyProp, value); }
+        }
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ReadOnlyProp =
+            DependencyProperty.Register("selectedOrderItem", typeof(bool), typeof(OrderItem));
+
+
         public OrderItem(BO.OrderItem selectedOrderItem, int orderId)
         {
-            if (selectedOrderItem != null)
-            {
-                //MessageBox.Show(selectedOrderItem.ToString());
+            //MessageBox.Show(selectedOrderItem.ToString());
+            this.selectedOrderItem = selectedOrderItem;
+            this.orderId = orderId;
+            ReadOnly = true;
+            InitializeComponent();
 
-                this.selectedOrderItem = selectedOrderItem;
-                this.orderId = orderId;
-                InitializeComponent();
-            }
+        }
+
+        public OrderItem(int orderId, bool isAdd)
+        {
+            selectedOrderItem = new();
+            //this.selectedOrderItem.ProductName = "";
+            ReadOnly = false;
+            InitializeComponent();
         }
         private void confirmDelete(object sender, RoutedEventArgs e)
         {
             if (bl != null)
             {
                 bl.Order.UpdateOrder(orderId, selectedOrderItem.ProductId, 0);
-                this.Hide();
+                this.Close();
             }
         }
         private void confirmUpdate(object sender, RoutedEventArgs e)
@@ -56,7 +73,7 @@ namespace PL.Order
             if (bl != null)
             {
                 bl.Order.UpdateOrder(orderId, selectedOrderItem.ProductId, selectedOrderItem.AmountInCart);
-                this.Hide();
+                this.Close();
             }
         }
 

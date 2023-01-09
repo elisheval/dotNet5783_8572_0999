@@ -7,11 +7,12 @@
         mc:Ignorable="d"
         Title="OrderItems" Height="450" Width="800"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
-    <StackPanel>
-        <ListView ItemsSource="{Binding orderItemsList , Mode=TwoWay}" SelectedItem="{Binding selectedOrderItem}" MouseDoubleClick="updateOrderItem" >
-            <ListView.View>
-                <GridView x:Name="GridView1">
-                    <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=ProductId}" 
+    <Grid>
+        <StackPanel>
+            <ListView ItemsSource="{Binding orderItemsList , Mode=TwoWay}" SelectedItem="{Binding selectedOrderItem}" MouseDoubleClick="updateOrderItem" >
+                <ListView.View>
+                    <GridView x:Name="GridView1">
+                        <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=ProductId}" 
                                 Header="product_id" Width="100"/>
                         <GridViewColumn DisplayMemberBinding= "{Binding Path=Price}" 
                                 Header="price" Width="100"/>
@@ -25,7 +26,6 @@
                 </ListView.View>
             </ListView>
         </StackPanel>
-
         <Button Visibility="Visible" Content="add new orderItem" Margin="638,368,10,10" Click="Button_Click" />
     </Grid>
 </Window>

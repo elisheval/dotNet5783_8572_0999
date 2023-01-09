@@ -66,8 +66,9 @@ public partial class OrderItems : Window
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
-    { 
-        new OrderItem(selectedOrderItem, orderId).ShowDialog();
-        this.Close();
+    {
+        this.Hide();
+        new OrderItem(orderId, true).ShowDialog();
+        this.Show();
     }
 }
