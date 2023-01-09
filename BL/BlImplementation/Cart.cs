@@ -43,7 +43,7 @@ internal class Cart : ICart
                 if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
 
                 DO.Product product = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
-                orderItem.AmountInCart++;
+                orderItem.AmountInCart+=1;
                 myCart.TotalOrderPrice += product.Price * orderItem.AmountInCart - orderItem.TotalPriceForItem;
                 orderItem.TotalPriceForItem = product.Price * orderItem.AmountInCart;
                 orderItem.Price = product.Price;
@@ -100,6 +100,7 @@ internal class Cart : ICart
             if (newAmount == 0)
             {
                 myCart.OrderItemList!.Remove(orderItem);
+                return myCart;
             }
             else
             {
@@ -109,8 +110,8 @@ internal class Cart : ICart
                     throw new BO.ProductOutOfStockException("product is out of stock");
                 else if (product?.InStock >= newAmount)
                 {
-                    myCart.TotalOrderPrice += product?.Price * newAmount - orderItem.TotalPriceForItem;
-                    orderItem.TotalPriceForItem = newAmount * product?.Price ?? 0;
+                    myCart.TotalOrderPrice += (product?.Price??0) * newAmount - orderItem.TotalPriceForItem;
+                    orderItem.TotalPriceForItem = newAmount * (product?.Price?? 0);
                     orderItem.AmountInCart = newAmount;
                     orderItem.Price = product?.Price ?? 0;
                     return myCart;
@@ -119,7 +120,7 @@ internal class Cart : ICart
                 {
                     if (product?.InStock > orderItem.AmountInCart)
                     {
-                        myCart.TotalOrderPrice += product?.Price * product?.InStock - orderItem.TotalPriceForItem;
+                        myCart.TotalOrderPrice +=( product?.Price??0 )* product?.InStock??0 - orderItem.TotalPriceForItem;
                         orderItem.TotalPriceForItem = product?.InStock ?? 0 * product?.Price ?? 0;
                         orderItem.AmountInCart = product?.InStock ?? 0;
                         orderItem.Price = product?.Price ?? 0;

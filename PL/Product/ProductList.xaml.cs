@@ -75,7 +75,7 @@ public partial class ProductList : Window
     /// <param name="e"></param>
     private void categorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (bl != null)productList =bl.Product.GetProductsByCategory((BO.Enums.Category)selectedCategory);
+        if (bl != null)productList =bl.Product.GetProductsByCategory((BO.Enums.Category)selectedCategory!);
     }
     #endregion
 

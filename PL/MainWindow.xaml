@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <StackPanel>
         <Button Content="manager" FontSize="50" Background="Aqua" Click="NavigateToManagerWindow"/>
-        <Button Content="new order" FontSize="50" Background="Aqua" Click="NavigateToOrderWindow"/>
+        <Button Content="new order" FontSize="50" Background="Aqua" Click="NavigateToCatalogWindow"/>
         <Button Content="order tracking" FontSize="50" Background="Aqua" Click="NavigateToOrderTrackingWindow"/>
     </StackPanel>
 </Window>

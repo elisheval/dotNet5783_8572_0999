@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using PL.Manager;
 using PL.Order;
+using PL.Product;
 namespace PL;
 
 /// <summary>
@@ -18,18 +19,15 @@ public partial class MainWindow : Window
     private void NavigateToManagerWindow(object sender, RoutedEventArgs e)
     {
         new ManagerWindow().Show();
-        this.Close();
     }
 
-    private void NavigateToOrderWindow(object sender, RoutedEventArgs e)
+    private void NavigateToCatalogWindow(object sender, RoutedEventArgs e)
     {
-        //new OrderWindow().Show();
-        //this.Close();
+        new ProductCatalog().Show();
     }
 
     private void NavigateToOrderTrackingWindow(object sender, RoutedEventArgs e)
     {
         new OrderTracking().Show();
-        this.Close();
     }
 }

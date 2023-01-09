@@ -42,5 +42,7 @@ public interface IProduct
     /// <param name="category"></param>
     /// <returns></returns>
     public IEnumerable<ProductForList?> GetProductsByCategory(BO.Enums.Category category);
+    public IEnumerable<ProductItem?> GetAllProductItems(BO.Cart myCart);
+    public IEnumerable<ProductItem?> GetProductItemsByCategory(BO.Cart myCart,BO.Enums.Category? category);
 
 }

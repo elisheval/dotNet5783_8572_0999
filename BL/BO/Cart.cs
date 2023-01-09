@@ -13,7 +13,7 @@ public class Cart
     public string? CustomerEmail { get; set; }
     public string? CustomerAddress { get; set; }
     public List<OrderItem>? OrderItemList { get; set; }
-    public double? TotalOrderPrice { get; set; }
+    public double TotalOrderPrice { get; set; }
     #endregion
 
     #region ToString

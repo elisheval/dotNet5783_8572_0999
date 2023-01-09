@@ -47,16 +47,16 @@ internal class Product : IProduct
             try
             {
                 if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-                DO.Product productFromDo = _dal.Product.GetByCondition(x=>x!?.Id==myId&&x!=null);
-                    BO.Product product = new()
-                    {
-                        Id = productFromDo.Id,
-                        Name = productFromDo.Name,
-                        Price = productFromDo.Price,
-                        Category = (BO.Enums.Category?)productFromDo.Category,
-                        InStock = productFromDo.InStock
-                    };
-                    return product;
+                DO.Product productFromDo = _dal.Product.GetByCondition(x => x!?.Id == myId && x != null);
+                BO.Product product = new()
+                {
+                    Id = productFromDo.Id,
+                    Name = productFromDo.Name,
+                    Price = productFromDo.Price,
+                    Category = (BO.Enums.Category?)productFromDo.Category,
+                    InStock = productFromDo.InStock
+                };
+                return product;
             }
             catch (DO.NoFoundItemExceptions ex)
             {
@@ -76,11 +76,11 @@ internal class Product : IProduct
     /// <returns>return the amount of this product</returns>
     private int _amountOfProductInCart(int myId, BO.Cart cart)
     {
-        if (cart.OrderItemList != null) { 
-            var orderItem = cart.OrderItemList?.Where(x => x != null && x?.Id == myId).FirstOrDefault();
+        if (cart.OrderItemList != null) {
+            var orderItem = cart.OrderItemList?.Where(x => x != null && x?.ProductId == myId).FirstOrDefault();
             if (orderItem != null)
-            return orderItem.AmountInCart;
-            }
+                return orderItem.AmountInCart;
+        }
         return 0;
     }
     #endregion
@@ -101,7 +101,7 @@ internal class Product : IProduct
             try
             {
                 if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-                DO.Product productFromDo = _dal.Product.GetByCondition(x=>x!=null&&x?.Id==myId);//לבדוק
+                DO.Product productFromDo = _dal.Product.GetByCondition(x => x != null && x?.Id == myId);//לבדוק
                 BO.ProductItem productItem = new()
                 {
                     Id = productFromDo.Id,
@@ -137,16 +137,16 @@ internal class Product : IProduct
             throw new BO.InvalidValueException("invalid price");
         if (myProduct.InStock < 0)
             throw new BO.InvalidValueException("invalid amount in stock");
-        if(myProduct.Name=="")
+        if (myProduct.Name == "")
             throw new BO.InvalidValueException("invalid name");
-        if(myProduct.Category==null)
+        if (myProduct.Category == null)
             throw new BO.InvalidValueException("invalid category");
 
 
         try
         {
             if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-            DO.Product productToAdd = new () { Id = myProduct.Id, Name = myProduct.Name, Price = myProduct.Price, Category = (DO.Enums.Category?)myProduct.Category, InStock = myProduct.InStock };
+            DO.Product productToAdd = new() { Id = myProduct.Id, Name = myProduct.Name, Price = myProduct.Price, Category = (DO.Enums.Category?)myProduct.Category, InStock = myProduct.InStock };
             _dal.Product.Add(productToAdd);
         }
         catch (DO.ItemAlresdyExsistException ex)
@@ -168,11 +168,11 @@ internal class Product : IProduct
         try
         {
             if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-            DO.Product productListFromDo = _dal.Product.GetByCondition((x) =>x!=null && x?.Id == myId);
-            IEnumerable<DO.OrderItem?> orderItems = _dal.OrderItem.GetAll((x) =>x!=null && x?.ProductId == myId&&_dal.Order.GetByCondition((y)=>y!=null && x?.OrderId==y?.ID).ShipDate==null);
-            if(orderItems!= null)
-                 throw new BO.ProductInOrderException("This product cannot be deleted, it is on order");
-             _dal.Product.Delete(myId);
+            DO.Product productListFromDo = _dal.Product.GetByCondition((x) => x != null && x?.Id == myId);
+            IEnumerable<DO.OrderItem?> orderItems = _dal.OrderItem.GetAll((x) => x != null && x?.ProductId == myId && _dal.Order.GetByCondition((y) => y != null && x?.OrderId == y?.ID).ShipDate == null);
+            if (orderItems != null)
+                throw new BO.ProductInOrderException("This product cannot be deleted, it is on order");
+            _dal.Product.Delete(myId);
         }
         catch (DO.NoFoundItemExceptions ex)
         {
@@ -199,7 +199,7 @@ internal class Product : IProduct
         try
         {
             if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-            DO.Product product = new(){ Id = myProduct.Id, Name = myProduct.Name, Price = myProduct.Price, Category = (DO.Enums.Category?)myProduct.Category, InStock = myProduct.InStock };
+            DO.Product product = new() { Id = myProduct.Id, Name = myProduct.Name, Price = myProduct.Price, Category = (DO.Enums.Category?)myProduct.Category, InStock = myProduct.InStock };
             _dal.Product.Update(product);
         }
         catch (DO.NoFoundItemExceptions ex)
@@ -213,7 +213,7 @@ internal class Product : IProduct
     public IEnumerable<ProductForList?> GetProductsByCategory(BO.Enums.Category category)
     {
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-        IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll((x) =>x!=null&& x?.Category == (DO.Enums.Category?)category);
+        IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll((x) => x != null && x?.Category == (DO.Enums.Category?)category);
         return from product in productListFromDo
                where product != null
                select new BO.ProductForList()
@@ -224,5 +224,23 @@ internal class Product : IProduct
                    Category = (BO.Enums.Category?)product?.Category
                };
     }
+    public IEnumerable<ProductItem?> GetAllProductItems(BO.Cart myCart)
+    {
+        if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
+        IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll((x) => x != null);
+        IEnumerable<BO.ProductItem?> productItems = productListFromDo.Select(x => GetProductById(x!.Value.Id, myCart));
+        return productItems;
+        //return from product in productListFromDo
+        //       where product != null
+        //       select GetProductById((product?.Id )?? 0, myCart);
+    }
     #endregion
+    public IEnumerable<ProductItem?> GetProductItemsByCategory(BO.Cart myCart, BO.Enums.Category? category)
+    {
+        if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
+        IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll((x) => x != null&&x?.Category.ToString()==category.ToString());
+        return from product in productListFromDo
+               where product != null
+               select GetProductById(product?.Id ?? 0, myCart);
+    }
 }
