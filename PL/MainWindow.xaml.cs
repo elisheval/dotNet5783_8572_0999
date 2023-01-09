@@ -18,7 +18,9 @@ public partial class MainWindow : Window
 
     private void NavigateToManagerWindow(object sender, RoutedEventArgs e)
     {
-        new ManagerWindow().Show();
+        this.Hide();
+        new ManagerWindow().ShowDialog();
+        this.Show();
     }
 
     private void NavigateToCatalogWindow(object sender, RoutedEventArgs e)
@@ -28,6 +30,8 @@ public partial class MainWindow : Window
 
     private void NavigateToOrderTrackingWindow(object sender, RoutedEventArgs e)
     {
-        new OrderTracking().Show();
+        this.Hide();
+        new OrderTracking().ShowDialog();
+        this.Show();
     }
 }

@@ -27,12 +27,14 @@ public partial class ManagerWindow : Window
 
     private void NavigateToProductListWindow(object sender, RoutedEventArgs e)
     {
-        new ProductList().Show();
-        this.Close();
+        this.Hide();
+        new ProductList().ShowDialog();
+        this.Show();
     }
     private void NavigateToOrderListWindow(object sender, RoutedEventArgs e)
     {
-        new OrderList().Show();
-        this.Close();
+        this.Hide();
+        new OrderList().ShowDialog();
+        this.Show();
     }
 }

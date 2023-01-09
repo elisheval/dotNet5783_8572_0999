@@ -76,8 +76,11 @@ internal class DalOrderItem : IOrderItem
     /// <exception cref="NoFoundItemExceptions"></exception>
     public OrderItem GetByCondition(Predicate<OrderItem?> func)
     {
-        return DataSource.orderItemsList.Where(x => func(x)).FirstOrDefault()??
-        throw new NoFoundItemExceptions("no found order item with this condition");
+        OrderItem? oi= DataSource.orderItemsList.Where(x => func(x)).FirstOrDefault();
+        if(oi==null)
+            throw (new NoFoundItemExceptions("no found order item with this condition"));
+        else
+            return (OrderItem)oi;
     }
     #endregion
 }

@@ -8,21 +8,24 @@
         Title="OrderItems" Height="450" Width="800"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     <StackPanel>
-        <ListView ItemsSource="{Binding orderItemsList, Mode=TwoWay}" SelectedItem="{Binding selectedOrderItem}" MouseDoubleClick="updateOrderItem" >
+        <ListView ItemsSource="{Binding orderItemsList , Mode=TwoWay}" SelectedItem="{Binding selectedOrderItem}" MouseDoubleClick="updateOrderItem" >
             <ListView.View>
                 <GridView x:Name="GridView1">
                     <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=ProductId}" 
                                 Header="product_id" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding= "{Binding Path=Price}" 
+                        <GridViewColumn DisplayMemberBinding= "{Binding Path=Price}" 
                                 Header="price" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding= "{Binding Path=ProductName}" 
+                        <GridViewColumn DisplayMemberBinding= "{Binding Path=ProductName}" 
                                 Header="product_name" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding= "{Binding Path=AmountInCart}" 
+                        <GridViewColumn DisplayMemberBinding= "{Binding Path=AmountInCart}" 
                                 Header="amount_in_cart" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding= "{Binding Path=TotalPriceForItem}" 
+                        <GridViewColumn DisplayMemberBinding= "{Binding Path=TotalPriceForItem}" 
                                 Header="total_price_for_item" Width="100"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </StackPanel>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+
+        <Button Visibility="Visible" Content="add new orderItem" Margin="638,368,10,10" Click="Button_Click" />
+    </Grid>
 </Window>

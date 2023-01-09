@@ -75,9 +75,11 @@ internal class DalProduct:IProduct
     /// <exception cref="NoFoundItemExceptions"></exception>
     public Product GetByCondition(Predicate<Product?> func)
     {
-        
-        return DataSource.productList.Where(x => func(x)).FirstOrDefault()??
-            throw new NoFoundItemExceptions("no found p with this condition");
+        Product? p = DataSource.productList.Where(x => func(x)).FirstOrDefault();
+        if (p == null)
+            throw (new NoFoundItemExceptions("no found p item with this condition"));
+        else
+            return (Product)p;
     }
     #endregion
 }
