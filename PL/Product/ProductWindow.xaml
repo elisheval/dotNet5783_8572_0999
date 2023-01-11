@@ -23,11 +23,13 @@
         <Label Content="name" HorizontalAlignment="Left" Margin="321,209,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.392,0.239"/>
         <Label Content="price" HorizontalAlignment="Left" Margin="323,257,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.587,2.18"/>
         <Label Content="in stock" HorizontalAlignment="Left" Margin="313,294,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.724,2.419"/>
-        <TextBox IsReadOnly="{Binding idIsReadOnly}"  Text="{Binding product.Id, Mode=TwoWay}"  HorizontalAlignment="Left" Margin="400,112,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.149,-0.44" TextChanged="ProductId_TextChanged"/>
-        <ComboBox SelectedItem="{Binding product.Category,Mode=TwoWay}" ItemsSource="{Binding categoryItems, Mode=TwoWay}" SelectionChanged="ProductCategory_TextChanged" HorizontalAlignment="Left" Margin="400,159,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120"/>
-        <TextBox Text="{Binding product.Name, Mode=TwoWay}" TextChanged="ProductName_TextChanged" HorizontalAlignment="Left" Margin="400,213,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox Text="{Binding product.Price, Mode=TwoWay}" TextChanged="ProductPrice_TextChanged" PreviewTextInput="PreviewTextInputDouble" HorizontalAlignment="Left" Margin="400,261,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox Text="{Binding product.InStock, Mode=TwoWay}" TextChanged="ProductInStock_TextChanged" PreviewTextInput="PreviewTextInputInt" HorizontalAlignment="Left" Margin="400,302,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="{Binding idIsReadOnly}"  Text="{Binding product.Id, Mode=TwoWay}"  HorizontalAlignment="Left" Margin="400,112,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.149,-0.44"/>
+        <ComboBox SelectedItem="{Binding product.Category,Mode=TwoWay}" ItemsSource="{Binding categoryItems, Mode=TwoWay}" HorizontalAlignment="Left" Margin="400,159,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding product.Name, Mode=TwoWay}" HorizontalAlignment="Left" Margin="400,213,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding product.Price, Mode=TwoWay}" PreviewTextInput="PreviewTextInputDouble" HorizontalAlignment="Left" Margin="400,261,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding product.InStock, Mode=TwoWay}" PreviewTextInput="PreviewTextInputInt" HorizontalAlignment="Left" Margin="400,302,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="{Binding message}" HorizontalAlignment="Center" Margin="0,30,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Button Click="NavigateToProductList" Content="back to product list" HorizontalAlignment="Left" Margin="699,18,0,0" Grid.Row="2" VerticalAlignment="Top"/>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>

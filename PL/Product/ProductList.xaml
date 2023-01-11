@@ -15,7 +15,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
         </Grid>
-        <Label Height="44" FontSize="33" Grid.Column="0">Category</Label>
+        <Label FontSize="33" Grid.Column="0" Margin="0,0,0,479" Grid.RowSpan="2">Category</Label>
         <ComboBox Text="" SelectedItem="{Binding selectedCategory, Mode=TwoWay}" ItemsSource="{Binding categoryItems}" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
                   Width="120"
@@ -37,7 +37,8 @@
             </ListView.View>
         </ListView>
 
-        <Button Content="Add new Product" Grid.Row="2" HorizontalAlignment="Left" Margin="691,0,0,5" Padding="5" Click="ShowProductWindow_Click" Height="28" VerticalAlignment="Bottom"/>
+        <Button Content="Add new Product" Grid.Row="2" HorizontalAlignment="Left" Margin="552,10,0,5" Padding="5" Click="ShowProductWindow_Click" Height="28" VerticalAlignment="Bottom"/>
+        <Button Click="NavigateToManagerWindow" Content="back to manager page" HorizontalAlignment="Left" Margin="552,547,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Grid.RowSpan="2" Width="114"/>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>

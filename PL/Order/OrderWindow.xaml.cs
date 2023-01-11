@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace PL.Order;
 
@@ -20,8 +7,21 @@ namespace PL.Order;
 /// </summary>
 public partial class OrderWindow : Window
 {
+    #region properties
     BlApi.IBl? bl = BlApi.Factory.Get();
-    bool manager;
+    public bool manager { get; set; }
+    #endregion
+
+    #region Dependency Propertys
+    public string message
+    {
+        get { return (string)GetValue(messageProperty); }
+        set { SetValue(messageProperty, value); }
+    }
+    // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty messageProperty =
+        DependencyProperty.Register("message", typeof(string), typeof(OrderWindow));
+
     public bool visiblityShip
     {
         get { return (bool)GetValue(visiblityShipProperty); }
@@ -48,42 +48,81 @@ public partial class OrderWindow : Window
     // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty orderProperty =
         DependencyProperty.Register("order", typeof(BO.Order), typeof(OrderWindow));
-    
+    #endregion
+
+    #region constractor
     public OrderWindow(int orderId,bool visibleShip,bool visibleDelivery, bool manager=false)
     {
-        visiblityShip= visibleShip;
-        visiblityDelivery = visibleDelivery;
-        if (bl != null) order=bl.Order.GetOrderById(orderId);
-        this.manager = manager;
-        InitializeComponent();
+            message = "";
+            visiblityShip = visibleShip;
+            visiblityDelivery = visibleDelivery;
+            if (bl != null) order = bl.Order.GetOrderById(orderId);
+            this.manager = manager;
+            InitializeComponent();
     }
-    
+    #endregion
+
+    #region ShowAllOrderItems
     private void ShowAllOrderItems(object sender, RoutedEventArgs e)
     {
+        if (bl != null) order = bl.Order.GetOrderById(order.Id);
         this.Hide();
         new OrderItems(order.OrderItemList, manager, visiblityShip, order.Id).ShowDialog();
-        if (bl != null) order = bl.Order.GetOrderById(order.Id);
         this.Show();
     }
+    #endregion
 
+    #region btnConfirmShip
+    /// <summary>
+    /// updating the order status to br shiped
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void btnConfirmShip(object sender, RoutedEventArgs e)
     {
-        if (bl != null)
+        try
         {
-            bl.Order.OrderShippingUpdate(order.Id);
-            visiblityShip = false;
-            visiblityDelivery = true;
-            order = bl.Order.GetOrderById(order.Id);
+            if (bl != null)
+            {
+                bl.Order.OrderShippingUpdate(order.Id);
+                visiblityShip = false;
+                visiblityDelivery = true;
+                order = bl.Order.GetOrderById(order.Id);
+            }
         }
+        catch (BO.InvalidDateChange ex) { message = ex.Message; }
+        catch (BO.NoFoundItemExceptions ex) { message = ex.Message; }
     }
-    
+    #endregion
+
+    #region btnConfirmDelivery
+    /// <summary>
+    /// updating the order status to be delivery
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void btnConfirmDelivery(object sender, RoutedEventArgs e)
     {
-        if (bl != null)
+        try
         {
-            bl.Order.OrderDeliveryUpdate(order.Id);
-            visiblityDelivery = false;
-            order = bl.Order.GetOrderById(order.Id);
+            if (bl != null)
+            {
+                bl.Order.OrderDeliveryUpdate(order.Id);
+                visiblityDelivery = false;
+                order = bl.Order.GetOrderById(order.Id);
+            }
         }
+        catch (BO.InvalidDateChange ex) { message = ex.Message; }
+        catch (BO.NoFoundItemExceptions ex) { message = ex.Message; }
     }
+    #endregion
+
+    #region NavigateToOrderList
+
+    private void NavigateToOrderList(object sender, RoutedEventArgs e)
+    {
+        new OrderList().Show();
+        this.Close();
+    }
+    #endregion
 }

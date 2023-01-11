@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="OrderItems" Height="450" Width="800"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
+    <Window.Resources>
+        <local:CnvrtBoolToVisible x:Key="myCnvrtr"/>
+    </Window.Resources>
+    <Grid>
     <StackPanel>
         <ListView ItemsSource="{Binding orderItemsList , Mode=TwoWay}" SelectedItem="{Binding selectedOrderItem}" MouseDoubleClick="updateOrderItem" >
             <ListView.View>
@@ -24,8 +28,16 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+            <StackPanel Visibility="{Binding visibiltyForm,Converter={StaticResource myCnvrtr}}">
+                <Label Content="enter product id"></Label>
+                <TextBox Text="{Binding productId,Mode=TwoWay}"></TextBox>
+                <Label Content="enter amount"></Label>
+                <TextBox Text="{Binding amount,Mode=TwoWay}"></TextBox>
+                <Button Content="confirm adding" Click="ConfirmAdding"></Button>
+                <Label Content="{Binding message}"></Label>
+            </StackPanel>
         </StackPanel>
-
-        <Button Visibility="Visible" Content="add new orderItem" Margin="638,368,10,10" Click="Button_Click" />
+        <Button Visibility="{Binding notSent, Converter={StaticResource myCnvrtr}}" Content="add new orderItem" Margin="638,368,10,10" Click="AddNewOrderItem" />
+        
     </Grid>
 </Window>

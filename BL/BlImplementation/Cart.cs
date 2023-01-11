@@ -100,6 +100,7 @@ internal class Cart : ICart
             if (newAmount == 0)
             {
                 myCart.OrderItemList!.Remove(orderItem);
+                myCart.TotalOrderPrice-= orderItem.Price*orderItem.AmountInCart;
                 return myCart;
             }
             else

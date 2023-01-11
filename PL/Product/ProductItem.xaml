@@ -23,6 +23,7 @@
         <TextBox IsReadOnly="true" Text="{Binding productItem.AmountInCart}"  HorizontalAlignment="Left" Margin="400,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Button Click="AddProductToCart" Content="add product to my cart" HorizontalAlignment="Left" Margin="269,395,0,0" VerticalAlignment="Top"/>
         <Button Click="RemoveProductFromCart" Content="remove product from my cart" HorizontalAlignment="Left" Margin="548,395,0,0" VerticalAlignment="Top"/>
-
+        <Button Click="NavigateToProductCatalog" Content="back to product catalog" HorizontalAlignment="Left" Margin="292,40,0,355" Width="228"/>
+        <Button Click="NavigateToProductCatalog" Content="X" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.378,0.258" Width="54"/>
     </Grid>
 </Window>

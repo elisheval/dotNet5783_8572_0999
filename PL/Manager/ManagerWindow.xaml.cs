@@ -1,40 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using PL.ProductWindows;
 using PL.Order;
-namespace PL.Manager;
 
+namespace PL.Manager;
 /// <summary>
 /// Interaction logic for managerWindow.xaml
 /// </summary>
 public partial class ManagerWindow : Window
 {
+    #region constractor
     public ManagerWindow()
     {
         InitializeComponent();
     }
+    #endregion
 
+    #region navigation functions 
     private void NavigateToProductListWindow(object sender, RoutedEventArgs e)
     {
-        this.Hide();
-        new ProductList().ShowDialog();
-        this.Show();
+        new ProductList().Show();
+        this.Close();
     }
     private void NavigateToOrderListWindow(object sender, RoutedEventArgs e)
     {
-        this.Hide();
-        new OrderList().ShowDialog();
-        this.Show();
+        new OrderList().Show();
+        this.Close();
     }
+    #endregion
 }

@@ -10,18 +10,19 @@
     <StackPanel>
         <Button Content="confirm order" Click="NavigateToConfirmOrder"></Button>
         <Button Content="back to product catalog" Click="NavigateToProductCatalog"></Button>
-        <ListView SelectedItem="{Binding selectedProduct, Mode=TwoWay}" ItemsSource="{Binding orderItemsList, Mode=TwoWay}" >
+        <Label Content="{Binding message}"></Label>
+        <ListView  ItemsSource="{Binding OIList}" >
             <ListView.View>
                 <GridView x:Name="GridView1">
-                    <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=ProductId}" 
+                    <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding ProductId}" 
                                 Header="product_id" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding= "{Binding Path=Price}" 
+                    <GridViewColumn DisplayMemberBinding= "{Binding Price}" 
                                 Header="price" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding= "{Binding Path=ProductName}" 
+                    <GridViewColumn DisplayMemberBinding= "{Binding orderItemsList.ProductName}" 
                                 Header="product_name" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding= "{Binding Path=AmountInCart}" 
+                    <GridViewColumn DisplayMemberBinding= "{Binding AmountInCart}" 
                                 Header="amount_in_cart" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding= "{Binding Path=TotalPriceForItem}" 
+                    <GridViewColumn DisplayMemberBinding= "{Binding TotalPriceForItem}" 
                                 Header="total_price_for_item" Width="100"/>
                     <GridViewColumn Width="100" Header="remove item">
                         <GridViewColumn.CellTemplate>
@@ -41,11 +42,16 @@
                                 <StackPanel>
                                 <Button
                        Click="btnAddAmount"
-                       Content="add"
+                       Content="+"
                        Margin="0"
                        VerticalAlignment="Center"
                         />
-                                    <TextBox Text="{Binding amount, Mode=TwoWay}"></TextBox>
+                            <Button
+                       Click="btnSubtractAmount"
+                       Content="-"
+                       Margin="0"
+                       VerticalAlignment="Center"
+                        />
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>

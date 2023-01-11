@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PL.Manager;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -12,7 +13,13 @@ namespace PL.ProductWindows;
 /// 
 public partial class ProductList : Window
 {
+    #region properties
     BlApi.IBl? bl = BlApi.Factory.Get();
+    public System.Array categoryItems { get; set; } = Enum.GetValues(typeof(BO.Enums.Category));
+
+    #endregion
+
+    #region Dependency Propertys
     public BO.Enums.Category? selectedCategory
     {
         get { return (BO.Enums.Category?)GetValue(selectedCategoryProperty); }
@@ -21,7 +28,6 @@ public partial class ProductList : Window
     // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty selectedCategoryProperty =
         DependencyProperty.Register("selectedCategory", typeof(BO.Enums.Category?), typeof(ProductList));
-    public System.Array categoryItems { get; set; }=Enum.GetValues(typeof(BO.Enums.Category));
     public IEnumerable<BO.ProductForList?> productList
     {
         get { return (IEnumerable<BO.ProductForList?>)GetValue(productListProperty); }
@@ -38,6 +44,7 @@ public partial class ProductList : Window
     // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty productSelectedProperty =
         DependencyProperty.Register("productSelected", typeof(BO.ProductForList), typeof(ProductList));
+    #endregion
 
     #region constructor
     /// <summary>
@@ -53,7 +60,7 @@ public partial class ProductList : Window
 
     #region ShowProductWindow_Click
     /// <summary>
-    /// open the add window
+    /// open the product window passing the selected product
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e">button</param>
@@ -61,7 +68,9 @@ public partial class ProductList : Window
     {
         if (bl != null)
         {
+            this.Hide();
             new ProductWindow().ShowDialog();//after the add window close updating the list
+            this.Show();
             productList = bl.Product.GetAllProduct();
         }
     }
@@ -87,8 +96,20 @@ public partial class ProductList : Window
     /// <param name="e"></param>
     private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
+        this.Hide();
         new ProductWindow(productSelected.Id).ShowDialog();//after the add window close updating the list
+        this.Show();
         if(bl!=null)productList = bl.Product.GetAllProduct();
     }
     #endregion
+
+    #region NavigateToManagerWindow
+    private void NavigateToManagerWindow(object sender, RoutedEventArgs e)
+    {
+        new ManagerWindow().Show();
+        this.Close();
+    }
+    #endregion
+
+    
 }

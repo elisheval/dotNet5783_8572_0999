@@ -41,6 +41,7 @@
             </ListView.View>
         </ListView>
         <Button Click="NavigateToCartWindow" Content="my cart" HorizontalAlignment="Left" Margin="91,351,0,0" Grid.Row="1" VerticalAlignment="Top" Height="42" Width="83"/>
+        <Button Click="NavigateToMainWindow" Content="back to main window" HorizontalAlignment="Left" Margin="216,351,0,0" Grid.Row="1" VerticalAlignment="Top" Height="41" Width="148"/>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>

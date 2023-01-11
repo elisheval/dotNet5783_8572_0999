@@ -21,7 +21,11 @@ namespace PL.Order;
 /// </summary>
 public partial class OrderList : Window
 {
+    #region bl variable
     BlApi.IBl? bl = BlApi.Factory.Get();
+    #endregion
+
+    #region Dependency Propertys
     public IEnumerable<BO.OrderForList?> orderList
     {
         get { return (IEnumerable<BO.OrderForList?>)GetValue(orderListProperty); }
@@ -38,13 +42,23 @@ public partial class OrderList : Window
     // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty orderSelectedProperty =
         DependencyProperty.Register("orderSelected", typeof(BO.OrderForList), typeof(OrderList));
+    #endregion
 
+    #region constractor
     public OrderList()
     {
         orderSelected = new();
         orderList = bl.Order.GetAllOrders();
         InitializeComponent();
     }
+    #endregion
+
+    #region ListView_MouseDoubleClick
+    /// <summary>
+    /// navigate to order window passing the selected order
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         //MessageBox.Show(orderSelected.ToString());
@@ -54,9 +68,8 @@ public partial class OrderList : Window
             ifSent = true;
         else if (orderSelected.OrderStatus == (BO.Enums.OrderStatus)1)
             ifSupplied = true;
-        this.Hide();
-        new OrderWindow(orderSelected.Id, ifSent, ifSupplied, true ).ShowDialog();//after the add window close updating the list
-        if(bl!=null) orderList = bl.Order.GetAllOrders();
-        //this.Show();
+        new OrderWindow(orderSelected.Id, ifSent, ifSupplied, true ).Show();//after the add window close updating the list
+        this.Close();
     }
+    #endregion
 }

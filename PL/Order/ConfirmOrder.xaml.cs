@@ -1,17 +1,6 @@
 ﻿using BO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PL.Product;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL.Order;
 
@@ -20,8 +9,21 @@ namespace PL.Order;
 /// </summary>
 public partial class ConfirmOrder : Window
 {
+    #region properties
     BlApi.IBl? bl = BlApi.Factory.Get();
-    BO.Cart myCart = new() { OrderItemList=new()};
+    BO.Cart myCart = new() { OrderItemList = new() };
+    #endregion
+
+    #region Dependency Propertys
+    public string message
+    {
+        get { return (string)GetValue(messageProperty); }
+        set { SetValue(messageProperty, value); }
+    }
+    // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty messageProperty =
+        DependencyProperty.Register("message", typeof(string), typeof(ConfirmOrder));
+
     public BO.Order order
     {
         get { return (BO.Order)GetValue(orderProperty); }
@@ -30,27 +32,82 @@ public partial class ConfirmOrder : Window
     // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty orderProperty =
         DependencyProperty.Register("order", typeof(BO.Order), typeof(ConfirmOrder));
+    #endregion
 
+    #region constractor
+    /// <summary>
+    /// getting the user cart
+    /// </summary>
+    /// <param name="cart"></param>
     public ConfirmOrder(BO.Cart cart)
     {
+        message = "";
         order = new();
         MessageBox.Show(cart.TotalOrderPrice.ToString());
         myCart = cart;
         order.TotalOrderPrice = cart.TotalOrderPrice;
         InitializeComponent();
     }
+    #endregion
 
+    #region Order Confirmation
+    /// <summary>
+    /// check validation of user details input,
+    /// and confirm the order
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void OrderConfirmation(object sender, RoutedEventArgs e)
     {
         if (order.CustomerName == null)
-            throw new Exception();
+        {
+            message = "enter customer name ";
+            return;
+        }
         if (order.CustomerAddress == null)
-            throw new Exception();
+        {
+            message = "enter customer address ";
+            return;
+        }
+
         if (order.CustomerEmail == null)
-            throw new Exception();
-        if (bl != null) bl.Cart.OrderConfirmation(myCart, order.CustomerName, order.CustomerEmail, order.CustomerAddress);
-        MessageBox.Show("succsesfully");
-        this.Close();
-        new MainWindow().Show();
+        {
+            message = "enter customer email ";
+            return;
+        }
+        if (order.TotalOrderPrice == 0)
+        {
+            message = "no items in the order";
+            return;
+        }
+        try
+        {
+            if (bl != null) bl.Cart.OrderConfirmation(myCart, order.CustomerName!, order.CustomerEmail!, order.CustomerAddress!);
+            MessageBox.Show("succsesfully");
+            new MainWindow().Show();
+            this.Close();
+        }
+        catch (BO.InvalidValueException ex)
+        {
+            message = ex.Message;
+        }
+        catch (BO.ProductOutOfStockException ex)
+        {
+            message =ex.Message;
+        }
     }
+    #endregion
+
+    #region NavigateToProductCatalog
+    /// <summary>
+    /// navigate back to product catalog
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void NavigateToProductCatalog(object sender, RoutedEventArgs e)
+    {
+        new ProductCatalog(myCart).Show();
+        this.Close();
+    }
+    #endregion
 }
