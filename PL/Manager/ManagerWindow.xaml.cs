@@ -8,7 +8,7 @@ namespace PL.Manager;
 /// </summary>
 public partial class ManagerWindow : Window
 {
-    #region constractor
+    #region constructor
     public ManagerWindow()
     {
         InitializeComponent();
@@ -27,4 +27,10 @@ public partial class ManagerWindow : Window
         this.Close();
     }
     #endregion
+
+    private void NavigateToMainWindow(object sender, RoutedEventArgs e)
+    {
+        new MainWindow().Show();
+        this.Close();
+    }
 }

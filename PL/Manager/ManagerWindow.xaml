@@ -9,5 +9,7 @@
     <StackPanel>
         <Button Content="all product list" Click="NavigateToProductListWindow"/>
         <Button Content="all order list" Click="NavigateToOrderListWindow"/>
+        <Button Content="back to main window" Click="NavigateToMainWindow" />
+
     </StackPanel>
 </Window>

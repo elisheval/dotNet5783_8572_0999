@@ -37,7 +37,7 @@ public partial class CartWindow : Window
         DependencyProperty.Register("OIList", typeof(ObservableCollection<BO.OrderItem?>), typeof(OrderItems));
     #endregion
 
-    #region constracror
+    #region construcror
     /// <summary>
     /// the window opening from productt catalog window 
     /// </summary>
@@ -65,8 +65,8 @@ public partial class CartWindow : Window
         {
             //if (myCart.OrderItemList != null) myCart.OrderItemList.Remove((element.DataContext as BO.OrderItem)!);
             //if(myCart.OrderItemList!=null)orderItemsList = myCart.OrderItemList!;
-            var a=element.DataContext as BO.OrderItem;
-            if (myCart.OrderItemList != null&&bl!=null) OIList = new ObservableCollection<BO.OrderItem?>(((bl.Cart.UpdateAmountOfProductInCart(a.ProductId, myCart, 0)).OrderItemList));
+            var a = element.DataContext as BO.OrderItem;
+            if (myCart.OrderItemList != null && bl != null) OIList = new ObservableCollection<BO.OrderItem?>(((bl.Cart.UpdateAmountOfProductInCart(a.ProductId, myCart, 0)).OrderItemList));
         }
     }
     #endregion
@@ -79,8 +79,11 @@ public partial class CartWindow : Window
     /// <param name="e"></param>
     private void NavigateToConfirmOrder(object sender, RoutedEventArgs e)
     {
-        new ConfirmOrder(myCart).Show();
-        this.Close();
+        if (OIList != null)
+        {
+            new ConfirmOrder(myCart).Show();
+            this.Close();
+        }
     }
     #endregion
 
@@ -109,22 +112,22 @@ public partial class CartWindow : Window
 
         if (element != null && element.DataContext is BO.OrderItem)
         {
-            if (myCart.OrderItemList != null && bl!=null)
+            if (myCart.OrderItemList != null && bl != null)
             {
                 try
                 {
                     myCart = bl.Cart.UpdateAmountOfProductInCart((element.DataContext as BO.OrderItem)!.ProductId, myCart, (element.DataContext as BO.OrderItem)!.AmountInCart + 1);
-                    OIList = new ObservableCollection<BO.OrderItem?>(myCart.OrderItemList!.Cast<BO.OrderItem?>());
-                    message = "the amount update succesfully"; 
+                    //OIList = new ObservableCollection<BO.OrderItem?>(myCart.OrderItemList!<BO.OrderItem?>());
+                    message = "the amount update succesfully";
                 }
-            catch (BO.ProductOutOfStockException ex)
-            {
-                message = ex.Message;
-            }
-            catch (BO.InvalidValueException ex)
-            {
-                message = ex.Message;
-            }
+                catch (BO.ProductOutOfStockException ex)
+                {
+                    message = ex.Message;
+                }
+                catch (BO.InvalidValueException ex)
+                {
+                    message = ex.Message;
+                }
             }
 
         }
@@ -152,7 +155,7 @@ public partial class CartWindow : Window
                     message = ex.Message;
                 }
             }
-           
+
         }
     }
     #endregion

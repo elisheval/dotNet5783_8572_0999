@@ -5,25 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Product"
         mc:Ignorable="d"
+        
+        
         Title="ProductItem" Height="450" Width="800"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
 
+    <Window.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Width" Value="170" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Margin" Value="130" />
+
+        </Style>
+    </Window.Resources>
     <Grid>
-        <Label Content="id" HorizontalAlignment="Left" Margin="331,112,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <Label Content="category" HorizontalAlignment="Left" Margin="310,159,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.473,1.475"/>
-        <Label Content="name" HorizontalAlignment="Left" Margin="321,209,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.392,0.239"/>
-        <Label Content="price" HorizontalAlignment="Left" Margin="323,257,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.587,2.18"/>
-        <Label Content="in stock" HorizontalAlignment="Left" Margin="313,302,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.724,2.419"/>
-        <Label Content="amount in you cart" HorizontalAlignment="Left" Margin="256,340,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.724,2.419"/>
-        <TextBox IsReadOnly="true"  Text="{Binding productItem.Id}" HorizontalAlignment="Left" Margin="400,112,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.149,-0.44"/>
-        <TextBox IsReadOnly="true" Text="{Binding productItem.Category}" HorizontalAlignment="Left" Margin="400,159,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120"/>
-        <TextBox IsReadOnly="true" Text="{Binding productItem.Name}"  HorizontalAlignment="Left" Margin="400,213,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox IsReadOnly="true" Text="{Binding productItem.Price}" HorizontalAlignment="Left" Margin="400,261,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox IsReadOnly="true" Text="{Binding productItem.InStock}" HorizontalAlignment="Left" Margin="400,302,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox IsReadOnly="true" Text="{Binding productItem.AmountInCart}"  HorizontalAlignment="Left" Margin="400,344,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Click="AddProductToCart" Content="add product to my cart" HorizontalAlignment="Left" Margin="269,395,0,0" VerticalAlignment="Top"/>
-        <Button Click="RemoveProductFromCart" Content="remove product from my cart" HorizontalAlignment="Left" Margin="548,395,0,0" VerticalAlignment="Top"/>
-        <Button Click="NavigateToProductCatalog" Content="back to product catalog" HorizontalAlignment="Left" Margin="292,40,0,355" Width="228"/>
-        <Button Click="NavigateToProductCatalog" Content="X" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.378,0.258" Width="54"/>
+        <Label Content="id" HorizontalAlignment="Left" Margin="519,87,0,0" VerticalAlignment="Top"/>
+        <Label Content="category" HorizontalAlignment="Left" Margin="498,134,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.473,1.475"/>
+        <Label Content="name" HorizontalAlignment="Left" Margin="509,184,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.392,0.239"/>
+        <Label Content="price" HorizontalAlignment="Left" Margin="511,232,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.587,2.18"/>
+        <Label Content="in stock" HorizontalAlignment="Left" Margin="501,277,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.724,2.419"/>
+        <Label Content="amount in your cart" HorizontalAlignment="Left" Margin="444,315,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.724,2.419"/>
+        <TextBox IsReadOnly="true"  Text="{Binding productItem.Id}" HorizontalAlignment="Left" Margin="588,87,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.149,-0.44"/>
+        <TextBox IsReadOnly="true" Text="{Binding productItem.Category}" HorizontalAlignment="Left" Margin="588,134,0,0" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="true" Text="{Binding productItem.Name}"  HorizontalAlignment="Left" Margin="588,188,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="true" Text="{Binding productItem.Price}" HorizontalAlignment="Left" Margin="588,236,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="true" Text="{Binding productItem.InStock}" HorizontalAlignment="Left" Margin="588,277,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox IsReadOnly="true" Text="{Binding productItem.AmountInCart}"  HorizontalAlignment="Left" Margin="588,319,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button Click="NavigateToProductCatalog" Content="back to product catalog" HorizontalAlignment="Left" Margin="100,130,0,0" VerticalAlignment="Top" />
+        <Button  Click="AddProductToCart" Content="add product to my cart" HorizontalAlignment="Left" Margin="100,210,0,0" VerticalAlignment="Top" />
+        <Button Click="RemoveProductFromCart" Content="remove product from my cart" HorizontalAlignment="Left" Margin="100,290,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

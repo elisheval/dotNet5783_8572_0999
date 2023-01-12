@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using PL.Order;
+using PL.Manager;
 
 namespace PL.Order;
 
@@ -69,6 +70,14 @@ public partial class OrderList : Window
         else if (orderSelected.OrderStatus == (BO.Enums.OrderStatus)1)
             ifSupplied = true;
         new OrderWindow(orderSelected.Id, ifSent, ifSupplied, true ).Show();//after the add window close updating the list
+        this.Close();
+    }
+    #endregion
+
+    #region navigateToManager
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        new ManagerWindow().Show();
         this.Close();
     }
     #endregion

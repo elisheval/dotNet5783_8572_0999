@@ -3,6 +3,8 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
+using System.Reflection.Emit;
+using System.Windows.Controls;
 
 namespace PL.ProductWindows;
 
@@ -18,7 +20,17 @@ public partial class ProductWindow : Window
     public System.Array categoryItems { get; set; } = Enum.GetValues(typeof(BO.Enums.Category));
     #endregion
 
-    #region Dependency Propertys
+    #region Dependency Properties
+    //public Label lblMessage
+    //{
+    //    get { return (Label)GetValue(marginProperty); }
+    //    set { SetValue(marginProperty, value); }
+    //}
+    // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+    //public static readonly DependencyProperty marginProperty =
+    //    DependencyProperty.Register("lblMessage", typeof(Label), typeof(ProductWindow));
+
+
     public string message
     {
         get { return (string)GetValue(messageProperty); }
@@ -28,6 +40,7 @@ public partial class ProductWindow : Window
     public static readonly DependencyProperty messageProperty =
         DependencyProperty.Register("message", typeof(string), typeof(ProductWindow));
 
+    // public string 
     public string btnAddOrUpdateContent
     {
         get { return (string)GetValue(btnAddOrUpdateContentProperty); }
@@ -61,6 +74,16 @@ public partial class ProductWindow : Window
         if (product.Name == null)
         {
             message = "invalid name"; return;
+            //lblMessage = new Label()
+            //{
+            //    Content = "name",
+            //    HorizontalAlignment = HorizontalAlignment.Left,
+            //    Margin = new Thickness(400, 230, 0,0),
+            //    //Grid.Row = "1",
+            //    VerticalAlignment = VerticalAlignment.Top
+            //    //RenderTransformOrigin = "0.392,0.239"
+            //};
+            ////400,213,0,0
         }
         if (product.Price == 0)
         {
@@ -83,7 +106,7 @@ public partial class ProductWindow : Window
         }
         catch (ItemAlresdyExsistException ex)
         {
-            message= ex.Message;
+            message = ex.Message;
         }
         catch (InvalidValueException ex)
         {
@@ -97,7 +120,7 @@ public partial class ProductWindow : Window
     /// <summary>
     /// constructor for adding product with out getting parameters
     /// </summary>
-    public ProductWindow() 
+    public ProductWindow()
     {
         message = "";
         btnAddOrUpdateContent = "add";
@@ -117,7 +140,8 @@ public partial class ProductWindow : Window
             product = new() { Name = p.Name, Id = p.Id, InStock = p.InStock, Price = p.Price, Category = p.Category };
             btnAddOrUpdateContent = "update";
         }
-        catch(BO.ItemAlresdyExsistException ex) {
+        catch (BO.ItemAlresdyExsistException ex)
+        {
             message = ex.Message;
             new ProductList().Show();
             this.Close();
@@ -130,7 +154,7 @@ public partial class ProductWindow : Window
 
     private void PreviewTextInputInt(object sender, TextCompositionEventArgs e)
     {
-        Regex regex = new ("[^0-9]+");
+        Regex regex = new("[^0-9]+");
         e.Handled = regex.IsMatch(e.Text);
     }
     private void PreviewTextInputDouble(object sender, TextCompositionEventArgs e)

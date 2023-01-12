@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:PL.Order"
         mc:Ignorable="d"
         Title="OrderTracking" Height="450" Width="800"
-        DataContext = "{Binding RelativeSource={RelativeSource Self}}">
+        DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
+    
     <StackPanel Margin="0,0,0,71">
         <Label Content="enter order id"></Label>
         <Label Content="{Binding message}"></Label>
@@ -14,6 +15,7 @@
         <Button Content="order tracking" Click="BtnOrderTracking"></Button>
         <ListView ItemsSource="{Binding }">
         </ListView>
-        <Button Content="display all details of order" Click="showAllDetailsOfOrder"></Button>
+        <Button Content="display all details of order" Click="showAllDetailsOfOrder"/>
+        <Button Content="back to main window" Click="backMainWindow"/>
     </StackPanel>
 </Window>

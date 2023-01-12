@@ -92,4 +92,10 @@ public partial class OrderTracking : Window
         }
     }
     #endregion
+
+    private void backMainWindow(object sender, RoutedEventArgs e)
+    {
+        new MainWindow().Show();
+        this.Close();
+    }
 }
