@@ -7,6 +7,17 @@
         mc:Ignorable="d"
         Title="ProductList" Height="640" Width="800"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
+
+    <Window.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Margin" Value="200" />
+
+        </Style>
+    </Window.Resources>
+
     <Grid Name="MainGrid">
         <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
             VerticalAlignment="Stretch" Width="auto">
@@ -15,7 +26,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
         </Grid>
-        <Label FontSize="33" Grid.Column="0" Margin="0,0,0,479" Grid.RowSpan="2">Category</Label>
+        <Label FontSize="33" Grid.Column="0" Margin="0,0,0,479" Grid.RowSpan="2"/>
         <ComboBox Text="" SelectedItem="{Binding selectedCategory, Mode=TwoWay}" ItemsSource="{Binding categoryItems}" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
                   Width="120"
@@ -37,8 +48,9 @@
             </ListView.View>
         </ListView>
 
-        <Button Content="Add new Product" Grid.Row="2" HorizontalAlignment="Left" Margin="552,10,0,5" Padding="5" Click="ShowProductWindow_Click" Height="28" VerticalAlignment="Bottom"/>
-        <Button Click="NavigateToManagerWindow" Content="back to manager page" HorizontalAlignment="Left" Margin="552,547,0,0" Grid.Row="1" VerticalAlignment="Top" Height="31" Grid.RowSpan="2" Width="114"/>
+        <Button  Click="ShowProductWindow_Click" Content="Add new Product"  HorizontalAlignment="Left" Margin="520,0,0,0"   VerticalAlignment="Top"   Grid.Row="3"/>
+        <Button Click="showAllButton" Content="back to manager page" HorizontalAlignment="Left" Margin="320,0,0,0" VerticalAlignment="Top"  Grid.Row="3"/>
+        <Button Click="NavigateToManagerWindow" Content="back to manager page" HorizontalAlignment="Left" Margin="120,0,0,0" Grid.Row="3" VerticalAlignment="Top"   />
 
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>

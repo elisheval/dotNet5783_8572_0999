@@ -143,9 +143,9 @@ internal class Cart : ICart
     /// <returns>true- if valid, false- if not</returns>
     private bool IsValid(string email)
     {
-        bool valid = true;
+        bool valid = false;
         try { MailAddress emailAddress = new MailAddress(email); }
-        catch { valid = false; }
+        catch { valid = true; }
         return valid;
     }
 

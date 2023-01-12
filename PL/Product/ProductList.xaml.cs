@@ -84,7 +84,8 @@ public partial class ProductList : Window
     /// <param name="e"></param>
     private void categorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (bl != null)productList =bl.Product.GetProductsByCategory((BO.Enums.Category)selectedCategory!);
+        if (bl != null)
+            productList =bl.Product.GetProductsByCategory((BO.Enums.Category)selectedCategory!);
     }
     #endregion
 
@@ -96,10 +97,14 @@ public partial class ProductList : Window
     /// <param name="e"></param>
     private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        this.Hide();
-        new ProductWindow(productSelected.Id).ShowDialog();//after the add window close updating the list
-        this.Show();
-        if(bl!=null)productList = bl.Product.GetAllProduct();
+        //if (sender.GetType!=(System.Windows.Controls.ListViewItem))
+        //{
+            this.Hide();
+
+            new ProductWindow(productSelected.Id).ShowDialog();//after the add window close updating the list
+            this.Show();
+            if (bl != null) productList = bl.Product.GetAllProduct();
+        //}
     }
     #endregion
 
@@ -111,5 +116,14 @@ public partial class ProductList : Window
     }
     #endregion
 
-    
+    #region showAllButton
+    private void showAllButton(object sender, RoutedEventArgs e)
+    {
+        if (bl != null)
+        {
+            //selectedCategory = null;
+            productList = bl.Product.GetAllProduct();
+        }
+    }
+    #endregion
 }

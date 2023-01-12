@@ -31,11 +31,14 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Content="back" Click="Button_Click" Grid.Row="4" Width="100"></Button>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
             <RowDefinition Height="500*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
+
         </Grid.RowDefinitions>
     </Grid>
 

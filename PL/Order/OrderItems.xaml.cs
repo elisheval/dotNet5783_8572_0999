@@ -160,9 +160,11 @@ public partial class OrderItems : Window
                 amount = 0;
                 productId = 0;
             }
-            catch (BO.InvalidValueException ex) { message = ex.Message; }
-            catch (BO.NoFoundItemExceptions ex) { message = ex.Message; }
+            catch (BO.InvalidValueException) { message = "invalid amount"; }
+            catch (BO.NoFoundItemExceptions) { message = "no found product with this id"; }
         }
     }
     #endregion
+
+    
 }

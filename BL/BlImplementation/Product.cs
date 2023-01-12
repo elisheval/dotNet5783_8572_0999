@@ -213,7 +213,9 @@ internal class Product : IProduct
     public IEnumerable<ProductForList?> GetProductsByCategory(BO.Enums.Category category)
     {
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
-        IEnumerable<DO.Product?> productListFromDo = _dal.Product.GetAll((x) => x != null && x?.Category == (DO.Enums.Category?)category);
+        IEnumerable<DO.Product?> productListFromDo;
+       
+        productListFromDo = _dal.Product.GetAll((x) => x != null &&(x?.Category == (DO.Enums.Category?)category));
         return from product in productListFromDo
                where product != null
                select new BO.ProductForList()

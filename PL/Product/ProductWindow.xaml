@@ -1,5 +1,4 @@
-﻿
-<Window x:Class="PL.ProductWindows.ProductWindow"
+﻿<Window x:Class="PL.ProductWindows.ProductWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,32 +7,40 @@
         mc:Ignorable="d"
         Title="ProductWindow" Height="450" Width="800"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
-    <Grid Name="MainGrid">
-        <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
+
+    <Window.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Margin" Value="200" />
+
+        </Style>
+    </Window.Resources>
+    <Grid >
+        <Grid  HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
             VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
         </Grid>
-
-        <Button Content="{Binding btnAddOrUpdateContent, Mode=TwoWay}" Grid.Row="2" HorizontalAlignment="Right" Margin="5" Padding="5" Click="AddButton_Click"/>
-        <Label Content="id" HorizontalAlignment="Left" Margin="331,112,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <Label Content="category" HorizontalAlignment="Left" Margin="310,159,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.473,1.475"/>
-        <Label Content="name" HorizontalAlignment="Left" Margin="321,209,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.392,0.239"/>
-        <Label Content="price" HorizontalAlignment="Left" Margin="323,257,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.587,2.18"/>
-        <Label Content="in stock" HorizontalAlignment="Left" Margin="313,294,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.724,2.419"/>
-        <TextBox IsReadOnly="{Binding idIsReadOnly}"  Text="{Binding product.Id, Mode=TwoWay}"  HorizontalAlignment="Left" Margin="400,112,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.149,-0.44"/>
-        <ComboBox SelectedItem="{Binding product.Category,Mode=TwoWay}" ItemsSource="{Binding categoryItems, Mode=TwoWay}" HorizontalAlignment="Left" Margin="400,159,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120"/>
-        <TextBox Text="{Binding product.Name, Mode=TwoWay}" HorizontalAlignment="Left" Margin="400,213,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox Text="{Binding product.Price, Mode=TwoWay}" PreviewTextInput="PreviewTextInputDouble" HorizontalAlignment="Left" Margin="400,261,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox Text="{Binding product.InStock, Mode=TwoWay}" PreviewTextInput="PreviewTextInputInt" HorizontalAlignment="Left" Margin="400,302,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Label Content="{Binding message}" HorizontalAlignment="Center" Margin="0,30,0,0" Grid.Row="1" VerticalAlignment="Top"/>
-        <Button Click="NavigateToProductList" Content="back to product list" HorizontalAlignment="Left" Margin="699,18,0,0" Grid.Row="2" VerticalAlignment="Top"/>
-
+        <!--<Grid Style="{StaticResource basicL}">-->
+            <Label Content="id" HorizontalAlignment="Left" Margin="479,70,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Label Content="category" HorizontalAlignment="Left" Margin="458,117,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.473,1.475"/>
+        <Label Content="name" HorizontalAlignment="Left" Margin="469,167,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.392,0.239"/>
+        <Label Content="price" HorizontalAlignment="Left" Margin="471,215,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.587,2.18"/>
+        <Label Content="in stock" HorizontalAlignment="Left" Margin="461,252,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.724,2.419"/>
+        <TextBox IsReadOnly="{Binding idIsReadOnly}"  Text="{Binding product.Id, Mode=TwoWay}"  HorizontalAlignment="Left" Margin="548,70,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.149,-0.44"/>
+        <ComboBox SelectedItem="{Binding product.Category,Mode=TwoWay}" ItemsSource="{Binding categoryItems, Mode=TwoWay}" HorizontalAlignment="Left" Margin="548,117,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding product.Name, Mode=TwoWay}" HorizontalAlignment="Left" Margin="548,171,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding product.Price, Mode=TwoWay}" PreviewTextInput="PreviewTextInputDouble" HorizontalAlignment="Left" Margin="548,219,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding product.InStock, Mode=TwoWay}" PreviewTextInput="PreviewTextInputInt" HorizontalAlignment="Left" Margin="548,260,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button Click="NavigateToProductList" Content="back to product list" HorizontalAlignment="Left" Margin="110,120,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Button Click="AddButton_Click" Content="{Binding btnAddOrUpdateContent, Mode=TwoWay}" HorizontalAlignment="Left" Grid.Row="1"  Margin="110,208,0,186"/>
+         <!--</Grid>-->
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
     </Grid>

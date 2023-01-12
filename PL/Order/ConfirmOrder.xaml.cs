@@ -69,7 +69,12 @@ public partial class ConfirmOrder : Window
             message = "enter customer address ";
             return;
         }
-
+        //if (!IsValidEmail())
+        //{
+        //    message = "in     valid email";
+        //    return;
+        //}
+              
         if (order.CustomerEmail == null)
         {
             message = "enter customer email ";
@@ -110,4 +115,23 @@ public partial class ConfirmOrder : Window
         this.Close();
     }
     #endregion
+
+    private bool IsValidEmail()
+    {
+        var trimmedEmail = order.CustomerEmail;
+
+        if (trimmedEmail!=null&&trimmedEmail.EndsWith("."))
+        {
+            return false; // suggested by @TK-421
+        }
+        try
+        {
+            var addr = new System.Net.Mail.MailAddress(order.CustomerEmail);
+            return addr.Address == trimmedEmail;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }

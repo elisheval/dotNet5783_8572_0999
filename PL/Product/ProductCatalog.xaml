@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="ProductCatalog" Height="450" Width="800"
     DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
+    <Window.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Margin" Value="200" />
+
+        </Style>
+    </Window.Resources>
     <Grid Name="MainGrid">
         <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
             VerticalAlignment="Stretch" Width="auto">
@@ -15,14 +24,14 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
         </Grid>
-        <Label Height="44" FontSize="33" Grid.Column="0">Category</Label>
+        <Label FontSize="33" Grid.Column="0" Margin="0,0,0,370" Grid.RowSpan="2">Category</Label>
         <ComboBox Text="" SelectedItem="{Binding selectedCategory, Mode=TwoWay}" ItemsSource="{Binding categoryItems}" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
                   Width="120"
                   Name="categorySelector"
                   Grid.Column="1" SelectionChanged="categorySelector_SelectionChanged">
         </ComboBox>
-        <ListView Grid.Row="1" SelectedItem="{Binding selectedProduct, Mode=TwoWay}" ItemsSource="{Binding productCatalog,Mode=TwoWay}" MouseDoubleClick="ListView_MouseDoubleClick" Margin="0,66,0,0" Height="285" VerticalAlignment="Top"  >
+        <ListView Grid.Row="1" SelectedItem="{Binding selectedProduct, Mode=TwoWay}" ItemsSource="{Binding productCatalog,Mode=TwoWay}" MouseDoubleClick="ListView_MouseDoubleClick" Margin="0,29,0,0" Height="285" VerticalAlignment="Top"  >
             <ListView.View>
                 <GridView x:Name="GridView1">
                     <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=Id}" 
@@ -40,13 +49,13 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Click="NavigateToCartWindow" Content="my cart" HorizontalAlignment="Left" Margin="91,351,0,0" Grid.Row="1" VerticalAlignment="Top" Height="42" Width="83"/>
-        <Button Click="NavigateToMainWindow" Content="back to main window" HorizontalAlignment="Left" Margin="216,351,0,0" Grid.Row="1" VerticalAlignment="Top" Height="41" Width="148"/>
+        <Button Click="NavigateToCartWindow" Content="my cart" HorizontalAlignment="Left" Margin="212,50,0,40" Grid.Row="3"   />
+        <Button Click="NavigateToMainWindow" Content="back to main window" HorizontalAlignment="Left" Margin="431,50,0,40" Grid.Row="3"   />
 
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
     </Grid>
 
