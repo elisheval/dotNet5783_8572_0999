@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <StackPanel >
+
+            <StackPanel >
         <Button Background="{StaticResource MyButtonBackground}" Content="manager" FontSize="50"  Click="NavigateToManagerWindow"/>
         <Button Background="{StaticResource MyButtonBackground}" Content="new order" FontSize="50" Click="NavigateToCatalogWindow"/>
         <Button Background="{StaticResource MyButtonBackground}" Content="order tracking" FontSize="50" Click="NavigateToOrderTrackingWindow"/>

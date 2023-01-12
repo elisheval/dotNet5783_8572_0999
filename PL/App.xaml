@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:PL"
              StartupUri="MainWindow.xaml">
-    <Application.Resources>
+    <!--<Application.Resources>
         <LinearGradientBrush 
            x:Key="MyButtonBackground" 
            EndPoint="0.504,1.5" StartPoint="0.504,0.03">
             <GradientStop Color="Gray" Offset="0"/>
             <GradientStop Color="#FFFFFFFF" Offset="0.567"/>
         </LinearGradientBrush>
-    </Application.Resources>
+    </Application.Resources>-->
 </Application>
