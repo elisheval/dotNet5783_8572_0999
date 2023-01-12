@@ -147,14 +147,21 @@ public partial class OrderItems : Window
         if (bl != null)
         {
             if (amount <= 0)
+            {
                 message = "invalid amount";
-            if(productId<=0)
+                return;
+            }
+            if (productId <= 0)
+            {
                 message = "invalid product id";
+                return;
+            }
 
             try
             {
                 bl.Order.UpdateOrder(orderId, productId, amount);
                 MessageBox.Show("succesfully");
+                message = "";
                 visibiltyForm=false;
                 orderItemsList = new ObservableCollection<BO.OrderItem?>((bl.Order.GetOrderById(orderId).OrderItemList!).Cast<BO.OrderItem?>());
                 amount = 0;

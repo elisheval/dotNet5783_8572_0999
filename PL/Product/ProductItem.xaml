@@ -16,10 +16,12 @@
             <Setter Property="Width" Value="170" />
             <Setter Property="Height" Value="40" />
             <Setter Property="Margin" Value="130" />
-
         </Style>
     </Window.Resources>
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Product/a.jpg"/>
+        </Grid.Background>
         <Label Content="id" HorizontalAlignment="Left" Margin="519,87,0,0" VerticalAlignment="Top"/>
         <Label Content="category" HorizontalAlignment="Left" Margin="498,134,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.473,1.475"/>
         <Label Content="name" HorizontalAlignment="Left" Margin="509,184,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.392,0.239"/>

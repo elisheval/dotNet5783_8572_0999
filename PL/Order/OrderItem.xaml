@@ -8,6 +8,9 @@
         Title="OrderItem" Height="450" Width="800"
     DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     <Grid Margin="0,0,0,0">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Order/a.jpg"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="38*"/>
             <RowDefinition Height="49*"/>

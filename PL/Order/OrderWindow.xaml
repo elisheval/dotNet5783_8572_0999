@@ -8,9 +8,18 @@
         Title="OrderWindow" Height="450" Width="800"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     <Window.Resources>
+        <Style TargetType="Button" x:Key="btnStyle" BasedOn="{StaticResource basicBtnStyle}">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Margin" Value="200" />
+        </Style>
         <local:CnvrtBoolToVisible x:Key="myCnvrtr"/>
     </Window.Resources>
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Order/a.jpg"/>
+        </Grid.Background>
         <Label Content="Id" HorizontalAlignment="Left" Margin="286,73,0,0" VerticalAlignment="Top"/>
         <Label Content="CustomerName" HorizontalAlignment="Left" Margin="286,104,0,0" VerticalAlignment="Top"/>
         <Label Content="CustomerEmail" HorizontalAlignment="Left" Margin="286,135,0,0" VerticalAlignment="Top"/>
@@ -30,11 +39,10 @@
         <TextBox IsReadOnly="True" Text="{Binding order.DeliveryDate}" HorizontalAlignment="Left" Margin="390,294,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox IsReadOnly="True" Text="{Binding order.TotalOrderPrice}" HorizontalAlignment="Left" Margin="390,330,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" />
         <Label Content="NewOrder" HorizontalAlignment="Center" Margin="0,42,0,0" VerticalAlignment="Top"/>
-        <Button Content="show all order items" HorizontalAlignment="Left" Margin="676,381,0,0" VerticalAlignment="Top" Click="ShowAllOrderItems"/>
+        <Button Style="{StaticResource btnStyle}" Content="show all order items" HorizontalAlignment="Left" Margin="415,356,0,0" VerticalAlignment="Top" Click="ShowAllOrderItems"/>
         <Button Content="confirm ship" Click="btnConfirmShip" Visibility="{Binding visiblityShip, Converter={StaticResource myCnvrtr}}" VerticalAlignment="Top" Width="120" HorizontalAlignment="Left" Margin="390,263,0,0"></Button>
         <Button Content="confirm delivery" Click="btnConfirmDelivery" Visibility="{Binding visiblityDelivery, Converter={StaticResource myCnvrtr}}" VerticalAlignment="Top" Width="120" HorizontalAlignment="Left" Margin="390,294,0,0"></Button>
         <Label Content="{Binding message}" HorizontalAlignment="Left" Margin="376,391,0,0" VerticalAlignment="Top"/>
-        <Button Click="NavigateToOrderList" Content="back to order list" HorizontalAlignment="Left" Margin="532,381,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.252,-0.399" Width="106"/>
+        <Button Style="{StaticResource btnStyle}" Click="NavigateToOrderList" Content="back to order list" HorizontalAlignment="Left" Margin="236,357,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.252,-0.399"/>
     </Grid>
-    <!--Visibility="{Binding visiblity, Converter={StaticResource myCnvrtr}}"-->
 </Window>

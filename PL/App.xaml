@@ -9,17 +9,24 @@
                 <Setter Property="FontWeight" Value="Normal" />
                 <Setter Property="BorderBrush" Value="#7B7D82" />
                 <Setter Property="BorderThickness" Value="3" />
-            <Setter Property="Foreground" Value="#7B7D82" />
-            <Setter Property="Background" Value="#ECEE"/>
+                <Setter Property="Foreground" Value="#7B7D82" />
+                <Setter Property="Background" Value="LightGray"/>
                 <Style.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="7,7,7,7" />
                     </Style>
                 </Style.Resources>
-
-
-
-            </Style>
+        </Style>
+        <Style TargetType="ListView" x:Key="basicLstVStyle" >
+            <Setter Property="Background" Value="white" />
+            <Setter Property="Width" Value="auto" />
+            <Setter Property="Opacity" Value="0.8" />
+            <Setter Property="Height" Value="400" />
+        </Style>
+        <Style TargetType="Label" x:Key="basicLabelStyle" >
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Foreground" Value="Red" />
+        </Style>
 
         <!--<Style TargetType="Grid" x:Key="basicstVStyle">
             <Setter Property="BorderBrush" Value="#7B7D82" />

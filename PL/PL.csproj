@@ -16,6 +16,39 @@
 	    </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="images\**" />
+    <EmbeddedResource Remove="images\**" />
+    <None Remove="images\**" />
+    <Page Remove="images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="mainWImg.jpg" />
+    <None Remove="Order\a.jpg" />
+    <None Remove="Order\c.jpg" />
+    <None Remove="Order\d.jpg" />
+    <None Remove="Order\e.jpg" />
+    <None Remove="Order\mainWImg.jpg" />
+    <None Remove="Product\a.jpg" />
+    <None Remove="Product\c.jpg" />
+    <None Remove="Product\rr.jpg" />
+    <None Remove="rr.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="mainWImg.jpg" />
+    <Resource Include="Order\a.jpg" />
+    <Resource Include="Order\c.jpg" />
+    <Resource Include="Order\d.jpg" />
+    <Resource Include="Order\e.jpg" />
+    <Resource Include="Order\mainWImg.jpg" />
+    <Resource Include="Product\a.jpg" />
+    <Resource Include="Product\c.jpg" />
+    <Resource Include="Product\rr.jpg" />
+    <Resource Include="rr.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
   </ItemGroup>
 

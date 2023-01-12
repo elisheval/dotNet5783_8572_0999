@@ -18,6 +18,9 @@
         </Style>
     </Window.Resources>
     <Grid >
+        <Grid.Background>
+            <ImageBrush ImageSource="/Product/a.jpg"/>
+        </Grid.Background>
         <Grid  HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
             VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
@@ -26,7 +29,8 @@
             </Grid.ColumnDefinitions >
         </Grid>
         <!--<Grid Style="{StaticResource basicL}">-->
-            <Label Content="id" HorizontalAlignment="Left" Margin="479,70,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Label Style="{StaticResource basicLabelStyle}" Content="{Binding message}" HorizontalAlignment="Left" Margin="489,15,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Label Content="id" HorizontalAlignment="Left" Margin="479,70,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <Label Content="category" HorizontalAlignment="Left" Margin="458,117,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.473,1.475"/>
         <Label Content="name" HorizontalAlignment="Left" Margin="469,167,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.392,0.239"/>
         <Label Content="price" HorizontalAlignment="Left" Margin="471,215,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.587,2.18"/>
@@ -38,7 +42,7 @@
         <TextBox Text="{Binding product.InStock, Mode=TwoWay}" PreviewTextInput="PreviewTextInputInt" HorizontalAlignment="Left" Margin="548,260,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Button Click="NavigateToProductList" Content="back to product list" HorizontalAlignment="Left" Margin="110,120,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <Button Click="AddButton_Click" Content="{Binding btnAddOrUpdateContent, Mode=TwoWay}" HorizontalAlignment="Left" Grid.Row="1"  Margin="110,208,0,186"/>
-         <!--</Grid>-->
+        <!--</Grid>-->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>

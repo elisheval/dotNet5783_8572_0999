@@ -7,14 +7,28 @@
         mc:Ignorable="d"
         Title="CartWindow" Height="450" Width="800"
      DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
+    <Window.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}" x:Key="btnStyle">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Margin" Value="10" />
+        </Style>
+        <Style TargetType="ListView" BasedOn="{StaticResource basicLstVStyle}">
+            <Setter Property="Width" Value="730" />
+            <Setter Property="Height" Value="300" />
+        </Style>
+    </Window.Resources>
     <StackPanel>
-        <Button Content="confirm order" Click="NavigateToConfirmOrder"></Button>
-        <Button Content="back to product catalog" Click="NavigateToProductCatalog"></Button>
-        <Label Content="{Binding message}"></Label>
-        <ListView  ItemsSource="{Binding OIList}" >
+        <StackPanel.Background>
+            <ImageBrush ImageSource="/Product/rr.jpg"></ImageBrush>
+        </StackPanel.Background>
+        <Button Style="{StaticResource btnStyle}" Content="confirm order" Click="NavigateToConfirmOrder"></Button>
+        <Label Style="{StaticResource basicLabelStyle}" Content="{Binding message}"></Label>
+        <ListView ItemsSource="{Binding OIList}" >
             <ListView.View>
-                <GridView x:Name="GridView1">
-                    <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding ProductId}" 
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding= "{Binding ProductId}" 
                                 Header="product_id" Width="100"/>
                     <GridViewColumn DisplayMemberBinding= "{Binding Price}" 
                                 Header="price" Width="100"/>
@@ -59,6 +73,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Style="{StaticResource btnStyle}" Content="back to product catalog" Click="NavigateToProductCatalog"></Button>
     </StackPanel>
         
     

@@ -7,33 +7,37 @@
         mc:Ignorable="d"
         Title="ProductList" Height="640" Width="800"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
-
     <Window.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}">
             <Setter Property="FontSize" Value="10" />
             <Setter Property="Width" Value="150" />
             <Setter Property="Height" Value="40" />
             <Setter Property="Margin" Value="200" />
-
+        </Style>
+        <Style TargetType="ListView" BasedOn="{StaticResource basicLstVStyle}">
+            <Setter Property="Width" Value="500" />
         </Style>
     </Window.Resources>
-
-    <Grid Name="MainGrid">
-        <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Product/rr.jpg"></ImageBrush>
+        </Grid.Background>
+        <Grid HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
             VerticalAlignment="Stretch" Width="auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
         </Grid>
-        <Label FontSize="33" Grid.Column="0" Margin="0,0,0,479" Grid.RowSpan="2"/>
+        <Label FontSize="33" Grid.Column="0" Margin="0,0,0,479" Grid.RowSpan="2">
+        </Label>
         <ComboBox Text="" SelectedItem="{Binding selectedCategory, Mode=TwoWay}" ItemsSource="{Binding categoryItems}" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch"
                   Width="120"
                   Name="categorySelector"
                   Grid.Column="1" SelectionChanged="categorySelector_SelectionChanged">
         </ComboBox>
-        <ListView Grid.Row="1" ItemsSource="{Binding productList }" SelectedItem="{Binding productSelected, Mode=TwoWay}" MouseDoubleClick="ListView_MouseDoubleClick"  >
+        <ListView  Grid.Row="1" ItemsSource="{Binding productList }" SelectedItem="{Binding productSelected, Mode=TwoWay}" MouseDoubleClick="ListView_MouseDoubleClick"  >
             <ListView.View>
                 <GridView x:Name="GridView1">
                     <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=Id}" 
@@ -49,7 +53,7 @@
         </ListView>
 
         <Button  Click="ShowProductWindow_Click" Content="Add new Product"  HorizontalAlignment="Left" Margin="520,0,0,0"   VerticalAlignment="Top"   Grid.Row="3"/>
-        <Button Click="showAllButton" Content="back to manager page" HorizontalAlignment="Left" Margin="320,0,0,0" VerticalAlignment="Top"  Grid.Row="3"/>
+        <Button Click="showAllButton" Content="show all" HorizontalAlignment="Left" Margin="245,10,0,0" VerticalAlignment="Top" Width="73" Height="33" RenderTransformOrigin="0.792,-0.027"/>
         <Button Click="NavigateToManagerWindow" Content="back to manager page" HorizontalAlignment="Left" Margin="120,0,0,0" Grid.Row="3" VerticalAlignment="Top"   />
 
         <Grid.RowDefinitions>

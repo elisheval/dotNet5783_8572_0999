@@ -8,14 +8,39 @@
         Title="OrderItems" Height="450" Width="800"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     <Window.Resources>
+        <Style TargetType="ListView" BasedOn="{StaticResource basicLstVStyle}">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Width" Value="550" />
+            <Setter Property="Height" Value="120" />
+            <Setter Property="Margin" Value="44" />
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="40" />
+        </Style>
+        <Style TargetType="StackPanel" x:Key="spStyle">
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="300" />
+            <Setter Property="Background" Value="white" />
+            <Setter Property="Opacity" Value="0.8" />
+        </Style>
+        <Style TargetType="Label" x:Key="lblStyle" BasedOn="{StaticResource basicLabelStyle}">
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Height" Value="120" />
+            <Setter Property="FontSize" Value="16" />
+        </Style>
         <local:CnvrtBoolToVisible x:Key="myCnvrtr"/>
     </Window.Resources>
     <Grid>
-    <StackPanel>
-        <ListView ItemsSource="{Binding orderItemsList , Mode=TwoWay}" SelectedItem="{Binding selectedOrderItem}" MouseDoubleClick="updateOrderItem" >
-            <ListView.View>
-                <GridView x:Name="GridView1">
-                    <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=ProductId}" 
+        <Grid.Background>
+            <ImageBrush ImageSource="/Product/rr.jpg"></ImageBrush>
+        </Grid.Background>
+        <StackPanel>
+            <ListView ItemsSource="{Binding orderItemsList , Mode=TwoWay}" SelectedItem="{Binding selectedOrderItem}" MouseDoubleClick="updateOrderItem" >
+                <ListView.View>
+                    <GridView >
+                        <GridViewColumn DisplayMemberBinding= "{Binding Path=ProductId}" 
                                 Header="product_id" Width="100"/>
                         <GridViewColumn DisplayMemberBinding= "{Binding Path=Price}" 
                                 Header="price" Width="100"/>
@@ -28,16 +53,15 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <StackPanel Visibility="{Binding visibiltyForm,Converter={StaticResource myCnvrtr}}">
+            <Label Content="{Binding message}" Style="{StaticResource lblStyle}" Height="30"/>
+            <StackPanel Style="{StaticResource spStyle}" Visibility="{Binding visibiltyForm,Converter={StaticResource myCnvrtr}}">
                 <Label Content="enter product id"></Label>
                 <TextBox Text="{Binding productId,Mode=TwoWay}"></TextBox>
                 <Label Content="enter amount"></Label>
                 <TextBox Text="{Binding amount,Mode=TwoWay}"></TextBox>
-                <Button Content="confirm adding" Click="ConfirmAdding"></Button>
-                <Label Content="{Binding message}"></Label>
+                <Button Content="confirm adding" Click="ConfirmAdding"/>
             </StackPanel>
+            <Button Visibility="{Binding notSent,Converter={StaticResource myCnvrtr}}" Content="add new order item" Click="AddNewOrderItem" />
         </StackPanel>
-        <Button Visibility="{Binding notSent, Converter={StaticResource myCnvrtr}}" Content="add new orderItem" Margin="638,368,10,10" Click="AddNewOrderItem" />
-        
     </Grid>
 </Window>

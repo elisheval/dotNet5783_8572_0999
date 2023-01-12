@@ -9,11 +9,14 @@
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     
     <StackPanel Margin="0,0,0,71">
+        <StackPanel.Background>
+            <ImageBrush Stretch="UniformToFill" ImageSource="/Order/a.jpg"/>
+        </StackPanel.Background>
         <Label Content="enter order id"></Label>
-        <Label Content="{Binding message}"></Label>
+        <Label Style="{StaticResource basicLabelStyle}" Content="{Binding message}"></Label>
         <TextBox Text="{Binding orderId, Mode=TwoWay}"></TextBox>
         <Button Content="order tracking" Click="BtnOrderTracking"></Button>
-        <ListView ItemsSource="{Binding }">
+        <ListView ItemsSource="{Binding orderTracking.DetailOrderStatuses}">
         </ListView>
         <Button Content="display all details of order" Click="showAllDetailsOfOrder"/>
         <Button Content="back to main window" Click="backMainWindow"/>

@@ -6,10 +6,20 @@
         xmlns:local="clr-namespace:PL.Manager"
         mc:Ignorable="d"
         Title="managerWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Margin" Value="12" />
+        </Style>
+    </Window.Resources>
     <StackPanel>
+        <StackPanel.Background>
+            <ImageBrush ImageSource="/mainWImg.jpg"/>
+        </StackPanel.Background>
         <Button Content="all product list" Click="NavigateToProductListWindow"/>
         <Button Content="all order list" Click="NavigateToOrderListWindow"/>
         <Button Content="back to main window" Click="NavigateToMainWindow" />
-
     </StackPanel>
 </Window>
