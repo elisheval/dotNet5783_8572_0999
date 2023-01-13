@@ -16,19 +16,19 @@ public partial class ProductWindow : Window
     #region properties
     BlApi.IBl? bl = BlApi.Factory.Get();
     public bool idIsReadOnly { get; set; } = false;
-    public BO.Product product { get; set; } = new();
+    //public BO.Product product { get; set; } = new();
     public System.Array categoryItems { get; set; } = Enum.GetValues(typeof(BO.Enums.Category));
     #endregion
 
     #region Dependency Properties
-    //public Label lblMessage
-    //{
-    //    get { return (Label)GetValue(marginProperty); }
-    //    set { SetValue(marginProperty, value); }
-    //}
+    public BO.Product product
+    {
+        get { return (BO.Product)GetValue(productProperty); }
+        set { SetValue(productProperty, value); }
+    }
     // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
-    //public static readonly DependencyProperty marginProperty =
-    //    DependencyProperty.Register("lblMessage", typeof(Label), typeof(ProductWindow));
+    public static readonly DependencyProperty productProperty =
+        DependencyProperty.Register("product", typeof(BO.Product), typeof(ProductWindow));
 
 
     public string message
@@ -61,8 +61,7 @@ public partial class ProductWindow : Window
     /// <param name="e"></param>
     private void AddButton_Click(object sender, RoutedEventArgs e)
     {
-
-        //check validation
+        MessageBox.Show(product.Price.ToString());      //check validation
         if (product.Id == 0)
         {
             message = "invalid id"; return;
@@ -74,18 +73,8 @@ public partial class ProductWindow : Window
         if (product.Name == null)
         {
             message = "invalid name"; return;
-            //lblMessage = new Label()
-            //{
-            //    Content = "name",
-            //    HorizontalAlignment = HorizontalAlignment.Left,
-            //    Margin = new Thickness(400, 230, 0,0),
-            //    //Grid.Row = "1",
-            //    VerticalAlignment = VerticalAlignment.Top
-            //    //RenderTransformOrigin = "0.392,0.239"
-            //};
-            ////400,213,0,0
         }
-        if (product.Price == 0)
+        if (product.Price == null)
         {
             message = "invalid price"; return;
         }
@@ -124,6 +113,7 @@ public partial class ProductWindow : Window
     {
         message = "";
         btnAddOrUpdateContent = "add";
+        product = new();
         InitializeComponent();
     }
 

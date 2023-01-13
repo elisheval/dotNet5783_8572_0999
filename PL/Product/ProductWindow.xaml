@@ -38,7 +38,7 @@
         <TextBox IsReadOnly="{Binding idIsReadOnly}"  Text="{Binding product.Id, Mode=TwoWay}"  HorizontalAlignment="Left" Margin="548,70,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" RenderTransformOrigin="-0.149,-0.44"/>
         <ComboBox SelectedItem="{Binding product.Category,Mode=TwoWay}" ItemsSource="{Binding categoryItems, Mode=TwoWay}" HorizontalAlignment="Left" Margin="548,117,0,0" Grid.Row="1" VerticalAlignment="Top" Width="120"/>
         <TextBox Text="{Binding product.Name, Mode=TwoWay}" HorizontalAlignment="Left" Margin="548,171,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox Text="{Binding product.Price, Mode=TwoWay}" PreviewTextInput="PreviewTextInputDouble" HorizontalAlignment="Left" Margin="548,219,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox Text="{Binding product.Price, Mode=TwoWay}" PreviewTextInput="PreviewTextInputDouble" HorizontalAlignment="Left" Margin="548,219,0,0" Grid.Row="1"  VerticalAlignment="Top" Width="120"/>
         <TextBox Text="{Binding product.InStock, Mode=TwoWay}" PreviewTextInput="PreviewTextInputInt" HorizontalAlignment="Left" Margin="548,260,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Button Click="NavigateToProductList" Content="back to product list" HorizontalAlignment="Left" Margin="110,120,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <Button Click="AddButton_Click" Content="{Binding btnAddOrUpdateContent, Mode=TwoWay}" HorizontalAlignment="Left" Grid.Row="1"  Margin="110,208,0,186"/>

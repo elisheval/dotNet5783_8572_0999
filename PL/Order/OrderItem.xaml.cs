@@ -23,7 +23,7 @@ public partial class OrderItem : Window
         DependencyProperty.Register("selectedOrderItem", typeof(BO.OrderItem), typeof(OrderItem));
     #endregion
 
-    #region constractor
+    #region constructor
     public OrderItem(BO.OrderItem selectedOrderItem, int orderId)
     {
         if (selectedOrderItem != null)
