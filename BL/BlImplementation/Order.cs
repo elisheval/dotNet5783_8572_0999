@@ -323,7 +323,7 @@ internal class Order : IOrder
                         };
                         if (p.InStock < amount)
                         {
-                            OItoChange.Amount = orderItem?.Amount ?? 0 + p.InStock;
+                            OItoChange.Amount = (orderItem?.Amount ?? 0) + p.InStock;
                             p.InStock = 0;
                         }
                         else
@@ -340,8 +340,8 @@ internal class Order : IOrder
                     DO.Product p = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
                     if (p.InStock < amount)
                     {
-                        p.InStock = 0;
                         amount = p.InStock;
+                        p.InStock = 0;
                     }
                     else
                     {

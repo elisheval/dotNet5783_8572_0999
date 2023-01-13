@@ -54,7 +54,7 @@
                 </ListView.View>
             </ListView>
             <Label Content="{Binding message}" Style="{StaticResource lblStyle}" Height="30"/>
-            <StackPanel Style="{StaticResource spStyle}" Visibility="{Binding visibiltyForm,Converter={StaticResource myCnvrtr}}">
+            <StackPanel Style="{StaticResource spStyle}" Visibility="{Binding visibiltyForm,Converter={StaticResource myCnvrtr}}" Height="212" Width="164">
                 <Label Content="enter product id"></Label>
                 <TextBox Text="{Binding productId,Mode=TwoWay}"></TextBox>
                 <Label Content="enter amount"></Label>
