@@ -61,7 +61,6 @@ public partial class ProductWindow : Window
     /// <param name="e"></param>
     private void AddButton_Click(object sender, RoutedEventArgs e)
     {
-        MessageBox.Show(product.Price.ToString());      //check validation
         if (product.Id == 0)
         {
             message = "invalid id"; return;
@@ -74,7 +73,7 @@ public partial class ProductWindow : Window
         {
             message = "invalid name"; return;
         }
-        if (product.Price == null)
+        if (product.Price == 0)
         {
             message = "invalid price"; return;
         }

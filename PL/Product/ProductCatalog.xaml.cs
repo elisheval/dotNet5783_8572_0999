@@ -106,9 +106,11 @@ public partial class ProductCatalog : Window
     }
     #endregion
 
+    #region NavigateToMainWindow
     private void NavigateToMainWindow(object sender, RoutedEventArgs e)
     {
         new MainWindow().Show();
         this.Close();
     }
+    #endregion
 }

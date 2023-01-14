@@ -93,9 +93,12 @@ public partial class OrderTracking : Window
     }
     #endregion
 
+    #region backMainWindow
     private void backMainWindow(object sender, RoutedEventArgs e)
     {
         new MainWindow().Show();
         this.Close();
     }
+    #endregion
 }
+

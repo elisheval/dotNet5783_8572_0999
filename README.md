@@ -116,3 +116,12 @@ stage2: this is the method to update, we tryed it and its work:
     locking is used so that only one thread can enter valid code snippets at a time.
     we can also use Lazy class for it and in the default itis also safetly,
     but we used the nested class because its was in the presentation of the material
+    stage 5:
+    we used :*A uniform style inside the resource feature 
+             in the APP file as well as in a specific window
+             with the use of based on with changes adjusted 
+             to the window.
+             *Transform to rotate buttons.
+             *Drawing - in order confirmation, the customer signs in a canvas box.
+             *a trigger to change the design of a button when the mouse hovers over it.     
+             *a trigger to change the design of a button when the mouse out of fucus over it. 

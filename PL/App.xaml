@@ -12,20 +12,24 @@
                 <Setter Property="BorderThickness" Value="3" />
                 <Setter Property="Foreground" Value="#7B7D82" />
                 <Setter Property="Background" Value="LightGray"/>
+            <Setter Property = "Foreground" Value = "#7B7D82" />
             <Style.Triggers>
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsFocused" Value="True">
-                        </Condition>
-                        <Condition Property="IsMouseOver" Value="True">
-                        </Condition>
-                    </MultiTrigger.Conditions>
-                    <MultiTrigger.Setters>
-                        <Setter Property="Background" Value="yellow" >
-                        </Setter>
-                    </MultiTrigger.Setters>
-                </MultiTrigger>
+                <Trigger Property = "IsMouseOver" Value = "True">
+                    <Setter Property = "Foreground" Value = "green" />
+                    <Setter Property = "FontWeight" Value = "Bold" />
+                    <Setter Property = "FontSize" Value = "12" />
+                    <Setter Property = "Opacity" Value = "0.6" />
+                </Trigger>
+                <EventTrigger RoutedEvent="LostFocus">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color"
+                    To="White" Duration="0:0:0.25"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
             </Style.Triggers>
+                
             <Style.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="7,7,7,7" />
@@ -42,10 +46,5 @@
             <Setter Property="FontSize" Value="20" />
             <Setter Property="Foreground" Value="Red" />
         </Style>
-
-        <!--<Style TargetType="Grid" x:Key="basicstVStyle">
-            <Setter Property="BorderBrush" Value="#7B7D82" />
-            <Setter Property="BorderThickness" Value="3" />
-        </Style>-->
     </Application.Resources>
 </Application>

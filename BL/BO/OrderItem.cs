@@ -1,14 +1,72 @@
 ﻿
+using System.ComponentModel;
+
 namespace BO;
-public class OrderItem
+public class OrderItem: INotifyPropertyChanged
 {
     #region properties
-    public int Id { get; set; }
-    public int ProductId { get; set; } 
-    public string? ProductName { get; set; }
-    public double Price { get; set; }
-    public int AmountInCart { get; set; }
-    public double TotalPriceForItem { get; set; }
+    private int id;
+    public int Id
+    {
+        get { return id; }
+        set
+        {
+            id = value;
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("ID"));
+        }
+    }
+    private int productId;
+    public int ProductId
+    {
+        get { return productId; }
+        set
+        {
+            productId = value;
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("ProductId"));
+        }
+    }
+    private string? productName;
+    public string? ProductName
+    {
+        get { return productName; }
+        set
+        {
+            productName = value;
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("ProductName"));
+        }
+    }
+    private double price;
+    public double Price
+    {
+        get { return price; }
+        set
+        {
+            price = value;
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Price"));
+        }
+    }
+    private int amountInCart;
+    public int AmountInCart
+    {
+        get { return amountInCart; }
+        set
+        {
+            amountInCart = value;
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("AmountInCart"));
+        }
+    }
+    private double totalPriceForItem;
+    public double TotalPriceForItem
+    {
+        get { return totalPriceForItem; }
+        set
+        {
+            totalPriceForItem = value;
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("TotalPriceForItem"));
+        }
+    }
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     #endregion
 
     #region ToString

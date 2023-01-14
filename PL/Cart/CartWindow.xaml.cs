@@ -1,7 +1,9 @@
 ﻿using PL.Order;
 using PL.Product;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 
@@ -10,10 +12,21 @@ namespace PL.Cart;
 /// <summary>
 /// Interaction logic for CartWindow.xaml
 /// </summary>
-public partial class CartWindow : Window
+public partial class CartWindow : Window, INotifyPropertyChanged
 {
     #region properties
-    BO.Cart myCart;
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private BO.Cart? myCart;
+    public BO.Cart? MyCart
+    {
+        get { return myCart; }
+        set
+        {
+            myCart = value;
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs("Cart"));
+        }
+    }
     BlApi.IBl? bl = BlApi.Factory.Get();
     #endregion
 
@@ -26,15 +39,6 @@ public partial class CartWindow : Window
     // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty messageProperty =
         DependencyProperty.Register("message", typeof(string), typeof(CartWindow));
-
-    public ObservableCollection<BO.OrderItem?> OIList
-    {
-        get { return (ObservableCollection<BO.OrderItem?>)GetValue(OIListProperty); }
-        set { SetValue(OIListProperty, value); }
-    }
-    // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty OIListProperty =
-        DependencyProperty.Register("OIList", typeof(ObservableCollection<BO.OrderItem?>), typeof(OrderItems));
     #endregion
 
     #region construcror
@@ -42,11 +46,9 @@ public partial class CartWindow : Window
     /// the window opening from productt catalog window 
     /// </summary>
     /// <param name="myCart"> user cart</param>
-    public CartWindow(BO.Cart c)
+    public CartWindow(BO.Cart cart)
     {
-
-        myCart = c;
-        OIList = new ObservableCollection<BO.OrderItem?>(c.OrderItemList!);
+        MyCart = cart;
         InitializeComponent();
     }
     #endregion
@@ -63,10 +65,10 @@ public partial class CartWindow : Window
 
         if (element != null && element.DataContext is BO.OrderItem)
         {
-            //if (myCart.OrderItemList != null) myCart.OrderItemList.Remove((element.DataContext as BO.OrderItem)!);
-            //if(myCart.OrderItemList!=null)orderItemsList = myCart.OrderItemList!;
             var a = element.DataContext as BO.OrderItem;
-            if (myCart.OrderItemList != null && bl != null) OIList = new ObservableCollection<BO.OrderItem?>(((bl.Cart.UpdateAmountOfProductInCart(a.ProductId, myCart, 0)).OrderItemList));
+            if (MyCart!.OrderItemList != null && bl != null) MyCart.OrderItemList.RemoveAll(item => item.ProductId == a!.ProductId);
+            MessageBox.Show("the order item removed");
+            NavigateToProductCatalog(sender, e);
         }
     }
     #endregion
@@ -79,9 +81,9 @@ public partial class CartWindow : Window
     /// <param name="e"></param>
     private void NavigateToConfirmOrder(object sender, RoutedEventArgs e)
     {
-        if (OIList != null)
+        if (MyCart!= null)
         {
-            new ConfirmOrder(myCart).Show();
+            new ConfirmOrder(MyCart).Show();
             this.Close();
         }
     }
@@ -95,8 +97,11 @@ public partial class CartWindow : Window
     /// <param name="e"></param>
     private void NavigateToProductCatalog(object sender, RoutedEventArgs e)
     {
-        new ProductCatalog(myCart).Show();
-        this.Close();
+        if (MyCart != null)
+        {
+            new ProductCatalog(MyCart).Show();
+            this.Close();
+        }
     }
     #endregion
 
@@ -112,12 +117,11 @@ public partial class CartWindow : Window
 
         if (element != null && element.DataContext is BO.OrderItem)
         {
-            if (myCart.OrderItemList != null && bl != null)
+            if (MyCart!.OrderItemList != null && bl != null)
             {
                 try
                 {
-                    myCart = bl.Cart.UpdateAmountOfProductInCart((element.DataContext as BO.OrderItem)!.ProductId, myCart, (element.DataContext as BO.OrderItem)!.AmountInCart + 1);
-                    //OIList = new ObservableCollection<BO.OrderItem?>(myCart.OrderItemList!<BO.OrderItem?>());
+                    MyCart = bl.Cart.UpdateAmountOfProductInCart((element.DataContext as BO.OrderItem)!.ProductId, MyCart, (element.DataContext as BO.OrderItem)!.AmountInCart + 1);
                     message = "the amount update succesfully";
                 }
                 catch (BO.ProductOutOfStockException ex)
@@ -138,12 +142,17 @@ public partial class CartWindow : Window
 
         if (element != null && element.DataContext is BO.OrderItem)
         {
-            if (myCart.OrderItemList != null && bl != null)
+            if (myCart!.OrderItemList != null && bl != null)
             {
+                if ((element.DataContext as BO.OrderItem)!.AmountInCart ==1) { 
+                    myCart.OrderItemList.RemoveAll(item => item.ProductId == (element.DataContext as BO.OrderItem)!.ProductId);
+                    MessageBox.Show("the order item removed");
+                    NavigateToProductCatalog(sender, e);
+                    return;
+                }
                 try
                 {
-                    myCart = bl.Cart.UpdateAmountOfProductInCart((element.DataContext as BO.OrderItem)!.ProductId, myCart, (element.DataContext as BO.OrderItem)!.AmountInCart - 1);
-                    OIList = new ObservableCollection<BO.OrderItem?>(myCart.OrderItemList!.Cast<BO.OrderItem?>());
+                    MyCart = bl.Cart.UpdateAmountOfProductInCart((element.DataContext as BO.OrderItem)!.ProductId, myCart, (element.DataContext as BO.OrderItem)!.AmountInCart - 1);
                     message = "the amount update succesfully";
                 }
                 catch (BO.ProductOutOfStockException ex)

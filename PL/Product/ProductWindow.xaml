@@ -29,7 +29,7 @@
             </Grid.ColumnDefinitions >
         </Grid>
         <!--<Grid Style="{StaticResource basicL}">-->
-        <Label Content="{Binding message}" HorizontalAlignment="Left" Margin="548,27,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Label Style="{StaticResource basicLabelStyle}" Content="{Binding message}" HorizontalAlignment="Left" Margin="548,27,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <Label Content="id" HorizontalAlignment="Left" Margin="479,70,0,0" Grid.Row="1" VerticalAlignment="Top"/>
         <Label Content="category" HorizontalAlignment="Left" Margin="458,117,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.473,1.475"/>
         <Label Content="name" HorizontalAlignment="Left" Margin="469,167,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="0.392,0.239"/>
@@ -47,5 +47,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+   
     </Grid>
+    
 </Window>

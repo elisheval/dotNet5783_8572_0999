@@ -43,7 +43,6 @@ public partial class ConfirmOrder : Window
     {
         message = "";
         order = new();
-        MessageBox.Show(cart.TotalOrderPrice.ToString());
         myCart = cart;
         order.TotalOrderPrice = cart.TotalOrderPrice;
         InitializeComponent();
@@ -69,12 +68,7 @@ public partial class ConfirmOrder : Window
             message = "enter customer address ";
             return;
         }
-        //if (!IsValidEmail())
-        //{
-        //    message = "in     valid email";
-        //    return;
-        //}
-              
+        
         if (order.CustomerEmail == null)
         {
             message = "enter customer email ";
@@ -116,6 +110,8 @@ public partial class ConfirmOrder : Window
     }
     #endregion
 
+    #region IsValidEmail
+
     private bool IsValidEmail()
     {
         var trimmedEmail = order.CustomerEmail;
@@ -134,4 +130,5 @@ public partial class ConfirmOrder : Window
             return false;
         }
     }
+    #endregion
 }

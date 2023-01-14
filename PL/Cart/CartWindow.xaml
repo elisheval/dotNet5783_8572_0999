@@ -25,14 +25,14 @@
         </StackPanel.Background>
         <Button Style="{StaticResource btnStyle}" Content="confirm order" Click="NavigateToConfirmOrder"></Button>
         <Label Style="{StaticResource basicLabelStyle}" Content="{Binding message}"></Label>
-        <ListView ItemsSource="{Binding OIList}" >
+        <ListView ItemsSource="{Binding MyCart.OrderItemList}" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding= "{Binding ProductId}" 
                                 Header="product_id" Width="100"/>
                     <GridViewColumn DisplayMemberBinding= "{Binding Price}" 
                                 Header="price" Width="100"/>
-                    <GridViewColumn DisplayMemberBinding= "{Binding orderItemsList.ProductName}" 
+                    <GridViewColumn DisplayMemberBinding= "{Binding ProductName}" 
                                 Header="product_name" Width="100"/>
                     <GridViewColumn DisplayMemberBinding= "{Binding AmountInCart}" 
                                 Header="amount_in_cart" Width="100"/>

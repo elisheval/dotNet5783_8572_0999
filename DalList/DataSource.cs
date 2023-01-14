@@ -102,7 +102,7 @@ internal static class DataSource
             #region assignment of 20 orders using dataTime.MinValue and timespan
             new Order(){CustomerName="elisheva",CustomerEmail="ee@",CustomerAddress="ddd76",OrderDate=new DateTime(2022,11,09),ShipDate=null,DeliveryDate=null},
             new Order(){CustomerName="miri",CustomerEmail="eemiri22" ,CustomerAddress="katz19",OrderDate=new DateTime(2022,10,05),ShipDate=null,DeliveryDate=null},
-            new Order(){CustomerName="",CustomerEmail="@",CustomerAddress="agasu45",OrderDate=new DateTime(2022,11,02),ShipDate=null,DeliveryDate=null},
+            new Order(){CustomerName="elis",CustomerEmail="@",CustomerAddress="agasu45",OrderDate=new DateTime(2022,11,02),ShipDate=null,DeliveryDate=null},
             new Order(){CustomerName="rina",CustomerEmail="rina",CustomerAddress="drouk76",OrderDate=new DateTime(2022,09,30),ShipDate=null,DeliveryDate=null},
             new Order(){CustomerName="tamar",CustomerEmail="tamar@",CustomerAddress="drook476",OrderDate=new DateTime(2022,09,15),ShipDate=new DateTime(2022,09,22),DeliveryDate=null},
             new Order(){CustomerName="nomi",CustomerEmail="nomi@",CustomerAddress="hakablan12",OrderDate=new DateTime(2022,09,07),ShipDate=new DateTime(2022, 09,09),DeliveryDate=null},

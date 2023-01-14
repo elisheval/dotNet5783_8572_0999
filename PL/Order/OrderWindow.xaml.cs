@@ -125,10 +125,4 @@ public partial class OrderWindow : Window
         this.Close();
     }
     #endregion
-
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        new OrderList().Show();
-        this.Close();
-    }
 }
