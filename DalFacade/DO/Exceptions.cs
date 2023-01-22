@@ -24,3 +24,9 @@ public class DalConfigException : Exception
     public DalConfigException(string msg, Exception ex) : base(msg, ex) { }
 }
 
+
+    public class XMLFileLoadCreateException : Exception
+{
+    public XMLFileLoadCreateException(string msg) : base(msg) { }
+    public XMLFileLoadCreateException(string msg,string ms, Exception ex) : base(msg, ex) { }
+}

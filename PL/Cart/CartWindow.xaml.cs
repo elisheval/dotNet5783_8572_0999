@@ -144,7 +144,8 @@ public partial class CartWindow : Window, INotifyPropertyChanged
         {
             if (myCart!.OrderItemList != null && bl != null)
             {
-                if ((element.DataContext as BO.OrderItem)!.AmountInCart ==1) { 
+                if ((element.DataContext as BO.OrderItem)!.AmountInCart == 1)
+                {
                     myCart.OrderItemList.RemoveAll(item => item.ProductId == (element.DataContext as BO.OrderItem)!.ProductId);
                     MessageBox.Show("the order item removed");
                     NavigateToProductCatalog(sender, e);

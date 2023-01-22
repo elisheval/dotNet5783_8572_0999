@@ -2,12 +2,12 @@
 using DalApi;
 namespace Dal;
 
-internal sealed class DalList : IDal
+public sealed class DalList : IDal
 {
 
-    public IOrder Order => new DalOrder();
-    public IOrderItem OrderItem => new DalOrderItem();
-    public IProduct Product => new DalProduct();
+    public IOrder Order { get; } = new DalOrder();
+    public IOrderItem OrderItem { get; } = new DalOrderItem();
+    public IProduct Product { get; } = new DalProduct();
 
     class Nested
     {
