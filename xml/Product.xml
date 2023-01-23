@@ -3,9 +3,9 @@
   <product>
     <Id>100001</Id>
     <Name>drums</Name>
-    <Price>900</Price>
-    <Category>percussions</Category>
-    <InStock>5</InStock>
+    <Price>drsums</Price>
+    <Category>drums</Category>
+    <InStock>drums</InStock>
   </product>
   <product>
     <Id>100002</Id>

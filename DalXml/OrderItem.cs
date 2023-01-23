@@ -41,7 +41,7 @@ internal class OrderItem : IOrderItem
 
     public IEnumerable<DO.OrderItem?> GetAll(Predicate<DO.OrderItem?>? func = null)
     {
-        List<DO.OrderItem?> orderItemList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(dirOrderItem).FindAll(x => func(x) == null || func(x));
+        List<DO.OrderItem?> orderItemList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(dirOrderItem).FindAll(x => func == null || func(x));
         return orderItemList;
     }
 
