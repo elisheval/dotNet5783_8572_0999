@@ -6,23 +6,32 @@ using System.Threading.Tasks;
 
 namespace Dal;
 using DalApi;
+using System.Xml.Linq;
 
 internal class OrderItem : IOrderItem
 {
-    string OrderItemPath = @"OrderItem.xml";
+    string dirConfig = @"config.xml";
+    string dirOrderItem = @"OrderItem.xml";
     public int Add(DO.OrderItem item)
     {
-
-        throw new NotImplementedException();
+        XElement identifies = XMLTools.LoadListFromXMLElement(dirConfig);
+        int orderItemId = (int.Parse(identifies.Elements().ToList()[1].Value)) + 1;
+        item.Id = orderItemId;
+        List<DO.OrderItem> orderItems = XMLTools.LoadListFromXMLSerializer<DO.OrderItem>(dirOrderItem);
+        orderItems.Add(item);
+        identifies.Elements().ToList()[1].Value = orderItemId.ToString();
+        XMLTools.SaveListToXMLElement(identifies, dirConfig);
+        XMLTools.SaveListToXMLSerializer(orderItems, dirOrderItem);
+        return orderItemId;
     }
 
     public void Delete(int id)
     {
         try
         {
-            List<DO.OrderItem?> orderItemList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(OrderItemPath);
+            List<DO.OrderItem?> orderItemList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(dirOrderItem);
             orderItemList.RemoveAll(x => x?.Id == id);
-            XMLTools.SaveListToXMLSerializer(orderItemList, OrderItemPath);
+            XMLTools.SaveListToXMLSerializer(orderItemList, dirOrderItem);
         }
         catch (DO.XMLFileLoadCreateException ex)
         {
@@ -32,14 +41,14 @@ internal class OrderItem : IOrderItem
 
     public IEnumerable<DO.OrderItem?> GetAll(Predicate<DO.OrderItem?>? func = null)
     {
-        List<DO.OrderItem?> orderItemList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(OrderItemPath).FindAll(x => func(x) == null || func(x));
+        List<DO.OrderItem?> orderItemList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(dirOrderItem).FindAll(x => func(x) == null || func(x));
         return orderItemList;
     }
 
     public DO.OrderItem GetByCondition(Predicate<DO.OrderItem?> func)
     {
 
-        List<DO.OrderItem?> orderItemList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(OrderItemPath);
+        List<DO.OrderItem?> orderItemList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(dirOrderItem);
         DO.OrderItem? orderItem = orderItemList.FirstOrDefault(x => func(x));
         if (orderItem == null)
         {
@@ -52,10 +61,10 @@ internal class OrderItem : IOrderItem
     {
         try
         {
-            List<DO.OrderItem?> orderItemList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(OrderItemPath);
+            List<DO.OrderItem?> orderItemList = XMLTools.LoadListFromXMLSerializer<DO.OrderItem?>(dirOrderItem);
             orderItemList.RemoveAll(x => x?.Id == item.Id);
             orderItemList.Add(item);
-            XMLTools.SaveListToXMLSerializer(orderItemList, OrderItemPath);
+            XMLTools.SaveListToXMLSerializer(orderItemList, dirOrderItem);
         }
         catch (DO.XMLFileLoadCreateException ex)
         {

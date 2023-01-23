@@ -24,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "xml", "xml", "{00B6F9EB-23B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{DBF53C3C-B9DE-436D-804A-0EFDA2AEBC0B}"
 	ProjectSection(SolutionItems) = preProject
+		xml\config.xml = xml\config.xml
+		xml\dal-config.xml = xml\dal-config.xml
+		xml\Order.xml = xml\Order.xml
+		xml\OrderItem.xml = xml\OrderItem.xml
 		xml\Product.xml = xml\Product.xml
 		README.md = README.md
 	EndProjectSection

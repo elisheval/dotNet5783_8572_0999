@@ -8,7 +8,7 @@ public class XMLTools
     static string dir = @"../xml/";
     static XMLTools()
     {
-        new XmlInitilize();
+        //new XmlInitilize();
         if (!Directory.Exists(dir))
             Directory.CreateDirectory(dir);
     }

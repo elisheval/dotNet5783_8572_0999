@@ -5,8 +5,16 @@ namespace Dal;
 public class XmlInitilize
 {
 
-    public XmlInitilize() {
-        #region product initilize
+    public XmlInitilize()
+    {
+        #region config
+        XElement identifies = new XElement("Identifies");
+        XElement orderItemId = new XElement("OrderItemId", "100000");
+        XElement orderId = new XElement("OrderId", "100000");
+        identifies.Add(orderId, orderItemId);
+        XMLTools.SaveListToXMLElement(identifies, "config.xml");
+        #endregion
+        #region product initialize
         List<DO.Product> tmpProductList = new(){
             #region assignment of 10 products
             new DO.Product(100001,"drums", 900,DO.Enums.Category.percussions, 5),
@@ -37,18 +45,11 @@ public class XmlInitilize
         XMLTools.SaveListToXMLElement(ProductData,"Product.xml");
         #endregion
 
-        #region config
-        XElement identifies = new XElement("Identifies");
-        XElement orderItemId = new XElement("OrderItemId","100000");
-        XElement orderId = new XElement("OrderId","100000");
-        identifies.Add(orderId, orderItemId);
-        XMLTools.SaveListToXMLElement(identifies, "config.xml");
-        #endregion
-
+        
         XElement identifyes = XMLTools.LoadListFromXMLElement("Config.xml");
-        int oIdentify = int.Parse(identifyes.Elements().ToList()[0].Value);
         int oItemIdentify = int.Parse(identifyes.Elements().ToList()[1].Value);
-
+        int oIdentify = int.Parse(identifyes.Elements().ToList()[0].Value);
+        #region initialize Order
         List<DO.Order> tmpOrderList = new(){
 
             new DO.Order() { CustomerName = "elisheva", CustomerEmail = "ee@", CustomerAddress = "ddd76", OrderDate = new DateTime(2022, 11, 09), ShipDate = null, DeliveryDate = null },
@@ -75,7 +76,7 @@ public class XmlInitilize
         List<DO.Order> orders = new List<DO.Order>();
         tmpOrderList.ForEach(x => orders.Add(
             new DO.Order() {
-                ID = oIdentify++,
+                ID = ++oIdentify,
                 CustomerName = x.CustomerName,
                 CustomerAddress = x.CustomerAddress,
                 CustomerEmail = x.CustomerEmail,
@@ -83,7 +84,72 @@ public class XmlInitilize
                 ShipDate = x.ShipDate,
                 OrderDate = x.OrderDate }));
         identifyes.Elements().ToList()[0].Value = oIdentify.ToString();
-        XMLTools.SaveListToXMLElement(identifyes,"Config.xml");
         XMLTools.SaveListToXMLSerializer(orders, "Order.xml");
+        #endregion
+
+        XMLTools.SaveListToXMLElement(identifyes, "Config.xml");
+        Random rand = new Random();
+        List<DO.OrderItem> tmpOrderItemList = new(){
+            #region assignment of 40 order items  
+
+            new DO.OrderItem(100001,100001,900,rand.Next(1,5)),
+            new DO.OrderItem(100002,100001,400,rand.Next(1,5)),
+            new DO.OrderItem(100003,100001,20000,rand.Next(1,5)),
+            new DO.OrderItem(100004,100002,3000,rand.Next(1,5)),
+            new DO.OrderItem(100005,100002,15000,rand.Next(1,5)),
+            new DO.OrderItem(100002,100002,400,rand.Next(1,5)),
+            new DO.OrderItem(100002,100003,400,rand.Next(1,5)),
+            new DO.OrderItem(100006,100003,1500,rand.Next(1,5)),
+            new DO.OrderItem(100007,100003,4000,rand.Next(1,5)),
+            new DO.OrderItem(100007,100003,4000,rand.Next(1,5)),
+            new DO.OrderItem(100007,100003,4000,rand.Next(1,5)),
+            new DO.OrderItem(100001,100003,900,rand.Next(1,5)),
+            new DO.OrderItem(100003,100004,20000,rand.Next(1,5)),
+            new DO.OrderItem(100008,100005,2500,rand.Next(1,5)),
+            new DO.OrderItem(100005,100005,15000,rand.Next(1,5)),
+            new DO.OrderItem(100003,100006,20000,rand.Next(1,5)),
+            new DO.OrderItem(100009,100007,70,rand.Next(1,5)),
+            new DO.OrderItem(100001,100007,900,rand.Next(1,5)),
+            new DO.OrderItem(100010,100007,300,rand.Next(1,5)),
+            new DO.OrderItem(100002,100008,400,rand.Next(1,5)),
+            new DO.OrderItem(100009,100009,70,rand.Next(1,5)),
+            new DO.OrderItem(100004,100009,3000,rand.Next(1,5)),
+            new DO.OrderItem(100010,100010,300,rand.Next(1,5)),
+            new DO.OrderItem(100004,100010,3000,rand.Next(1,5)),
+            new DO.OrderItem(100001,100011,900,rand.Next(1,5)),
+            new DO.OrderItem(100002,100012,400,rand.Next(1,5)),
+            new DO.OrderItem(100008,100012,2500,rand.Next(1,5)),
+            new DO.OrderItem(100009,100012,70,rand.Next(1,5)),
+            new DO.OrderItem(100002,100013,400,rand.Next(1,5)),
+            new DO.OrderItem(100005,100014,15000,rand.Next(1,5)),
+            new DO.OrderItem(100003,100015,20000,rand.Next(1,5)),
+            new DO.OrderItem(100007,100016,4000,rand.Next(1,5)),
+            new DO.OrderItem(100009,100016,70,rand.Next(1,5)),
+            new DO.OrderItem(100001,100017,900,rand.Next(1,5)),
+            new DO.OrderItem(100003,100018,20000,rand.Next(1,5)),
+            new DO.OrderItem(100003,100019,20000,rand.Next(1,5)),
+            new DO.OrderItem(100006,100019,1500,rand.Next(1,5)),
+            new DO.OrderItem(100002,100019,400,rand.Next(1,5)),
+            new DO.OrderItem(100010,100019,300,rand.Next(1,5)),
+            new DO.OrderItem(100010,100020,300,rand.Next(1,5)),
+            new DO.OrderItem(100001,100020,900,rand.Next(1,5)),
+            new DO.OrderItem(100005,100020,15000,rand.Next(1,5))
+            #endregion
+        };
+
+        List<DO.OrderItem> orderItems = new List<DO.OrderItem>();
+        tmpOrderItemList.ForEach(x => orderItems.Add(
+            new DO.OrderItem()
+            {
+                Id = ++oItemIdentify,
+                ProductId = x.ProductId,
+                Price = x.Price,
+                Amount=x.Amount,
+                OrderId=x.OrderId
+            }));
+        identifyes.Elements().ToList()[1].Value = oItemIdentify.ToString();
+        XMLTools.SaveListToXMLSerializer(orderItems, "OrderItem.xml");
+        XMLTools.SaveListToXMLElement(identifyes, "config.xml");
+
     }
 }

@@ -13,7 +13,7 @@ public partial class MainWindow : Window
     BlApi.IBl? bl = BlApi.Factory.Get();
     #endregion
 
-    #region constractor
+    #region constructor
     public MainWindow()
     {
         InitializeComponent();

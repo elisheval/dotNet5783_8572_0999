@@ -87,7 +87,7 @@ internal class Product : IProduct
                 Price = Double.Parse(x.Element("Price").Value),
                 Category = (DO.Enums.Category?)(int.Parse)(x.Element("Category").Value),
                 InStock = int.Parse(x.Element("Instock").Value)
-            }).FirstOrDefault(x => func(x));
+            }).Where(x => func(x)).FirstOrDefault();
             if (p == null)
                 throw new DO.NoFoundItemExceptions("not found item with this id");
             return (DO.Product)p;

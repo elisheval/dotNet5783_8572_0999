@@ -6,8 +6,9 @@ using System.Net.Mail;
 namespace BlImplementation;
 internal class Cart : ICart
 {
-    DalApi.IDal? _dal = DalApi.Factory.Get();
 
+    DalApi.IDal? _dal= DalApi.Factory.Get();
+   
     #region private productInStock
     /// <param name="productId">get id of product</param>
     /// <summary>
@@ -37,13 +38,14 @@ internal class Cart : ICart
     public BO.Cart AddProductToCart(int productId, BO.Cart myCart)
     {
         var orderItem = myCart.OrderItemList!.FirstOrDefault(orderItem => orderItem != null && orderItem.ProductId == productId);
-        if (orderItem != null) {
+        if (orderItem != null)
+        {
             if (ProductInStock(productId))
             {
                 if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
 
                 DO.Product product = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
-                orderItem.AmountInCart+=1;
+                orderItem.AmountInCart += 1;
                 myCart.TotalOrderPrice += product.Price * orderItem.AmountInCart - orderItem.TotalPriceForItem;
                 orderItem.TotalPriceForItem = product.Price * orderItem.AmountInCart;
                 orderItem.Price = product.Price;
@@ -95,24 +97,24 @@ internal class Cart : ICart
         if (productId < 0)
             throw new BO.InvalidValueException("invalid product id");
         var orderItem = myCart.OrderItemList!.FirstOrDefault(x => x.ProductId == productId);
-         if(orderItem != null)
+        if (orderItem != null)
         {
             if (newAmount == 0)
             {
                 myCart.OrderItemList!.Remove(orderItem);
-                myCart.TotalOrderPrice-= orderItem.Price*orderItem.AmountInCart;
+                myCart.TotalOrderPrice -= orderItem.Price * orderItem.AmountInCart;
                 return myCart;
             }
             else
             {
                 if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
                 DO.Product? product = _dal.Product.GetByCondition(x => x != null && x?.Id == productId);
-                if(product?.InStock == 0)
+                if (product?.InStock == 0)
                     throw new BO.ProductOutOfStockException("product is out of stock");
                 else if (product?.InStock >= newAmount)
                 {
-                    myCart.TotalOrderPrice += (product?.Price??0) * newAmount - orderItem.TotalPriceForItem;
-                    orderItem.TotalPriceForItem = newAmount * (product?.Price?? 0);
+                    myCart.TotalOrderPrice += (product?.Price ?? 0) * newAmount - orderItem.TotalPriceForItem;
+                    orderItem.TotalPriceForItem = newAmount * (product?.Price ?? 0);
                     orderItem.AmountInCart = newAmount;
                     orderItem.Price = product?.Price ?? 0;
                     return myCart;
@@ -121,7 +123,7 @@ internal class Cart : ICart
                 {
                     if (product?.InStock > orderItem.AmountInCart)
                     {
-                        myCart.TotalOrderPrice +=( product?.Price??0 )* product?.InStock??0 - orderItem.TotalPriceForItem;
+                        myCart.TotalOrderPrice += (product?.Price ?? 0) * product?.InStock ?? 0 - orderItem.TotalPriceForItem;
                         orderItem.TotalPriceForItem = product?.InStock ?? 0 * product?.Price ?? 0;
                         orderItem.AmountInCart = product?.InStock ?? 0;
                         orderItem.Price = product?.Price ?? 0;
