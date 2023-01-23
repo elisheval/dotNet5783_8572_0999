@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Dal;
 using DalApi;
-using DO;
 using System.Globalization;
 using System.Xml.Linq;
 
@@ -79,15 +78,21 @@ internal class Product : IProduct
     {
         try
         {
-            XElement ProductData = XMLTools.LoadListFromXMLElement(productPath);
-            DO.Product? p = ProductData.Elements().Select(x => new DO.Product()
+            DO.Product? _convertFromXmlToProduct(XElement x)
             {
-                Id = int.Parse(x.Element("Id").Value),
-                Name = x.Element("Name").Value,
-                Price = Double.Parse(x.Element("Price").Value),
-                Category = (DO.Enums.Category?)(int.Parse)(x.Element("Category").Value),
-                InStock = int.Parse(x.Element("Instock").Value)
-            }).Where(x => func(x)).FirstOrDefault();
+                DO.Product p=new()
+                {
+                    Id = int.Parse(x.Element("Id").Value),
+                    Name = x.Element("Name").Value,
+                    Price = Double.Parse(x.Element("Price").Value),
+                    //Category = (DO.Enums.Category?)(int.Parse)(x.Element("Category").Value),
+                    InStock = int.Parse(x.Element("InStock").Value)
+                };
+                return (DO.Product?)p;
+            }
+            DO.Product? pr = new() {Id=5 };
+            XElement ProductData = XMLTools.LoadListFromXMLElement(productPath);
+            DO.Product? p = ProductData.Elements().Select(x => _convertFromXmlToProduct(x)).FirstOrDefault(x=>func(x));
             if (p == null)
                 throw new DO.NoFoundItemExceptions("not found item with this id");
             return (DO.Product)p;
