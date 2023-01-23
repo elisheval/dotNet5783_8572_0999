@@ -10,17 +10,17 @@ using DO;
 using System.Globalization;
 using System.Xml.Linq;
 
-public class Product : IProduct
-{ 
+internal class Product : IProduct
+{
     string productPath = @"Product.xml";
     public int Add(DO.Product item)
     {
         XElement ProductData = XMLTools.LoadListFromXMLElement(productPath);
         XElement product = ProductData.Elements().FirstOrDefault(x => int.Parse(x.Element("Id").Value) == item.Id);
-        if(product != null)
-        throw new DO.ItemAlresdyExsistException("product already exsist");
+        if (product != null)
+            throw new DO.ItemAlresdyExsistException("product already exsist");
         XElement productToAdd = new XElement("Product");
-        productToAdd.Add(new XElement("Id",item.Id.ToString()),
+        productToAdd.Add(new XElement("Id", item.Id.ToString()),
                          new XElement("Name", item.Name.ToString()),
                          new XElement("Price", item.Name.ToString()),
                          new XElement("Category", item.Category.ToString()),
@@ -46,7 +46,7 @@ public class Product : IProduct
         {
             throw new();
         }
-        catch(DO.NoFoundItemExceptions ex)
+        catch (DO.NoFoundItemExceptions ex)
         {
             throw new();
         }
@@ -57,16 +57,17 @@ public class Product : IProduct
         try
         {
             XElement ProductData = XMLTools.LoadListFromXMLElement(productPath);
-            IEnumerable<DO.Product> p = ProductData.Elements().Select(x => new DO.Product()
+            IEnumerable<DO.Product>p = ProductData.Elements().Where(x=>x!=null).Select(x => new DO.Product()
             {
                 Id = int.Parse(x.Element("Id").Value),
                 Name = x.Element("Name").Value,
                 Price = Double.Parse(x.Element("Price").Value),
                 Category = (DO.Enums.Category?)(int.Parse)(x.Element("Category").Value),
                 InStock = int.Parse(x.Element("Instock").Value)
-            }).Where(x=>func==null||func(x));
+            }).Where(x => func == null || func(x));
+            IEnumerable<DO.Product?> tmpProducts= (IEnumerable<DO.Product?>)p.ToList();
             if (p == null) { throw new(); }
-            return (IEnumerable<DO.Product?>) p;
+            return tmpProducts;
         }
         catch (DO.XMLFileLoadCreateException ex)
         {
@@ -78,8 +79,8 @@ public class Product : IProduct
     {
         try
         {
-           XElement ProductData = XMLTools.LoadListFromXMLElement(productPath);
-           DO.Product? p = ProductData.Elements().Select(x =>new DO.Product()
+            XElement ProductData = XMLTools.LoadListFromXMLElement(productPath);
+            DO.Product? p = ProductData.Elements().Select(x => new DO.Product()
             {
                 Id = int.Parse(x.Element("Id").Value),
                 Name = x.Element("Name").Value,
@@ -91,8 +92,8 @@ public class Product : IProduct
                 throw new DO.NoFoundItemExceptions("not found item with this id");
             return (DO.Product)p;
         }
-      
-        catch(DO.XMLFileLoadCreateException ex)
+
+        catch (DO.XMLFileLoadCreateException ex)
         {
             throw new();
         }
@@ -115,7 +116,7 @@ public class Product : IProduct
         }
         catch (DO.XMLFileLoadCreateException)
         {
-            throw new ();
+            throw new();
         }
     }
 }

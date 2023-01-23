@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Dal;
 using DalApi;
-using DO;
 
-public class OrderItem : IOrderItem
+internal class OrderItem : IOrderItem
 {
     string OrderItemPath = @"OrderItem.xml";
     public int Add(DO.OrderItem item)

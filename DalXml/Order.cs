@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Dal;
 using DalApi;
-using DO;
 
-public class Order : IOrder
+internal class Order : IOrder
 {
     string OrderPath = @"Order.xml";
     public int Add(DO.Order item)
@@ -32,7 +31,7 @@ public class Order : IOrder
 
     public IEnumerable<DO.Order?> GetAll(Predicate<DO.Order?>? func = null)
     {
-        List<DO.Order?> orderList = XMLTools.LoadListFromXMLSerializer<DO.Order?>(OrderPath).FindAll(x=>func(x)==null||func(x));
+        List<DO.Order?> orderList = XMLTools.LoadListFromXMLSerializer<DO.Order?>(OrderPath).FindAll(x => func == null||func(x));
         return orderList;
     }
 
@@ -40,9 +39,9 @@ public class Order : IOrder
     {
         List<DO.Order> orderList = XMLTools.LoadListFromXMLSerializer<DO.Order>(OrderPath);
         DO.Order? order = orderList.FirstOrDefault(x => func(x));
-        if (order ==null)
+        if (order == null)
         {
-            throw new ();
+            throw new();
         }
         return (DO.Order)order;
     }

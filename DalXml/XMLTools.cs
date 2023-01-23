@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using System.Xml.Serialization;
-using DO;
 
 namespace Dal;
 
 public class XMLTools
 {
-    static string dir = @"xml\";
+    static string dir = @"../xml/";
     static XMLTools()
     {
+        new XmlInitilize();
         if (!Directory.Exists(dir))
             Directory.CreateDirectory(dir);
     }
@@ -35,13 +29,14 @@ public class XMLTools
     {
         try
         {
-            if (File.Exists(dir + filePath))
+            
+            if (File.Exists(dir+filePath))
             {
                 return XElement.Load(dir + filePath);
             }
             else
             {
-                XElement rootElem = new XElement(dir + filePath);
+                XElement rootElem = new XElement( filePath);
                 rootElem.Save(dir + filePath);
                 return rootElem;
             }
