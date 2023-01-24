@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Dal;
 using DalApi;
+using DO;
 using System.Globalization;
 using System.Xml.Linq;
 
@@ -80,17 +81,19 @@ internal class Product : IProduct
         {
             DO.Product? _convertFromXmlToProduct(XElement x)
             {
+                Enum.TryParse<DO.Enums.Category>(x.Element("Category").Value, out DO.Enums.Category category);
                 DO.Product p=new()
                 {
                     Id = int.Parse(x.Element("Id").Value),
                     Name = x.Element("Name").Value,
                     Price = Double.Parse(x.Element("Price").Value),
                     //Category = (DO.Enums.Category?)(int.Parse)(x.Element("Category").Value),
+                    //Category = category,
                     InStock = int.Parse(x.Element("InStock").Value)
                 };
+
                 return (DO.Product?)p;
             }
-            DO.Product? pr = new() {Id=5 };
             XElement ProductData = XMLTools.LoadListFromXMLElement(productPath);
             DO.Product? p = ProductData.Elements().Select(x => _convertFromXmlToProduct(x)).FirstOrDefault(x=>func(x));
             if (p == null)
