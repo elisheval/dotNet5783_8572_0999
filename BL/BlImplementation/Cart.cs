@@ -172,7 +172,7 @@ internal class Cart : ICart
         if (customerEmail != null && IsValid(customerEmail))
             throw new BO.InvalidValueException("invalid email");
 
-        DO.Order order = new() { CustomerName = customerName, CustomerEmail = customerEmail, CustomerAddress = customerEmail, OrderDate = DateTime.Now, ShipDate = null, DeliveryDate = null };
+        DO.Order order = new() { CustomerName = customerName, CustomerEmail = customerEmail, CustomerAddress = customerAddress, OrderDate = DateTime.Now, ShipDate = null, DeliveryDate = null };
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         int orderId = _dal.Order.Add(order);
         string massegeOfLackProducts = "";

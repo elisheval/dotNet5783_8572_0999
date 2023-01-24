@@ -2,24 +2,24 @@
 <ProductData>
   <product>
     <Id>100001</Id>
-    <Name>drums</Name>
-    <Price>drsums</Price>
-    <Category>drums</Category>
-    <InStock>drums</InStock>
+    <Name>elisheva</Name>
+    <Price>900</Price>
+    <Category></Category>
+    <InStock>19</InStock>
   </product>
   <product>
     <Id>100002</Id>
     <Name>Salute</Name>
     <Price>400</Price>
-    <Category>percussions</Category>
-    <InStock>2</InStock>
+    <Category></Category>
+    <InStock>0</InStock>
   </product>
   <product>
     <Id>100003</Id>
-    <Name>piano</Name>
+    <Name>wertyui</Name>
     <Price>20000</Price>
-    <Category>keyboards</Category>
-    <InStock>1</InStock>
+    <Category>exhalation</Category>
+    <InStock>2</InStock>
   </product>
   <product>
     <Id>100004</Id>
@@ -32,7 +32,7 @@
     <Id>100005</Id>
     <Name>harp</Name>
     <Price>15000</Price>
-    <Category>strings</Category>
+    <Category></Category>
     <InStock>0</InStock>
   </product>
   <product>
@@ -46,28 +46,42 @@
     <Id>100007</Id>
     <Name>flute</Name>
     <Price>4000</Price>
-    <Category>exhalation</Category>
-    <InStock>3</InStock>
+    <Category></Category>
+    <InStock>0</InStock>
   </product>
   <product>
     <Id>100008</Id>
     <Name>saxophone</Name>
-    <Price>2500</Price>
-    <Category>exhalation</Category>
-    <InStock>1</InStock>
+    <Price>9</Price>
+    <Category>keyboards</Category>
+    <InStock>9</InStock>
   </product>
   <product>
     <Id>100009</Id>
     <Name>guitar_textbook</Name>
     <Price>70</Price>
-    <Category>additional</Category>
-    <InStock>30</InStock>
+    <Category></Category>
+    <InStock>28</InStock>
   </product>
   <product>
     <Id>100010</Id>
     <Name>accordion_case</Name>
     <Price>300</Price>
-    <Category>additional</Category>
-    <InStock>10</InStock>
+    <Category></Category>
+    <InStock>8</InStock>
   </product>
+  <Product>
+    <Id>100040</Id>
+    <Name>qwert</Name>
+    <Price>1000</Price>
+    <Category>keyboards</Category>
+    <InStock>5</InStock>
+  </Product>
+  <Product>
+    <Id>100080</Id>
+    <Name>lopi</Name>
+    <Price>50</Price>
+    <Category></Category>
+    <InStock>498</InStock>
+  </Product>
 </ProductData>
