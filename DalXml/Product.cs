@@ -57,7 +57,7 @@ internal class Product : IProduct
         try
         {
             XElement ProductData = XMLTools.LoadListFromXMLElement(productPath);
-            IEnumerable<DO.Product>p = ProductData.Elements().Where(x=>x!=null).Select(x => new DO.Product()
+            IEnumerable<DO.Product> p = ProductData.Elements().Where(x => x != null).Select(x => new DO.Product()
             {
                 Id = int.Parse(x.Element("Id").Value),
                 Name = x.Element("Name").Value,
@@ -65,7 +65,7 @@ internal class Product : IProduct
                 Category = (DO.Enums.Category?)(int.Parse)(x.Element("Category").Value),
                 InStock = int.Parse(x.Element("Instock").Value)
             }).Where(x => func == null || func(x));
-            IEnumerable<DO.Product?> tmpProducts= (IEnumerable<DO.Product?>)p.ToList();
+            IEnumerable<DO.Product?> tmpProducts = (IEnumerable<DO.Product?>)p.ToList();
             if (p == null) { throw new(); }
             return tmpProducts;
         }
@@ -73,6 +73,19 @@ internal class Product : IProduct
         {
             throw new();
         }
+    }
+
+    private DO.Product? _convertFromXMLToProduct(XElement x)
+    {
+        DO.Product product = new()
+        {
+            Id = int.Parse(x.Element("Id").Value.ToString()),
+            Name = x.Element("Name").Value.ToString(),
+            Price = Double.Parse(x.Element("Price").Value.ToString()),
+            //Category = (DO.Enums.Category?)(int.Parse)(x.Element("Category").Value),
+            InStock = int.Parse(x.Element("InStock").Value.ToString())
+        };
+        return (DO.Product?)product;
     }
 
     public DO.Product GetByCondition(Predicate<DO.Product?> func)
@@ -100,7 +113,6 @@ internal class Product : IProduct
                 throw new DO.NoFoundItemExceptions("not found item with this id");
             return (DO.Product)p;
         }
-
         catch (DO.XMLFileLoadCreateException ex)
         {
             throw new();
