@@ -3,16 +3,16 @@
   <product>
     <Id>100001</Id>
     <Name>drums</Name>
-    <Price>122</Price>
+    <Price>12243</Price>
     <Category>percussions</Category>
     <InStock>5</InStock>
   </product>
   <product>
     <Id>100002</Id>
     <Name>Salute</Name>
-    <Price>400</Price>
+    <Price>5</Price>
     <Category>percussions</Category>
-    <InStock>2</InStock>
+    <InStock>144</InStock>
   </product>
   <product>
     <Id>100003</Id>
@@ -26,7 +26,7 @@
     <Name>accordion</Name>
     <Price>3000</Price>
     <Category>keyboards</Category>
-    <InStock>10</InStock>
+    <InStock>0</InStock>
   </product>
   <product>
     <Id>100005</Id>
@@ -45,9 +45,9 @@
   <product>
     <Id>100007</Id>
     <Name>flute</Name>
-    <Price>4000</Price>
-    <Category>exhalation</Category>
-    <InStock>3</InStock>
+    <Price>12</Price>
+    <Category>strings</Category>
+    <InStock>4</InStock>
   </product>
   <product>
     <Id>100008</Id>
@@ -61,7 +61,7 @@
     <Name>guitar_textbook</Name>
     <Price>70</Price>
     <Category>additional</Category>
-    <InStock>30</InStock>
+    <InStock>9</InStock>
   </product>
   <product>
     <Id>100010</Id>
@@ -70,4 +70,11 @@
     <Category>additional</Category>
     <InStock>10</InStock>
   </product>
+  <Product>
+    <Id>122222</Id>
+    <Name>dd</Name>
+    <Price>433</Price>
+    <Category>percussions</Category>
+    <InStock>23</InStock>
+  </Product>
 </ProductData>
