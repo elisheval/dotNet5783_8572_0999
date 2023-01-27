@@ -6,12 +6,14 @@ namespace Dal;
 public class XMLTools
 {
     static string dir = @"../xml/";
+    #region constructor
     static XMLTools()
     {
-        //new XmlInitilize();
         if (!Directory.Exists(dir))
             Directory.CreateDirectory(dir);
     }
+    #endregion
+
     #region SaveLoadWithXElement
     public static void SaveListToXMLElement(XElement rootElem, string filePath)
     {
@@ -72,7 +74,7 @@ public class XMLTools
                 List<T> list;
                 XmlSerializer x = new XmlSerializer(typeof(List<T>));
                 FileStream file = new FileStream(dir + filePath, FileMode.Open);
-                list = (List<T>)x.Deserialize(file);
+                list = (List<T>)x.Deserialize(file)!;
                 file.Close();
                 return list;
             }

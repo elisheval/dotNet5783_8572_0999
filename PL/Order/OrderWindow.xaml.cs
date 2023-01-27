@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using BO;
+using System.Windows;
 
 namespace PL.Order;
 
@@ -50,15 +51,19 @@ public partial class OrderWindow : Window
         DependencyProperty.Register("order", typeof(BO.Order), typeof(OrderWindow));
     #endregion
 
-    #region constractor
+    #region constructor
     public OrderWindow(int orderId,bool visibleShip,bool visibleDelivery, bool manager=false)
     {
+        try
+        {
             message = "";
             visiblityShip = visibleShip;
             visiblityDelivery = visibleDelivery;
             if (bl != null) order = bl.Order.GetOrderById(orderId);
             this.manager = manager;
             InitializeComponent();
+        }
+        catch(InvalidValueException ex){};
     }
     #endregion
 

@@ -45,7 +45,7 @@ public partial class OrderList : Window
         DependencyProperty.Register("orderSelected", typeof(BO.OrderForList), typeof(OrderList));
     #endregion
 
-    #region constractor
+    #region constructor
     public OrderList()
     {
         orderSelected = new();

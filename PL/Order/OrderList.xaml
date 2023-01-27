@@ -23,7 +23,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
         </Grid>
-        <ListView  Grid.Row="1" ItemsSource="{Binding orderList }" SelectedItem="{Binding orderSelected, Mode=TwoWay}" MouseDoubleClick="ListView_MouseDoubleClick"  >
+        <ListView  Grid.Row="1" ItemsSource="{Binding orderList}" SelectedItem="{Binding orderSelected, Mode=TwoWay}" MouseDoubleClick="ListView_MouseDoubleClick"  >
             <ListView.View>
                 <GridView x:Name="GridView1">
                     <GridViewColumn x:Name="idColumn" DisplayMemberBinding= "{Binding Path=Id}" 
@@ -42,10 +42,10 @@
         <Button Style="{StaticResource basicBtnStyle}" Content="back" Click="Button_Click" Grid.Row="4" Width="100"></Button>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="500*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="800*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="20"/>
 
         </Grid.RowDefinitions>
     </Grid>

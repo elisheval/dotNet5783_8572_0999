@@ -4,29 +4,29 @@
     <Id>100001</Id>
     <Name>elisheva</Name>
     <Price>900</Price>
-    <Category></Category>
-    <InStock>19</InStock>
+    <Category>percussions</Category>
+    <InStock>9</InStock>
   </product>
   <product>
     <Id>100002</Id>
     <Name>Salute</Name>
     <Price>400</Price>
-    <Category></Category>
-    <InStock>0</InStock>
+    <Category>percussions</Category>
+    <InStock>3</InStock>
   </product>
   <product>
     <Id>100003</Id>
     <Name>wertyui</Name>
     <Price>20000</Price>
     <Category>exhalation</Category>
-    <InStock>2</InStock>
+    <InStock>1</InStock>
   </product>
   <product>
     <Id>100004</Id>
     <Name>accordion</Name>
     <Price>3000</Price>
     <Category>keyboards</Category>
-    <InStock>10</InStock>
+    <InStock>0</InStock>
   </product>
   <product>
     <Id>100005</Id>
@@ -40,13 +40,13 @@
     <Name>violin</Name>
     <Price>1500</Price>
     <Category>strings</Category>
-    <InStock>7</InStock>
+    <InStock>9</InStock>
   </product>
   <product>
     <Id>100007</Id>
     <Name>flute</Name>
     <Price>4000</Price>
-    <Category></Category>
+    <Category>percussions</Category>
     <InStock>0</InStock>
   </product>
   <product>
@@ -60,28 +60,28 @@
     <Id>100009</Id>
     <Name>guitar_textbook</Name>
     <Price>70</Price>
-    <Category></Category>
-    <InStock>28</InStock>
+    <Category>keyboards</Category>
+    <InStock>27</InStock>
   </product>
   <product>
     <Id>100010</Id>
     <Name>accordion_case</Name>
     <Price>300</Price>
-    <Category></Category>
-    <InStock>8</InStock>
+    <Category>keyboards</Category>
+    <InStock>9</InStock>
   </product>
   <Product>
     <Id>100040</Id>
     <Name>qwert</Name>
     <Price>1000</Price>
     <Category>keyboards</Category>
-    <InStock>5</InStock>
+    <InStock>0</InStock>
   </Product>
   <Product>
     <Id>100080</Id>
     <Name>lopi</Name>
     <Price>50</Price>
-    <Category></Category>
+    <Category>percussions</Category>
     <InStock>498</InStock>
   </Product>
 </ProductData>

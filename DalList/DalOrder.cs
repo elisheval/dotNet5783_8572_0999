@@ -28,8 +28,6 @@ internal class DalOrder : IOrder
     /// <returns>the temp array</returns>
     public IEnumerable<Order?> GetAll(Predicate<Order?>? func = null)
     {
-
-
         if (func != null)
         {
             return DataSource.orderList.Where(x => func(x)).ToList();
@@ -73,12 +71,11 @@ internal class DalOrder : IOrder
     /// get filtering predicate and return the orderList filtering according to the method
     /// </summary>
     /// <returns>filtering orderList</returns>
-    /// <exception cref="NoFoundItemExceptions"> if the </exception>
+    /// <exception cref="NoFoundItemExceptions"> if no one stands in the condition</exception>
     public Order GetByCondition(Predicate<Order?> func)
     {
         return DataSource.orderList.Where(x => func(x)).FirstOrDefault()??
             throw new NoFoundItemExceptions("no found order with this condition");
     }
     #endregion
-
 }

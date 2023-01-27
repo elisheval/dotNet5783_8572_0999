@@ -46,7 +46,7 @@ internal class DalOrderItem : IOrderItem
     public void Delete(int myId)
     {
         if (DataSource.orderItemsList.RemoveAll(x => x != null && x?.Id == myId) == 0) 
-            throw new NoFoundItemExceptions("no orderItem found to delete with this ID");
+            throw new DO.NoFoundItemExceptions("no orderItem found to delete with this ID");
     }
     #endregion
 
