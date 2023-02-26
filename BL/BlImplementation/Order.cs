@@ -1,4 +1,6 @@
 ﻿using BlApi;
+using BO;
+using System.Data;
 using System.Diagnostics;
 
 namespace BlImplementation;
@@ -46,6 +48,7 @@ internal class Order : IOrder
     /// <returns>return list with the orders</returns>
     public IEnumerable<BO.OrderForList> GetAllOrders()
     {
+        IGrouping<int, int> p;
         if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
         IEnumerable<DO.Order?> ordersFromDo = _dal.Order.GetAll();
         return from order in ordersFromDo
@@ -359,4 +362,61 @@ internal class Order : IOrder
         }
     }
     #endregion
-}
+
+    public int? GetNextOrderToHandle()
+    {
+        DateTime minDate = DateTime.Now;
+        int? orderId = null;
+        List<OrderForList>? orderList = GetAllOrders().ToList();
+        orderList?.ForEach(o =>
+
+        {
+            switch (o.OrderStatus)
+            {
+                case Enums.OrderStatus.Approved:
+                    if (GetOrderById(o.Id).OrderDate < minDate)
+                    {
+                        orderId = o.Id;
+                        minDate = (DateTime)GetOrderById(o.Id).OrderDate;
+                    }
+                    break;
+                case Enums.OrderStatus.Sent:
+                    if (GetOrderById(o.Id).ShipDate < minDate)
+                    {
+                        orderId = o.Id;
+                        minDate = (DateTime)GetOrderById(o.Id).ShipDate;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+        return orderId;
+    }
+    //            if (_dal == null) throw new BO.NoAccessToDataException("no access to data");
+    //            IEnumerable<DO.Order?> ordersFromDo = _dal.Order.GetAll(x => x != null);
+    //        if (ordersFromDo == null)
+    //            throw new BO.NoFoundItemWithThisConditionException("no found order to handle");
+    //            DO.Order? order = ordersFromDo.FirstOrDefault();
+    //DateTime? lastDTUpdate;
+    //            if (order?.DeliveryDate == null)
+    //                lastDTUpdate = order?.OrderDate;
+    //            else lastDTUpdate=order?.ShipDate;
+    //            foreach (var o in ordersFromDo)
+    //            {
+    //                if (o?.DeliveryDate != null && o?.DeliveryDate<lastDTUpdate)
+    //                {
+    //                    lastDTUpdate = o?.DeliveryDate;
+    //                    order = o;
+    //                }
+    //                else if (o?.DeliveryDate == null && order?.OrderDate<lastDTUpdate)
+    //                {
+    //                    lastDTUpdate = o?.OrderDate;
+    //                    order = o;
+    //                }
+    //            }
+    //        return order?.ID;
+
+    //    }
+
+    }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Dal;
 using DalApi;
 using DO;
+using System.Diagnostics;
 using System.Globalization;
 using System.Xml.Linq;
 

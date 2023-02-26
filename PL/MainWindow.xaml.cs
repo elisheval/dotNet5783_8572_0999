@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.Drawing;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using PL.Manager;
 using PL.Order;
 using PL.Product;
@@ -38,4 +41,9 @@ public partial class MainWindow : Window
         this.Close();
     }
     #endregion
+
+    private void StartSimulatorBtnClick(object sender, RoutedEventArgs e)
+    {
+        new StartSimulatorWindow().Show();
+    }
 }

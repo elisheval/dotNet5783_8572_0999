@@ -43,4 +43,5 @@ public interface IOrder
     /// <exception cref="BO.NoAccessToSentOrder"></exception>
     /// <exception cref="BO.NoFoundItemExceptions"></exception>
     public void UpdateOrder(int orderId, int productId, int amount);
+    public int? GetNextOrderToHandle();
 }

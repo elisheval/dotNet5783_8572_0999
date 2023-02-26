@@ -97,6 +97,7 @@ public partial class ProductList : Window
     /// <param name="e"></param>
     private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
+
             this.Hide();
             new ProductWindow(productSelected.Id).ShowDialog();//after the add window close updating the list
             this.Show();

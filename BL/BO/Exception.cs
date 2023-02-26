@@ -160,3 +160,14 @@ public class NoAccessToDataException : Exception
 
 }
 #endregion
+#region
+public class NoFoundItemWithThisConditionException : Exception
+{
+    public NoFoundItemWithThisConditionException(string massege) : base(massege) { }
+    public override string ToString()
+    {
+        return ($@" exception name: NoFoundItemExceptions,
+                    exception message: {Message}");
+    }
+}
+#endregion

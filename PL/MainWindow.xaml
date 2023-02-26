@@ -20,10 +20,9 @@
         <StackPanel.Background>
             <ImageBrush ImageSource="/mainWImg.jpg"/>
         </StackPanel.Background>
-
         <Button Content="Manager" Click="NavigateToManagerWindow"/>
         <Button Content="New order" Click="NavigateToCatalogWindow"/>
         <Button  Content="Order tracking" Click="NavigateToOrderTrackingWindow"/>
-
+        <Button Content="start simulator" Click="StartSimulatorBtnClick"/>
     </StackPanel>
 </Window>

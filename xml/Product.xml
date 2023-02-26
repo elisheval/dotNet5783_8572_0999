@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ProductData>
+<ProductData.xml>
   <product>
     <Id>100001</Id>
     <Name>elisheva</Name>
@@ -84,4 +84,4 @@
     <Category>percussions</Category>
     <InStock>498</InStock>
   </Product>
-</ProductData>
+</ProductData.xml>

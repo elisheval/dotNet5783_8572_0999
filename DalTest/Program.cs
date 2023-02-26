@@ -48,6 +48,7 @@ public class Program
             Enum.TryParse(Console.ReadLine(), out choose);
             switch (choose)
             {
+
                 ///add a new order
                 case CRUD.Create:
                     Console.WriteLine("enter customer name");
@@ -406,6 +407,7 @@ public class Program
                         if (dalListTmp == null) { Console.WriteLine("no access to data layer"); return; }
                         tmpProduct = dalListTmp.Product.GetByCondition(x => x != null && x?.Id == id);
                         _print(tmpProduct);
+                        Console.WriteLine();
                     }
                     catch (NoFoundItemExceptions ex)
                     {
@@ -519,7 +521,7 @@ public class Program
 
             //convert string to enum type
             Enum.TryParse(Console.ReadLine(), out choose);
-
+            
             switch (choose)
             {
                 case Entity.Order:
