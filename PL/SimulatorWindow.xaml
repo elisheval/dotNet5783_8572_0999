@@ -5,25 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        DataContext = "{Binding RelativeSource={RelativeSource Self}}" 
-        Title="Simulator" Height="450" Width="800">
+                DataContext = "{Binding RelativeSource={RelativeSource Self}}" 
+        Title="Simulator" Height="550" Width="1000"
+        Closing="OnClosing">
+   
     <Window.Resources>
     <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}">
         <Setter Property="FontSize" Value="15" />
-        <Setter Property="Width" Value="510" />
+        <Setter Property="Width" Value="310" />
         <Setter Property="Height" Value="50" />
         <Setter Property="Margin" Value="6" />
 
     </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="6" />
+
+        </Style>
 
     </Window.Resources>
-    <Grid>
-        <Label Content="{Binding ClockText}" Height="50" Width="100" Margin="-300,-300,0,0"/>
-        <Label Content="{Binding ExpectedOrderDetails , Mode=TwoWay}" Margin="200,117,210,155"/>
-        <Label Content="{Binding CurrentOrderHandle, Mode=TwoWay}" Margin="200,303,298,48"/>
-
-        <Button Content="stop timer" Height="50" Width="100" Click="StopTimerButton_Click" Margin="590,148,110,236"></Button>
-        <ProgressBar HorizontalAlignment="Left" Height="10" Margin="400,409,0,0" VerticalAlignment="Top" Width="100" Name="progressBar"/>
-
-    </Grid>
+    <StackPanel>
+        <StackPanel.Background>
+            <ImageBrush ImageSource="/mainWImg.jpg"/>
+        </StackPanel.Background>
+        <Label Content="{Binding ClockText}" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+        <Label Content="{Binding ExpectedOrderDetails}" HorizontalAlignment="Center" Margin="0,50,0,0"/>
+        <Label Content="{Binding CurrentOrderHandle}" Margin="0,75,0,0" HorizontalAlignment="Center"/>
+        <Button Content="stop simulator" Click="StopTimerButton_Click"/>
+       
+    </StackPanel>
+    
 </Window>

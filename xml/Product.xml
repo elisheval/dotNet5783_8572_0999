@@ -5,21 +5,21 @@
     <Name>elisheva</Name>
     <Price>900</Price>
     <Category>percussions</Category>
-    <InStock>9</InStock>
+    <InStock>4</InStock>
   </product>
   <product>
     <Id>100002</Id>
     <Name>Salute</Name>
     <Price>400</Price>
     <Category>percussions</Category>
-    <InStock>3</InStock>
+    <InStock>1</InStock>
   </product>
   <product>
     <Id>100003</Id>
     <Name>wertyui</Name>
     <Price>20000</Price>
     <Category>exhalation</Category>
-    <InStock>1</InStock>
+    <InStock>0</InStock>
   </product>
   <product>
     <Id>100004</Id>
@@ -40,7 +40,7 @@
     <Name>violin</Name>
     <Price>1500</Price>
     <Category>strings</Category>
-    <InStock>9</InStock>
+    <InStock>2</InStock>
   </product>
   <product>
     <Id>100007</Id>
@@ -54,14 +54,14 @@
     <Name>saxophone</Name>
     <Price>9</Price>
     <Category>keyboards</Category>
-    <InStock>9</InStock>
+    <InStock>6</InStock>
   </product>
   <product>
     <Id>100009</Id>
     <Name>guitar_textbook</Name>
     <Price>70</Price>
     <Category>keyboards</Category>
-    <InStock>27</InStock>
+    <InStock>26</InStock>
   </product>
   <product>
     <Id>100010</Id>
@@ -82,6 +82,13 @@
     <Name>lopi</Name>
     <Price>50</Price>
     <Category>percussions</Category>
-    <InStock>498</InStock>
+    <InStock>497</InStock>
+  </Product>
+  <Product>
+    <Id>100087</Id>
+    <Name>אורגנית</Name>
+    <Price>1500</Price>
+    <Category>percussions</Category>
+    <InStock>3</InStock>
   </Product>
 </ProductData.xml>

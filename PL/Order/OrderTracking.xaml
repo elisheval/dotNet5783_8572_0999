@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Order"
         mc:Ignorable="d"
-        Title="OrderTracking" Height="450" Width="800"
+        Title="OrderTracking" Height="550" Width="1000"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     <Window.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}">

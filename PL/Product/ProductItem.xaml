@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         
         
-        Title="ProductItem" Height="450" Width="800"
+        Title="ProductItem" Height="550" Width="1000"
         DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
 
     <Window.Resources>

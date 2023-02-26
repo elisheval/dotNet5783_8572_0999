@@ -1,169 +1,4 @@
-﻿//using PL.ProductWindows;
-//using System;
-//using System.Collections.Generic;
-//using System.ComponentModel;
-//using System.Linq;
-//using System.Text;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Data;
-//using System.Windows.Documents;
-//using System.Windows.Input;
-//using System.Windows.Media;
-//using System.Windows.Media.Imaging;
-//using System.Windows.Shapes;
-//using Simulator;
-//using System.Diagnostics;
-//using System.Windows.Media.Animation;
-//using System.Windows.Threading;
-
-//namespace PL
-//{
-
-//    /// <summary>
-//    /// Interaction logic for Simulator.xaml
-//    /// </summary>
-//    public partial class SimulatorWindow : Window
-//    {
-//        public int timer
-//        {
-//            get { return (int)GetValue(timerProperty); }
-//            set { SetValue(timerProperty, value); }
-//        }
-//        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
-//        public static readonly DependencyProperty timerProperty =
-//            DependencyProperty.Register("timer", typeof(int), typeof(SimulatorWindow));
-//        string nextStatus;
-//        string previousStatus;
-//        Tuple<BO.Order, int, string, string> dcT;
-//        Stopwatch stopWatch;
-//        BackgroundWorker BW;
-//        //=======progressBar variables
-//        Duration duration;
-//        DoubleAnimation doubleanimation;
-//        ProgressBar ProgressBar;
-//        //=======countdown timer variables
-//        DispatcherTimer _timer;
-//        TimeSpan _time;
-//        //=======
-//        private bool isTimerRun;
-
-
-//        public SimulatorWindow()
-//        {
-//            InitializeComponent();
-//            Simulator.Simulator.StartSimulator();
-//            stopWatch = new Stopwatch();
-//            timer = 0;
-//            BW = new BackgroundWorker();
-//            BW.DoWork += Worker_DoWork;
-//            BW.ProgressChanged += Worker_ProgressChanged;
-//            BW.WorkerReportsProgress = true;
-//            BW.WorkerSupportsCancellation = true;
-//            BW.RunWorkerAsync();
-//        }
-
-//        void countDownTimer(int sec)
-//        {
-//            _time = TimeSpan.FromSeconds(sec);
-
-//            _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
-//            {
-//                tbTime.Text = _time.ToString("c");
-//                if (_time == TimeSpan.Zero) _timer.Stop();
-//                _time = _time.Add(TimeSpan.FromSeconds(-1));
-//            }, Application.Current.Dispatcher);
-
-//            _timer.Start();
-//        }
-//        void ProgressBarStart(int sec)
-//        {
-//            if (ProgressBar != null)
-//            {
-//                pBar.Items.Remove(ProgressBar);
-//            }
-//            ProgressBar = new ProgressBar();
-//            ProgressBar.IsIndeterminate = false;
-//            ProgressBar.Orientation = Orientation.Horizontal;
-//            ProgressBar.Width = 500;
-//            ProgressBar.Height = 30;
-//            duration = new Duration(TimeSpan.FromSeconds(sec * 2));
-//            doubleanimation = new DoubleAnimation(200.0, duration);
-//            ProgressBar.BeginAnimation(ProgressBar.ValueProperty, doubleanimation);
-//            pBar.Items.Add(ProgressBar);
-//        }
-
-
-//        private void FinishSimulator(object sender, EventArgs e)
-//        {
-//            if (isTimerRun)
-//            {
-//                stopWatch.Stop();
-//                isTimerRun = false;
-//            }
-//            Simulator.Simulator.StopSimulator();
-//            this.Close();
-//            BW.CancelAsync();
-//        }
-//        private void Worker_DoWork(object sender, DoWorkEventArgs e)
-//        {
-//            Simulator.Simulator.CompleteSimulator+=Stop;
-//            Simulator.Simulator.ProgressChange += ChangeOrder;
-//            Simulator.Simulator.StartSimulator();
-//            while (!BW.CancellationPending)
-//            {
-//                Thread.Sleep(1000);
-//                BW.ReportProgress(1);
-//            }
-//        }
-//        private void ChangeOrder(object sender, EventArgs e)
-//        {
-//            if (!(e is Details))
-//                return;
-
-//            Details details = e as Details;
-//            this.previousStatus = (details.order.ShipDate == null) ? BO.Enums.OrderStatus.Approved.ToString() : BO.Enums.OrderStatus.Sent.ToString();
-//            this.nextStatus = (details.order.ShipDate == null) ? BO.Enums.OrderStatus.Sent.ToString() : BO.Enums.OrderStatus.Supplied.ToString();
-//            dcT = new Tuple<BO.Order, int, string, string>(details.order, details.seconds / 1000, previousStatus, nextStatus);
-//            if (!CheckAccess())
-//            {
-//                Dispatcher.BeginInvoke(ChangeOrder, sender, e);
-//            }
-//            else
-//            {
-//                DataContext = dcT;
-//                countDownTimer(details.seconds / 1000);
-
-//                ProgressBarStart(details.seconds / 1000);
-//            }
-//        }
-//        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-//        {
-//            string timerText = stopWatch.Elapsed.ToString();
-//            timerText = timerText.Substring(0, 8);
-//            SimulatorTXTB.Text = timerText;
-//        }
-//        public void Stop(object sender, EventArgs e)
-//        {
-//            Simulator.Simulator.ProgressChange -= ChangeOrder;
-//            Simulator.Simulator.CompleteSimulator -= Stop;
-
-//            if (!CheckAccess())
-//            {
-//                Dispatcher.BeginInvoke(Stop, sender, e);
-//            }
-//            else
-//            {
-//                MessageBox.Show("complete updating");
-//                this.Close();
-//            }
-//        }
-//    }
-//}
-
-using BlApi;
+﻿using BlApi;
 using Simulator;
 using System;
 using System.Collections.Generic;
@@ -184,7 +19,7 @@ namespace PL;
 public partial class StartSimulatorWindow : Window
 {
     private readonly Stopwatch stopWatch = new();
-
+    private bool canCloseWindow=false;
     private volatile bool isTimerRun;
     private volatile bool isWating = false;
 
@@ -293,8 +128,8 @@ public partial class StartSimulatorWindow : Window
             var args = (Tuple<BO.Order, int>)e.UserState!;//extract the Tuple that contain Random time to end and the order details
 
             //update current order handle details 
-            CurrentOrderHandle = "ID : " + args.Item1.Id +
-            "\nCurrent status : " + args.Item1.OrderStatus;
+            CurrentOrderHandle = "order ID : " + args.Item1.Id +
+            "\nOrder status : " + args.Item1.OrderStatus;
 
             //extract start time and end time
             string timerText = stopWatch.Elapsed.ToString();
@@ -340,16 +175,9 @@ public partial class StartSimulatorWindow : Window
     private void StopTimerButton_Click(object sender, RoutedEventArgs e)
     {
         backroundWorker.CancelAsync();
+        canCloseWindow = true;
     }
 
-    private void Window_Closing(object sender, CancelEventArgs e)
-    {
-        if (backroundWorker.CancellationPending == false && isTimerRun) // Won't allow to cancel the window!!! It is not me!!!
-        {
-            e.Cancel = true;
-            MessageBox.Show(@"DON""T CLOSE ME!!!", "STOP IT!!!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-        }
-    }
     private void CloseHandler(object? sender, RunWorkerCompletedEventArgs? e)//close the window with soft thread cancel
     {
         Simulator.Simulator.DeAcitavet();
@@ -359,5 +187,11 @@ public partial class StartSimulatorWindow : Window
         backroundWorker.RunWorkerCompleted -= CloseHandler;
         Simulator.Simulator.ScreenUpdate -= Simulator_ScreenUpdate;
         Simulator.Simulator.Wating -= WaitForOrders;
+    }
+
+    private void OnClosing(object sender, CancelEventArgs e)
+    {
+        if(!canCloseWindow)
+        e.Cancel = true;
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Order"
         mc:Ignorable="d"
-        Title="OrderItem" Height="450" Width="800"
+        Title="OrderItem" Height="550" Width="1000"
     DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     <Grid Margin="0,0,0,0">
         <Grid.Background>

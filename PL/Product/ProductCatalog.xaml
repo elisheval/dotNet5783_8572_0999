@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Product"
         mc:Ignorable="d"
-        Title="ProductCatalog" Height="450" Width="800"
+        Title="ProductCatalog" Height="550" Width="1000"
     DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     <Window.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}">

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL.Cart"
         mc:Ignorable="d"
-        Title="CartWindow" Height="450" Width="800"
+        Title="CartWindow" Height="550" Width="1000"
      DataContext = "{Binding RelativeSource={RelativeSource Self}}" >
     <Window.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource basicBtnStyle}" x:Key="btnStyle">
